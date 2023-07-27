@@ -5,13 +5,20 @@ import 'package:flutter_hotel_app_ui/screens/auth/signup.dart';
 import 'package:flutter_hotel_app_ui/widgets/primary_button.dart';
 
 import '../../gen/theme.dart';
+import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/login_form.dart';
 import '../../widgets/formWidget/login_option.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: BuildAppbar('Login'),
       body: Padding(
         padding: kDefaultPadding,
         child: SingleChildScrollView(
@@ -85,6 +92,7 @@ class LogInScreen extends StatelessWidget {
               ),
               PrimaryButton(
                 buttonText: 'Log In',
+                
               ),
               SizedBox(
                 height: 20,
@@ -103,4 +111,5 @@ class LogInScreen extends StatelessWidget {
       ),
     );
   }
-}
+
+ }

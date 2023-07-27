@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotel_app_ui/screens/profile/profile_screen.dart';
 import 'package:flutter_hotel_app_ui/utils/localfiles.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../gen/theme.dart';
 import '../screens/home_screen.dart';
 import '../screens/map_screen.dart';
 
-class CustomNavBar extends StatelessWidget {
+class CustomNavBar extends StatefulWidget {
   const CustomNavBar({
     Key? key,
     required this.index,
@@ -14,6 +16,11 @@ class CustomNavBar extends StatelessWidget {
 
   final int index;
 
+  @override
+  State<CustomNavBar> createState() => _CustomNavBarState();
+}
+
+class _CustomNavBarState extends State<CustomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -33,12 +40,12 @@ class CustomNavBar extends StatelessWidget {
                   ),
                 );
               },
-              isSelected: index == 0,
+              isSelected: widget.index == 0,
             ),
             _NavBarIcon(
               iconPath: Localfiles.map,
               text: 'Map',
-              isSelected: index == 1,
+              isSelected: widget.index == 1,
               onTap: () {
                 Navigator.pushReplacement(
                   context,
@@ -55,6 +62,14 @@ class CustomNavBar extends StatelessWidget {
             _NavBarIcon(
               iconPath: Localfiles.profile,
               text: 'Profile',
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => ProfileScreen()),
+                  ),
+                );
+              },
             ),
           ],
         ),

@@ -13,10 +13,11 @@ class Localfiles {
   static const String OnboardImg1 = BaseImageUrl + 'img-1.png';
   static const String OnboardImg2 = BaseImageUrl + 'img-2.png';
   static const String OnboardImg3 = BaseImageUrl + 'img-3.png';
+  static const String profile = BaseImageUrl + 'photo.png';
 
   /*************** SVG PATH *********************/
 
- static const String BaseSvgUrl = 'assets/icon/';
+  static const String BaseSvgUrl = 'assets/icon/';
   static const String booking = BaseSvgUrl + 'booking.svg';
   static const String calendar = BaseSvgUrl + 'calendar.svg';
   static const String chevronDown = BaseSvgUrl + 'chevron-down.svg';
@@ -25,9 +26,10 @@ class Localfiles {
   static const String location = BaseSvgUrl + 'location.svg';
   static const String map = BaseSvgUrl + 'map.svg';
   static const String notification = BaseSvgUrl + 'notification.svg';
-  static const String profile = BaseSvgUrl + 'profile.svg';
+  
   static const String wishlist = BaseSvgUrl + 'wishlist.svg';
   static const String pin = BaseSvgUrl + 'pin.svg';
+  static const String inviteImage = BaseImageUrl + 'inviteImage.png';
 
   static const String BaseSvgUrlAmeneties = 'assets/icon/amenities/';
   static const String ac = BaseSvgUrl + 'ac.svg';
@@ -36,5 +38,4 @@ class Localfiles {
   static const String swimmingPool = BaseSvgUrl + 'swimming_pool.svg';
   static const String transport = BaseSvgUrl + 'transport.svg';
   static const String wifi = BaseSvgUrl + 'wifi.svg';
-
 }

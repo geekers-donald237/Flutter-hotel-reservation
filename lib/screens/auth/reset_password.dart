@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotel_app_ui/widgets/primary_button.dart';
 
 import '../../gen/theme.dart';
+import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/reset_form.dart';
 import 'login.dart';
 
@@ -9,6 +10,8 @@ class ResetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            appBar: BuildAppbar('reset Pwd'),
+
       body: Padding(
         padding: kDefaultPadding,
         child: Column(

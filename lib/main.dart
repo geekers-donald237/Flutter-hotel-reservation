@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hotel_app_ui/screens/auth/signup.dart';
+import 'package:flutter_hotel_app_ui/screens/home_screen.dart';
+import 'package:flutter_hotel_app_ui/screens/profile/profile_screen.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'gen/theme.dart';
+import 'onboard/onboard.dart';
 
 int? isviewed;
 void main() async {
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Hotel App UI',
+      title: 'Flutter Hotel App',
       theme: ThemeData(
         fontFamily: FontFamily.workSans,
         primarySwatch: ColorName.primarySwatch,

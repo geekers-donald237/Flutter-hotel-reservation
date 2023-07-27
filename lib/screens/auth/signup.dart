@@ -3,6 +3,7 @@ import 'package:flutter_hotel_app_ui/widgets/checkbox.dart';
 import 'package:flutter_hotel_app_ui/widgets/primary_button.dart';
 
 import '../../gen/theme.dart';
+import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/login_option.dart';
 import '../../widgets/formWidget/signup_form.dart';
 import 'login.dart';
@@ -11,6 +12,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: BuildAppbar("Register"),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
