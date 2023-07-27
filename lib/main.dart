@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_hotel_app_ui/screens/auth/signup.dart';
 
-void main() {
-  runApp(const MainApp());
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'gen/theme.dart';
+
+int? isviewed;
+void main() async {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
+  await dotenv.load(fileName: ".env");
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  isviewed = prefs.getInt('onBoard');
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Hotel App UI',
+      theme: ThemeData(
+        fontFamily: FontFamily.workSans,
+        primarySwatch: ColorName.primarySwatch,
       ),
+      // home: isviewed != 0 ? OnBoard() : HomeScreen(),
+      home: SignUpScreen(),
     );
   }
 }

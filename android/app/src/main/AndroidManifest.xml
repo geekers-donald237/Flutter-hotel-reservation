@@ -1,9 +1,14 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application
-        android:label="hotel_app"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.flutter_hotel_app_ui">
+   <application
+        android:label="flutter_hotel_app_ui"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <activity
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+                  android:value="AIzaSyAFvFK8aasYYYSgCleRW0WctgBQLOwT3p8"/>
+
+       <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
