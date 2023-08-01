@@ -1,6 +1,9 @@
+import 'package:find_hotel/screens/auth/otp.dart';
+import 'package:find_hotel/screens/auth/reset_password.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/routes/routes.dart';
-import 'package:flutter_hotel_app_ui/screens/auth/login.dart';
+import 'package:find_hotel/routes/routes.dart';
+import 'package:find_hotel/screens/auth/login.dart';
+import 'package:find_hotel/screens/profile/profile_screen.dart';
 
 import '../screens/auth/signup.dart';
 import '../screens/profile/country_screen.dart';
@@ -10,6 +13,7 @@ import '../screens/profile/hepl_center_screen.dart';
 import '../screens/profile/how_do_screen.dart';
 import '../screens/profile/invite_screen.dart';
 import '../screens/profile/settings_screen.dart';
+
 class NavigationServices {
   NavigationServices(this.context);
 
@@ -89,9 +93,9 @@ class NavigationServices {
     return await _pushMaterialPageRoute(HeplCenterScreen());
   }
 
-  // Future<dynamic> gotoChangepasswordScreen() async {
-  //   return await _pushMaterialPageRoute(ChangepasswordScreen());
-  // }
+  Future<dynamic> gotoResetPassword() async {
+    return await _pushMaterialPageRoute(ResetPassword());
+  }
 
   Future<dynamic> gotoInviteFriend() async {
     return await _pushMaterialPageRoute(InviteFriend());
@@ -110,4 +114,10 @@ class NavigationServices {
   Future<dynamic> gotoHowDoScreen() async {
     return await _pushMaterialPageRoute(HowDoScreen());
   }
+
+  Future<dynamic> gotoProfileScreen() async {
+    return await _pushMaterialPageRoute(ProfileScreen());
+  }
+
+
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/providers/selected_hotel_provider.dart';
+import 'package:find_hotel/providers/selected_hotel_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

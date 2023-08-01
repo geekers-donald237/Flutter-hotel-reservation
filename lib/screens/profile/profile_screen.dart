@@ -1,15 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/gen/theme.dart';
+import 'package:find_hotel/gen/theme.dart';
+import '../../models/setting.dart';
 import '../../models/setting_list_data.dart';
 import '../../routes/route_names.dart';
 import '../../utils/localfiles.dart';
-import '../../widgets/bottom_top_move_animation_view.dart';
+import '../../widgets/avatar_card.dart';
+import '../../widgets/custom_nav_bar.dart';
+import '../../widgets/setting_tile.dart';
+import '../../widgets/support_card.dart';
 
 class ProfileScreen extends StatefulWidget {
- 
-
-  const ProfileScreen({Key? key})
-      : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -25,91 +27,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      bottomNavigationBar: CustomNavBar(index: 3),
+      appBar: AppBar(
+        backgroundColor: kWhiteColor,
+        foregroundColor: kblack,
+        elevation: 2,
+        title: Text('Setting'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-           
+          children: [
             Expanded(
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.all(0.0),
-                itemCount: userSettingsList.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () async {
-                      //setting screen view
-                      if (index == 5) {
-                        NavigationServices(context).gotoSettingsScreen();
-    
-                        //   setState(() {});
-                      }
-                      //help center screen view
-    
-                      if (index == 3) {
-                        NavigationServices(context).gotoHeplCenterScreen();
-                      }
-                      //Chage password  screen view
-    
-                      if (index == 0) {
-                        // NavigationServices(context)
-                        //     .gotoChangepasswordScreen();
-                      }
-                      //Invite friend  screen view
-    
-                      if (index == 1) {
-                        NavigationServices(context).gotoInviteFriend();
-                      }
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 16),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    
-                                      userSettingsList[index].titleTxt,
-                                    
-                                    style:TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Container(
-                                  child: Icon(
-                                      userSettingsList[index].iconData,
-                                      color: kSecondaryColor
-                                          .withOpacity(0.7)),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16),
-                          child: Divider(
-                            height: 1,
-                          ),
-                        )
-                      ],
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BuildViewAndEdit(context),
+                  const SizedBox(height: 10),
+                  Column(
+                    children: List.generate(
+                      settings.length,
+                      (index) => SettingTile(setting: settings[index]),
                     ),
-                  );
-                },
+                  ),
+                  const SizedBox(height: 10),
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  Column(
+                    children: List.generate(
+                      settings2.length,
+                      (index) => SettingTile(setting: settings2[index]),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const SupportCard()
+                ],
               ),
-            )
+            ),
           ],
         ),
+      ),
     );
   }
 
-  Widget appBar() {
+  InkWell BuildViewAndEdit(BuildContext context) {
     return InkWell(
       onTap: () {
         NavigationServices(context).gotoEditProfile();
@@ -126,14 +91,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                   "raaj_text",
+                    "John Doe",
                     style: new TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   Text(
-                    "view_edit",
+                    "View and Edit",
                     style: new TextStyle(
                       fontSize: 18,
                       color: Theme.of(context).disabledColor,

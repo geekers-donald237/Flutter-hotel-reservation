@@ -25,8 +25,6 @@ class FontFamily {
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal
 
-
-
 class ColorName {
   ColorName._();
 
@@ -76,17 +74,18 @@ class ColorName {
 const kPrimaryColor = Color(0xFF1B383A);
 const kSecondaryColor = Color(0xFF59706F);
 const kDarkGreyColor = Color(0xFFA8A8A8);
-const kWhiteColor = Color(0xFFFFFFFF);
+const kWhiteColor = Color(0xFFFFFFFF); 
 const kZambeziColor = Color(0xFF5B5B5B);
 const kBlackColor = Color(0xFF272726);
 const kTextFieldColor = Color(0xFF979797);
+const kblue = Color(0xFF4756DF);
+const kwhite = Color(0xFFFFFFFF);
+const kblack = Color(0xFF000000);
+const kbrown300 = Color(0xFF8D6E63);
+const kbrown = Color(0xFF795548);
+const kgrey = Color(0xFFC0C0C0);
 
-Color kblue = Color(0xFF4756DF);
-Color kwhite = Color(0xFFFFFFFF);
-Color kblack = Color(0xFF000000);
-Color kbrown300 = Color(0xFF8D6E63);
-Color kbrown = Color(0xFF795548);
-Color kgrey = Color(0xFFC0C0C0);
+
 
 const kDefaultPadding = EdgeInsets.symmetric(horizontal: 30);
 

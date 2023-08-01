@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../models/setting_list_data.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/common_appbar_view.dart';

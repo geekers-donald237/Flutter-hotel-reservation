@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/gen/theme.dart';
+import 'package:find_hotel/gen/theme.dart';
 import 'app_text.dart';
 
 class MapMarkerPrice extends StatelessWidget {

@@ -1,6 +1,6 @@
 {
-    "name": "flutter_hotel_app_ui",
-    "short_name": "flutter_hotel_app_ui",
+    "name": "find_hotel",
+    "short_name": "find_hotel",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/widgets/tap_effect.dart';
-
+import 'package:find_hotel/widgets/tap_effect.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback? onTap;
@@ -43,10 +42,10 @@ class CommonButton extends StatelessWidget {
               child: buttonTextWidget ??
                   Text(
                     buttonText ?? "",
-                    style:TextStyle(
-                          color: textColor,
-                          fontSize: 16,
-                        ),
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 16,
+                    ),
                   ),
             ),
           ),

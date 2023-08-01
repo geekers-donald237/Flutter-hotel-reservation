@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/widgets/checkbox.dart';
-import 'package:flutter_hotel_app_ui/widgets/primary_button.dart';
+import 'package:find_hotel/widgets/checkbox.dart';
+import 'package:find_hotel/widgets/primary_button.dart';
 
 import '../../gen/theme.dart';
+
 import '../../widgets/custom_apbar.dart';
+import '../../widgets/formWidget/custom_phone_field.dart';
 import '../../widgets/formWidget/login_option.dart';
-import '../../widgets/formWidget/signup_form.dart';
 import 'login.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool _isObscure = true;
+  GlobalKey<FormState> _formKey = GlobalKey();
+
+  FocusNode focusNode = FocusNode();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController pswController = TextEditingController();
+  final TextEditingController cpswController = TextEditingController();
+
+  String phoneNumber =
+      ""; // Variable pour stocker le numéro de téléphone dans ce widget
+
+  void updatePhoneNumber(String newPhoneNumber) {
+    // Fonction de rappel pour mettre à jour le numéro de téléphone dans ce widget
+    phoneNumber = newPhoneNumber;
+    print('Updated Phone Number: $phoneNumber');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 70,
+              height: 40,
             ),
             Padding(
               padding: kDefaultPadding,
@@ -64,7 +89,21 @@ class SignUpScreen extends StatelessWidget {
             ),
             Padding(
               padding: kDefaultPadding,
-              child: SignUpForm(),
+              child: Column(
+                children: [
+                  buildInputForm('UserName', false, usernameController),
+                  buildInputForm('Email', false, emailController),
+                  // buildInputForm('Phone', false, phoneController),
+                  CustomPhoneField(
+                    formKey: _formKey,
+                    focusNode: focusNode,
+                    onPhoneNumberChanged: updatePhoneNumber,
+                    phoneNumber: phoneNumber,
+                  ),
+                  buildInputForm('Password', true, pswController),
+                  buildInputForm('Confirm Password', true, cpswController),
+                ],
+              ),
             ),
             SizedBox(
               height: 20,
@@ -85,7 +124,22 @@ class SignUpScreen extends StatelessWidget {
             ),
             Padding(
               padding: kDefaultPadding,
-              child: PrimaryButton(buttonText: 'Sign Up'),
+              child: PrimaryButton(
+                buttonText: 'Sign Up',
+                ontap: () {
+                  if (validateForm(
+                      usernameController.text,
+                      emailController.text,
+                      phoneNumber,
+                      pswController.text,
+                      cpswController.text)) {
+                    print("sucess");
+                    clearController();
+                  } else {
+                    print('restart');
+                  }
+                },
+              ),
             ),
             SizedBox(
               height: 20,
@@ -111,5 +165,72 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void clearController() {
+    usernameController.clear();
+    emailController.clear();
+    pswController.clear();
+    cpswController.clear();
+    phoneController.clear();
+  }
+
+  bool validateForm(String name, String email, String phoneNumber,
+      String password, String confirmPassword) {
+    // Vérification si aucun champ n'est vide
+    if (name.isEmpty ||
+        email.isEmpty ||
+        phoneNumber.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      return false;
+    }
+
+    // Vérification si le mot de passe et la confirmation du mot de passe sont identiques
+    if (password != confirmPassword) {
+      return false;
+    }
+
+    // Vérification si l'email est au bon format
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(email)) {
+      return false;
+    }
+
+    // Si toutes les validations sont réussies, retourne true pour indiquer que le formulaire est valide
+    return true;
+  }
+
+  Padding buildInputForm(
+      String hint, bool pass, TextEditingController textEditingController) {
+    return Padding(
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: TextFormField(
+          controller: textEditingController,
+          obscureText: pass ? _isObscure : false,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: kTextFieldColor),
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor)),
+            suffixIcon: pass
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                    icon: _isObscure
+                        ? Icon(
+                            Icons.visibility_off,
+                            color: kTextFieldColor,
+                          )
+                        : Icon(
+                            Icons.visibility,
+                            color: kPrimaryColor,
+                          ))
+                : null,
+          ),
+        ));
   }
 }

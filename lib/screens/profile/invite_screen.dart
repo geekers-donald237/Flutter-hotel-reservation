@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/gen/theme.dart';
+import 'package:find_hotel/gen/theme.dart';
 
 import '../../utils/localfiles.dart';
 import '../../widgets/common_button.dart';
@@ -30,8 +30,8 @@ class _InviteFriendState extends State<InviteFriend> {
                   child: Text(
                     "invite_your_friend",
                     style: TextStyle(
-                          fontSize: 20,
-                        ),
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 Container(
@@ -40,8 +40,8 @@ class _InviteFriendState extends State<InviteFriend> {
                     "invite_friend_desc",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                          fontSize: 16,
-                        ),
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -64,7 +64,7 @@ class _InviteFriendState extends State<InviteFriend> {
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
-                                 "share_text" ,
+                                  "share_text",
                                   style: TextStyle(color: kWhiteColor),
                                 ),
                               ),

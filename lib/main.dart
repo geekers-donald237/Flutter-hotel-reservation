@@ -1,23 +1,24 @@
+import 'package:find_hotel/screens/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_hotel_app_ui/screens/auth/signup.dart';
-import 'package:flutter_hotel_app_ui/screens/home_screen.dart';
-import 'package:flutter_hotel_app_ui/screens/profile/profile_screen.dart';
-
+import 'package:find_hotel/screens/home_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'gen/theme.dart';
 import 'onboard/onboard.dart';
+// import 'package:localizations/l10n/l10n.dart';
 
 int? isviewed;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  WidgetsFlutterBinding.ensureInitialized();
+
   await FlutterConfig.loadEnvVariables();
   await dotenv.load(fileName: ".env");
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,6 +38,12 @@ class MyApp extends StatelessWidget {
         fontFamily: FontFamily.workSans,
         primarySwatch: ColorName.primarySwatch,
       ),
+      // localizationsDelegates: [
+      //   // AppLocalizations.delegate,
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalCupertinoLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      // ],
       // home: isviewed != 0 ? OnBoard() : HomeScreen(),
       home: SignUpScreen(),
     );

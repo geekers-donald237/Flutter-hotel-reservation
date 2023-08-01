@@ -15,6 +15,13 @@ class Localfiles {
   static const String OnboardImg3 = BaseImageUrl + 'img-3.png';
   static const String profile = BaseImageUrl + 'photo.png';
 
+  static const String introduction = BaseImageUrl + 'introduction.jpg';
+
+  static const String introduction1 = BaseImageUrl + 'introduction1.png';
+  static const String introduction2 = BaseImageUrl + 'introduction2.png';
+  static const String introduction3 = BaseImageUrl + 'introduction3.png';
+  static const String illustration3 = BaseImageUrl + 'illustration-3.png';
+
   /*************** SVG PATH *********************/
 
   static const String BaseSvgUrl = 'assets/icon/';
@@ -26,7 +33,8 @@ class Localfiles {
   static const String location = BaseSvgUrl + 'location.svg';
   static const String map = BaseSvgUrl + 'map.svg';
   static const String notification = BaseSvgUrl + 'notification.svg';
-  
+  static const String profilePage = BaseSvgUrl + 'profile.svg';
+
   static const String wishlist = BaseSvgUrl + 'wishlist.svg';
   static const String pin = BaseSvgUrl + 'pin.svg';
   static const String inviteImage = BaseImageUrl + 'inviteImage.png';

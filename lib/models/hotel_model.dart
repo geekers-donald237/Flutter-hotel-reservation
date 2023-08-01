@@ -1,4 +1,4 @@
-import 'package:flutter_hotel_app_ui/utils/localfiles.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HotelModel {
@@ -41,9 +41,9 @@ class HotelModel {
       coordinate: LatLng(-7.8712168283326625, 110.353484068852),
       price: 458,
       imagePaths: [
-       Localfiles.gallery1,
-         Localfiles.gallery2,
-         Localfiles.gallery3,
+        Localfiles.gallery1,
+        Localfiles.gallery2,
+        Localfiles.gallery3,
       ],
       totalReview: 134,
     ),
@@ -59,9 +59,9 @@ class HotelModel {
       coordinate: LatLng(-7.8188302371260265, 110.36928495262913),
       price: 338,
       imagePaths: [
-       Localfiles.gallery1,
-         Localfiles.gallery2,
-         Localfiles.gallery3,
+        Localfiles.gallery1,
+        Localfiles.gallery2,
+        Localfiles.gallery3,
       ],
       totalReview: 432,
     ),
@@ -77,9 +77,9 @@ class HotelModel {
       coordinate: LatLng(-7.842320836894338, 110.33722565674677),
       price: 698,
       imagePaths: [
-       Localfiles.gallery1,
-         Localfiles.gallery2,
-         Localfiles.gallery3,
+        Localfiles.gallery1,
+        Localfiles.gallery2,
+        Localfiles.gallery3,
       ],
       totalReview: 99,
     ),
@@ -95,9 +95,9 @@ class HotelModel {
       coordinate: LatLng(-7.8147871933139434, 110.36921653947174),
       price: 123,
       imagePaths: [
-       Localfiles.gallery1,
-         Localfiles.gallery2,
-         Localfiles.gallery3,
+        Localfiles.gallery1,
+        Localfiles.gallery2,
+        Localfiles.gallery3,
       ],
       totalReview: 5,
     ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/gen/theme.dart';
-
+import 'package:find_hotel/gen/theme.dart';
 
 class CommonAppbarView extends StatelessWidget {
   final double? topPadding;
@@ -46,7 +45,7 @@ class CommonAppbarView extends StatelessWidget {
                       child: backWidget ??
                           Icon(
                             iconData,
-                            color:kPrimaryColor,
+                            color: kPrimaryColor,
                           ),
                     ),
                   ),

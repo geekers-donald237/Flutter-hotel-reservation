@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/gen/theme.dart';
-import 'package:flutter_hotel_app_ui/utils/localfiles.dart';
+import 'package:find_hotel/gen/theme.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/home_screen.dart';
@@ -15,17 +14,17 @@ class OnBoard extends StatefulWidget {
 class _OnBoardState extends State<OnBoard> {
   int currentIndex = 0;
   late PageController _pageController;
+  Color mycolor = kblue;
   List<OnboardModel> screens = <OnboardModel>[
     OnboardModel(
-      img: Localfiles.OnboardImg1,
-      text: "Belajar Dengan Metode Learning by Doing",
-      desc:
-          "Sebuah metode belajar yang terbuktiampuh dalam meningkatkan produktifitas belajar, Learning by Doing",
+      img: Localfiles.introduction3,
+      text: "Find The Best Deal",
+      desc: "Lorem Ipsum dolor si consctur",
       bg: Colors.white,
       button: Color(0xFF4756DF),
     ),
     OnboardModel(
-      img:  Localfiles.OnboardImg2,
+      img: Localfiles.introduction1,
       text: "Dapatkan Kemudahan Akses Kapanpun dan Dimanapun",
       desc:
           "Tidak peduli dimanapun kamu, semua kursus yang telah kamu ikuti bias kamu akses sepenuhnya",
@@ -33,7 +32,7 @@ class _OnBoardState extends State<OnBoard> {
       button: Colors.white,
     ),
     OnboardModel(
-      img:  Localfiles.OnboardImg3,
+      img: Localfiles.introduction2,
       text: "Gunakan Fitur Kolaborasi Untuk Pengalaman Lebih",
       desc:
           "Tersedia fitur Kolaborasi dengan tujuan untuk mengasah skill lebih dalam karena bias belajar bersama",
@@ -68,66 +67,67 @@ class _OnBoardState extends State<OnBoard> {
       backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
       appBar: AppBar(
         backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
-        elevation: 0.0,
+        foregroundColor: kblack,
+        elevation: 2.0,
         actions: [
-          TextButton(
-            onPressed: () {
-              _storeOnboardInfo();
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) =>  HomeScreen()));
-            },
-            child: Text(
-              "Skip",
-              style: TextStyle(
-                color: currentIndex % 2 == 0 ? kblack : kwhite,
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: 10.0, vertical: 2.0), // Espace extérieur horizontal
+            child: Container(
+              decoration: BoxDecoration(
+                // Couleur de fond du TextButton
+                color: mycolor,
+                borderRadius: BorderRadius.circular(8.0), // Bordures carrées
+              ),
+              child: TextButton(
+                onPressed: () {
+                  _storeOnboardInfo();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0), // Espace intérieur
+                  child: Text(
+                    "Skip",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: currentIndex % 2 == 0 ? kblack : kblue,
+                    ),
+                  ),
+                ),
               ),
             ),
           )
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: PageView.builder(
             itemCount: screens.length,
             controller: _pageController,
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             onPageChanged: (int index) {
               setState(() {
                 currentIndex = index;
+                if (currentIndex % 2 == 0) {
+                  setState(() {
+                    mycolor = kblue;
+                  });
+                } else {
+                  setState(() {
+                    mycolor = kwhite;
+                  });
+                }
               });
             },
             itemBuilder: (_, index) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(screens[index].img),
-                  Container(
-                    height: 10.0,
-                    child: ListView.builder(
-                      itemCount: screens.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 3.0),
-                                width: currentIndex == index ? 25 : 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: currentIndex == index
-                                      ? kbrown
-                                      : kbrown300,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ]);
-                      },
-                    ),
-                  ),
                   Text(
                     screens[index].text,
                     textAlign: TextAlign.center,
@@ -147,41 +147,104 @@ class _OnBoardState extends State<OnBoard> {
                       color: index % 2 == 0 ? kblack : kwhite,
                     ),
                   ),
-                  InkWell(
-                    onTap: () async {
-                      print(index);
-                      if (index == screens.length - 1) {
-                        await _storeOnboardInfo();
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) =>  HomeScreen()));
-                      }
+                  Container(
+                    alignment: Alignment(0, 0.75),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            print(index);
 
-                      _pageController.nextPage(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.bounceIn,
-                      );
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: index % 2 == 0 ? kblue : kwhite,
-                          borderRadius: BorderRadius.circular(15.0)),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Text(
-                          "Next",
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: index % 2 == 0 ? kwhite : kblue),
+                            _pageController.previousPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.bounceIn,
+                            );
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: index % 2 != 0 ? kwhite : kblue,
+                                ),
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.arrow_back_ios_new_sharp,
+                                  color: index % 2 != 0 ? kblue : kwhite,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          width: 15.0,
+                        Container(
+                          height: 10.0,
+                          child: ListView.builder(
+                            itemCount: screens.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 3.0),
+                                      width: currentIndex == index ? 25 : 8,
+                                      height: 8,
+                                      decoration: BoxDecoration(
+                                        color: currentIndex == index
+                                            ? kPrimaryColor
+                                            : kSecondaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ]);
+                            },
+                          ),
                         ),
-                        Icon(
-                          Icons.arrow_forward_sharp,
-                          color: index % 2 == 0 ? kwhite : kblue,
+                        InkWell(
+                          onTap: () async {
+                            print(index);
+                            if (index == screens.length - 1) {
+                              await _storeOnboardInfo();
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()));
+                            }
+
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.bounceIn,
+                            );
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: index % 2 != 0 ? kwhite : kblue,
+                                ),
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios_sharp,
+                                  color: index % 2 != 0 ? kblue : kwhite,
+                                ),
+                              ),
+                            ],
+                          ),
                         )
-                      ]),
+                      ],
                     ),
                   )
                 ],

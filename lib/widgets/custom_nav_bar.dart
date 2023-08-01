@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/screens/profile/profile_screen.dart';
-import 'package:flutter_hotel_app_ui/utils/localfiles.dart';
+import 'package:find_hotel/routes/route_names.dart';
+import 'package:find_hotel/screens/profile/profile_screen.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -60,15 +61,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
               text: 'Booking',
             ),
             _NavBarIcon(
-              iconPath: Localfiles.profile,
+              iconPath: Localfiles.profilePage,
               text: 'Profile',
+              isSelected: widget.index == 3,
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => ProfileScreen()),
-                  ),
-                );
+                NavigationServices(context).gotoProfileScreen();
               },
             ),
           ],

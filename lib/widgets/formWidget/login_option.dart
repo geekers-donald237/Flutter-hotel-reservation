@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/utils/localfiles.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 
 class LoginOption extends StatelessWidget {
   @override

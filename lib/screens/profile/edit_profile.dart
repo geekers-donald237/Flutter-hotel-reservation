@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotel_app_ui/gen/theme.dart';
-import 'package:flutter_hotel_app_ui/utils/localfiles.dart';
+import 'package:find_hotel/gen/theme.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 import '../../models/setting_list_data.dart';
 import '../../widgets/common_appbar_view.dart';
 import '../../widgets/common_card.dart';
+import '../../widgets/custom_nav_bar.dart';
 import '../../widgets/remove_focuse.dart';
 
 class EditProfile extends StatefulWidget {
@@ -19,6 +20,7 @@ class _EditProfileState extends State<EditProfile> {
     return Container(
       child: Scaffold(
         backgroundColor: kDarkGreyColor,
+        bottomNavigationBar: CustomNavBar(index: 4),
         body: RemoveFocuse(
           onClick: () {
             FocusScope.of(context).requestFocus(FocusNode());
@@ -29,7 +31,7 @@ class _EditProfileState extends State<EditProfile> {
             children: <Widget>[
               CommonAppbarView(
                 iconData: Icons.arrow_back,
-                titleText:"edit_profile",
+                titleText: "edit_profile",
                 onBackClick: () {
                   Navigator.pop(context);
                 },
@@ -56,11 +58,10 @@ class _EditProfileState extends State<EditProfile> {
                                           padding: const EdgeInsets.only(
                                               left: 16.0, bottom: 16, top: 16),
                                           child: Text(
-                                           
-                                                userInfoList[index].titleTxt,
+                                            userInfoList[index].titleTxt,
                                             style: TextStyle(
-                                                  fontSize: 16,
-                                                ),
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -71,9 +72,9 @@ class _EditProfileState extends State<EditProfile> {
                                           child: Text(
                                             userInfoList[index].subTxt,
                                             style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                ),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         ),
                                       )
