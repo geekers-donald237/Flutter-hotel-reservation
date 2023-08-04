@@ -1,9 +1,20 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:find_hotel/routes/route_names.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/widgets/checkbox.dart';
 import 'package:find_hotel/widgets/primary_button.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+
+import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
 
+import '../../urls/all_url.dart';
 import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/custom_phone_field.dart';
 import '../../widgets/formWidget/login_option.dart';
@@ -24,6 +35,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController pswController = TextEditingController();
   final TextEditingController cpswController = TextEditingController();
+  final Uri _url = Uri.parse('https://flutter.dev');
+  bool checkedAgreeTerms = false;
+  bool check18YearsOld = false;
 
   String phoneNumber =
       ""; // Variable pour stocker le numéro de téléphone dans ce widget
@@ -32,6 +46,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     // Fonction de rappel pour mettre à jour le numéro de téléphone dans ce widget
     phoneNumber = newPhoneNumber;
     print('Updated Phone Number: $phoneNumber');
+  }
+
+  bool _agreedToTerms = false;
+  bool _isAdult = false;
+
+  void _onTermsChanged(bool value) {
+    setState(() {
+      _agreedToTerms = value;
+    });
+  }
+
+  void _onAdultChanged(bool value) {
+    setState(() {
+      _isAdult = value;
+    });
+  }
+
+  bool validateCheckBoxes() {
+    return _agreedToTerms && _isAdult;
   }
 
   @override
@@ -91,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: kDefaultPadding,
               child: Column(
                 children: [
-                  buildInputForm('UserName', false, usernameController),
+                  buildInputForm('User Name', false, usernameController),
                   buildInputForm('Email', false, emailController),
                   // buildInputForm('Phone', false, phoneController),
                   CustomPhoneField(
@@ -110,14 +143,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Padding(
               padding: kDefaultPadding,
-              child: CheckBox('Agree to terms and conditions.'),
+              child: GestureDetector(
+                  onTap: () {
+                    _launchUrl();
+                  },
+                  child: CheckBox(
+                    'Agree to terms and conditions.  👈',
+                    onChanged: _onTermsChanged,
+                  )),
             ),
             SizedBox(
               height: 20,
             ),
             Padding(
               padding: kDefaultPadding,
-              child: CheckBox('I have at least 18 years old.'),
+              child: CheckBox(
+                'I have at least 18 years old.',
+                onChanged: _onAdultChanged,
+              ),
             ),
             SizedBox(
               height: 20,
@@ -133,10 +176,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       phoneNumber,
                       pswController.text,
                       cpswController.text)) {
-                    print("sucess");
+                    EasyLoading.show(status: "Loading...");
+                    singnIn(usernameController.text, emailController.text,
+                        pswController.text, phoneNumber);
+                    if (kDebugMode) {
+                      print("sucess");
+                    }
                     clearController();
-                  } else {
-                    print('restart');
                   }
                 },
               ),
@@ -167,6 +213,108 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  singnIn(String username, String email, String password,
+      String phoneNumber) async {
+    EasyLoading.show(status: 'Loading');
+    var url = Uri.parse(Urls.user);
+    // try {
+
+    try {
+      final response = await http.post(url, headers: {
+        "Accept": "application/json"
+      }, body: {
+        "user_name": encrypt(username),
+        "phone_number": encrypt(phoneNumber),
+        "email": encrypt(email),
+        "password": encrypt(password),
+        "action": encrypt("rentali_want_to_register_now")
+      });
+      var data = jsonDecode(response.body);
+      if (kDebugMode) {
+        print('dssd');
+        print(data);
+      }
+      if (response.statusCode == 200) {
+        if (data['status'] == 'error') {
+          if (data['message'] == 'email already exist') {
+            print(data['message'] + "ststus message email");
+            EasyLoading.showError(
+              'Email already in use',
+            );
+          } else if (data['message'] == 'phone number already exist') {
+            print(data['message'] + "ststus message another");
+            EasyLoading.showError(
+              'Phone Numnber Already exits',
+            );
+          } else {
+            EasyLoading.dismiss();
+            print(data['message'] + "show error another error");
+          }
+        } else {
+          EasyLoading.dismiss();
+          NavigationServices(context).gotoOpt2Screen();
+        }
+      } else {
+        print(data['message'] + "Anotherrrrrr errrroor");
+
+        EasyLoading.dismiss();
+      }
+    } on SocketException {
+      EasyLoading.dismiss();
+
+      print('bbbbbbbbb');
+    } catch (e) {
+      print('tttttttttttt');
+
+      print(e.toString());
+      EasyLoading.dismiss();
+    }
+    // if (response.statusCode == 200) {
+    // print(response.body);
+
+    //   if (data["message"] == 'Success Connexion') {
+    //     String id_admin = data['id_admin'].toString();
+    //     String email = data['email'];
+    //     String user_name = data['user_name'];
+    //     String tel = data['phone'];
+
+    //     SharedPreferences pref = await SharedPreferences.getInstance();
+    //     await pref.setString('id', encrypt(id_admin));
+    //     // await pref.setString('id_entreprise', id_entreprise);
+    //     await pref.setString('username', encrypt(user_name));
+    //     await pref.setString('email', encrypt(email));
+    //     await pref.setString('phone', encrypt(tel));
+    //     EasyLoading.dismiss();
+    //     Navigator.of(context).pushAndRemoveUntil(
+    //         MaterialPageRoute(builder: (context) => Start()),
+    //         (route) => false);
+    //   }
+    //   if (data["message"] == 'no able') {
+    //     EasyLoading.showError('Login incorrect',
+    //         duration: Duration(seconds: 5));
+    //   }
+    //   if (data["message"] == 'login ou mot de passe incorrect! ') {
+    //     EasyLoading.showError('Login incorrect',
+    //         duration: Duration(seconds: 5));
+    //   }
+    //   if (data["message"] == 'verified_your_account') {
+    //     EasyLoading.showError('verify your email address please',
+    //         duration: Duration(seconds: 5));
+    //   }
+    // } else {
+    //   EasyLoading.showError('verify internet');
+    // }
+    // }
+    //  on SocketException catch (e) {
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(SnackBar(content: Text('verify internet')));
+    // } catch (e) {
+    //   print(e);
+    //   EasyLoading.showError('an error occur');
+    // }
+    // }
+  }
+
   void clearController() {
     usernameController.clear();
     emailController.clear();
@@ -182,23 +330,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email.isEmpty ||
         phoneNumber.isEmpty ||
         password.isEmpty ||
-        confirmPassword.isEmpty) {
+        confirmPassword.isEmpty ||
+        !validateCheckBoxes()) {
+      EasyLoading.showError('Please fields All field',
+          duration: Duration(seconds: 3));
+
       return false;
     }
 
     // Vérification si le mot de passe et la confirmation du mot de passe sont identiques
     if (password != confirmPassword) {
+      EasyLoading.showError('Password doesnt macth',
+          duration: Duration(seconds: 3));
+
+      return false;
+    } else if ((password == confirmPassword) && password.length < 6) {
+      EasyLoading.showError('Password is too short',
+          duration: Duration(seconds: 3));
+
       return false;
     }
 
     // Vérification si l'email est au bon format
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
+      // showSnackBar(context, 'Invalid Email Address');
+      EasyLoading.showError('Invalid Email Address',
+          duration: Duration(seconds: 3));
+
       return false;
     }
+    EasyLoading.dismiss();
 
     // Si toutes les validations sont réussies, retourne true pour indiquer que le formulaire est valide
     return true;
+  }
+
+  Future<void> _launchUrl() async {
+    if (await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
+  loader(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 
   Padding buildInputForm(

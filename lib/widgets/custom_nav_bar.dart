@@ -1,10 +1,7 @@
+import 'package:find_hotel/utils/icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/routes/route_names.dart';
-import 'package:find_hotel/screens/profile/profile_screen.dart';
-import 'package:find_hotel/utils/localfiles.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../gen/theme.dart';
 import '../screens/home_screen.dart';
 import '../screens/map_screen.dart';
@@ -31,8 +28,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _NavBarIcon(
-              iconPath: Localfiles.home,
-              text: 'Home',
+              icon: CupertinoIcons.search,
+              text: 'Rechercher',
               onTap: () {
                 Navigator.pushReplacement(
                   context,
@@ -44,8 +41,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
               isSelected: widget.index == 0,
             ),
             _NavBarIcon(
-              iconPath: Localfiles.map,
-              text: 'Map',
+              icon: CupertinoIcons.heart,
+              text: 'Favoris',
               isSelected: widget.index == 1,
               onTap: () {
                 Navigator.pushReplacement(
@@ -57,11 +54,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
               },
             ),
             _NavBarIcon(
-              iconPath: Localfiles.booking,
-              text: 'Booking',
+              icon: Icons.playlist_add_check_sharp,
+              text: 'Reservations',
             ),
             _NavBarIcon(
-              iconPath: Localfiles.profilePage,
+              icon: CupertinoIcons.person,
               text: 'Profile',
               isSelected: widget.index == 3,
               onTap: () {
@@ -78,38 +75,44 @@ class _CustomNavBarState extends State<CustomNavBar> {
 class _NavBarIcon extends StatelessWidget {
   const _NavBarIcon({
     Key? key,
-    required this.iconPath,
+    required this.icon,
     required this.text,
     this.onTap,
     this.isSelected = false,
   }) : super(key: key);
 
-  final String iconPath;
+  final IconData icon;
   final String text;
   final Function()? onTap;
   final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? ColorName.primaryColor : ColorName.lightGrey;
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(iconPath, color: color),
-          const SizedBox(height: 5),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 12,
-              fontFamily: FontFamily.workSans,
-              fontWeight: FontWeight.w600,
+    final color = isSelected ? kblue : kblack;
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
               color: color,
             ),
-          ),
-        ],
+            const SizedBox(height: 5),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 10,
+                fontFamily: FontFamily.workSans,
+                fontWeight: FontWeight.w400,
+                color: color,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

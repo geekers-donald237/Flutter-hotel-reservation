@@ -1,12 +1,12 @@
-import 'package:find_hotel/screens/auth/signup.dart';
+import 'package:find_hotel/screens/home_screen.dart';
+import 'package:find_hotel/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:find_hotel/screens/home_screen.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'gen/theme.dart';
 import 'onboard/onboard.dart';
 // import 'package:localizations/l10n/l10n.dart';
@@ -24,6 +24,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isviewed = prefs.getInt('onBoard');
   runApp(const ProviderScope(child: MyApp()));
+  configLoading();
 }
 
 class MyApp extends StatelessWidget {
@@ -35,17 +36,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Hotel App',
       theme: ThemeData(
+        scaffoldBackgroundColor: kwhite,
         fontFamily: FontFamily.workSans,
         primarySwatch: ColorName.primarySwatch,
       ),
-      // localizationsDelegates: [
-      //   // AppLocalizations.delegate,
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalCupertinoLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      // ],
-      // home: isviewed != 0 ? OnBoard() : HomeScreen(),
-      home: SignUpScreen(),
+      home: isviewed != 0 ? OnBoard() : HomeScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }

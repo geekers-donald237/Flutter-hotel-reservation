@@ -1,3 +1,4 @@
+import 'package:find_hotel/routes/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/gen/theme.dart';
 import 'package:find_hotel/utils/localfiles.dart';
@@ -65,44 +66,44 @@ class _OnBoardState extends State<OnBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
-      appBar: AppBar(
-        backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
-        foregroundColor: kblack,
-        elevation: 2.0,
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 10.0, vertical: 2.0), // Espace extérieur horizontal
-            child: Container(
-              decoration: BoxDecoration(
-                // Couleur de fond du TextButton
-                color: mycolor,
-                borderRadius: BorderRadius.circular(8.0), // Bordures carrées
-              ),
-              child: TextButton(
-                onPressed: () {
-                  _storeOnboardInfo();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0), // Espace intérieur
-                  child: Text(
-                    "Skip",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: currentIndex % 2 == 0 ? kblack : kblue,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
+      //   foregroundColor: kblack,
+      //   elevation: 2.0,
+      //   // actions: [
+      //   //   Padding(
+      //   //     padding: EdgeInsets.symmetric(
+      //   //         horizontal: 10.0, vertical: 2.0), // Espace extérieur horizontal
+      //   //     child: Container(
+      //   //       decoration: BoxDecoration(
+      //   //         // Couleur de fond du TextButton
+      //   //         color: mycolor,
+      //   //         borderRadius: BorderRadius.circular(8.0), // Bordures carrées
+      //   //       ),
+      //   //       child: TextButton(
+      //   //         onPressed: () {
+      //   //           _storeOnboardInfo();
+      //   //           Navigator.pushReplacement(context,
+      //   //               MaterialPageRoute(builder: (context) => HomeScreen()));
+      //   //         },
+      //   //         child: Padding(
+      //   //           padding: EdgeInsets.symmetric(
+      //   //               vertical: 10.0, horizontal: 20.0), // Espace intérieur
+      //   //           child: Text(
+      //   //             "Skip",
+      //   //             style: TextStyle(
+      //   //               fontSize: 15,
+      //   //               color: currentIndex % 2 == 0 ? kblack : kblue,
+      //   //             ),
+      //   //           ),
+      //   //         ),
+      //   //       ),
+      //   //     ),
+      //   //   )
+      //   // ],
+      // ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: PageView.builder(
             itemCount: screens.length,
             controller: _pageController,
@@ -122,132 +123,130 @@ class _OnBoardState extends State<OnBoard> {
               });
             },
             itemBuilder: (_, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(screens[index].img),
-                  Text(
-                    screens[index].text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 27.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins',
-                      color: index % 2 == 0 ? kblack : kwhite,
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(screens[index].img),
+                    Text(
+                      screens[index].text,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 27.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                        color: index % 2 == 0 ? kblack : kwhite,
+                      ),
                     ),
-                  ),
-                  Text(
-                    screens[index].desc,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontFamily: 'Montserrat',
-                      color: index % 2 == 0 ? kblack : kwhite,
+                    Text(
+                      screens[index].desc,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontFamily: 'Montserrat',
+                        color: index % 2 == 0 ? kblack : kwhite,
+                      ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment(0, 0.75),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            print(index);
-
-                            _pageController.previousPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.bounceIn,
-                            );
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                width: 15.0,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: index % 2 != 0 ? kwhite : kblue,
-                                ),
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new_sharp,
-                                  color: index % 2 != 0 ? kblue : kwhite,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 10.0,
-                          child: ListView.builder(
-                            itemCount: screens.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 3.0),
-                                      width: currentIndex == index ? 25 : 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: currentIndex == index
-                                            ? kPrimaryColor
-                                            : kSecondaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  ]);
+                    Container(
+                      alignment: Alignment(0, 0.75),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              _storeOnboardInfo();
+                              NavigationServices(context).gotohomeScreen();
                             },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 15.0,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: index % 2 != 0 ? kwhite : kblue,
+                                  ),
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: index % 2 != 0 ? kblue : kwhite,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            print(index);
-                            if (index == screens.length - 1) {
-                              await _storeOnboardInfo();
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomeScreen()));
-                            }
+                          Container(
+                            height: 10.0,
+                            child: ListView.builder(
+                              itemCount: screens.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 3.0),
+                                        width: currentIndex == index ? 25 : 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: currentIndex == index
+                                              ? kPrimaryColor
+                                              : kSecondaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                    ]);
+                              },
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              print(index);
+                              if (index == screens.length - 1) {
+                                await _storeOnboardInfo();
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              }
 
-                            _pageController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.bounceIn,
-                            );
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                width: 15.0,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: index % 2 != 0 ? kwhite : kblue,
+                              _pageController.nextPage(
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.bounceIn,
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 15.0,
                                 ),
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios_sharp,
-                                  color: index % 2 != 0 ? kblue : kwhite,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: index % 2 != 0 ? kwhite : kblue,
+                                  ),
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios_sharp,
+                                    color: index % 2 != 0 ? kblue : kwhite,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               );
             }),
       ),

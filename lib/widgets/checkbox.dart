@@ -4,13 +4,17 @@ import '../gen/theme.dart';
 
 class CheckBox extends StatefulWidget {
   final String text;
-  const CheckBox(this.text);
+  final Function(bool) onChanged;
+
+  const CheckBox(this.text, {required this.onChanged});
+
   @override
   _CheckBoxState createState() => _CheckBoxState();
 }
 
 class _CheckBoxState extends State<CheckBox> {
   bool _isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,6 +25,8 @@ class _CheckBoxState extends State<CheckBox> {
               onTap: () {
                 setState(() {
                   _isSelected = !_isSelected;
+                  widget.onChanged(
+                      _isSelected); // Mettre à jour l'état dans le parent
                 });
               },
               child: Container(

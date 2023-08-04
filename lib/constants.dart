@@ -8,3 +8,5 @@ const klightContentColor = Color(0xffF1F2F7);
 const double kbigFontSize = 25;
 const double knormalFontSize = 18;
 const double ksmallFontSize = 15;
+
+String apiKey = "AIzaSyCRwQ16-quYEmufpTR4ba8tu2chhLwz7Ec";

@@ -4,12 +4,14 @@ import 'app_text.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
-    required this.label,
+     required this.label,
+    required this.hintext,
     required this.controller,
   }) : super(key: key);
 
   final String label;
   final TextEditingController controller;
+  final hintext;
 
   @override
   Widget build(BuildContext context) {

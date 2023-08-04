@@ -1,7 +1,9 @@
 class Localfiles {
   /****************** IMAGE PATH ***************/
   static const String BaseImageUrl = 'assets/image/';
-  static const String facebook = BaseImageUrl + 'facebook.png';
+  static const String apple = BaseImageUrl + 'apple.png';
+  static const String google = BaseImageUrl + 'google2.png';
+
   static const String twitter = BaseImageUrl + 'twitter.png';
   static const String thumbnail1 = BaseImageUrl + 'thumbnail1.png';
   static const String thumbnail2 = BaseImageUrl + 'thumbnail2.png';
@@ -21,6 +23,7 @@ class Localfiles {
   static const String introduction2 = BaseImageUrl + 'introduction2.png';
   static const String introduction3 = BaseImageUrl + 'introduction3.png';
   static const String illustration3 = BaseImageUrl + 'illustration-3.png';
+  
 
   /*************** SVG PATH *********************/
 
@@ -35,6 +38,8 @@ class Localfiles {
   static const String notification = BaseSvgUrl + 'notification.svg';
   static const String profilePage = BaseSvgUrl + 'profile.svg';
 
+  
+  
   static const String wishlist = BaseSvgUrl + 'wishlist.svg';
   static const String pin = BaseSvgUrl + 'pin.svg';
   static const String inviteImage = BaseImageUrl + 'inviteImage.png';

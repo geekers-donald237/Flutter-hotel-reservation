@@ -1,12 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/screens/auth/forgot_password.dart';
 import 'package:find_hotel/screens/auth/signup.dart';
 
 import 'package:find_hotel/widgets/primary_button.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
+import '../../routes/route_names.dart';
+import '../../urls/all_url.dart';
 import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/login_option.dart';
+import 'package:http/http.dart' as http;
 
 class LogInScreen extends StatefulWidget {
   @override
@@ -103,9 +112,10 @@ class _LogInScreenState extends State<LogInScreen> {
                 ontap: () {
                   if (validateLoginForm(
                       emailController.text, pswController.text)) {
-                    clearController();
-                  } else {
-                    print('nope');
+                    EasyLoading.show(status: "Loading...");
+
+                    login(emailController.text, pswController.text);
+                    // clearController();
                   }
                 },
               ),
@@ -136,12 +146,16 @@ class _LogInScreenState extends State<LogInScreen> {
   bool validateLoginForm(String email, String password) {
     // Vérification si aucun champ n'est vide
     if (email.isEmpty || password.isEmpty) {
+      EasyLoading.showError('Please fields All field',
+          duration: Duration(seconds: 3));
       return false;
     }
 
     // Vérification si l'email est au bon format
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
+      EasyLoading.showError('Invalid Email Address',
+          duration: Duration(seconds: 3));
       return false;
     }
 
@@ -186,5 +200,106 @@ class _LogInScreenState extends State<LogInScreen> {
                 : null),
       ),
     );
+  }
+
+  login(String email, String password) async {
+    // EasyLoading.show(status: 'Loading');
+    var url = Uri.parse(Urls.user);
+    // try {
+
+    try {
+      final response = await http.post(url, headers: {
+        "Accept": "application/json"
+      }, body: {
+        "email": encrypt(email),
+        "password": encrypt(password),
+        "action": encrypt("rentali_want_to_login_user_now")
+      });
+      // print(json.decode(response.body));
+      var data = jsonDecode(response.body);
+      if (kDebugMode) {
+        print('dssd');
+        print(data);
+      }
+
+      if (response.statusCode == 200) {
+        if (data['status'] == 'error') {
+          if (data['message'] == 'Verify your email') {
+            print(data['message'] + "ststus message email");
+            EasyLoading.showError(
+              'Verify your email',
+            );
+            NavigationServices(context).gotoOptScreen();
+          } else if (data['message'] == 'Incorrect password') {
+            print(data['message'] + "ststus message another");
+            EasyLoading.showError(
+              'Incorrect password',
+            );
+          } else if (data['message'] == 'This email not exist') {
+            EasyLoading.showError(
+              'Incorrect email',
+            );
+          } else {
+            EasyLoading.dismiss();
+            print(data['message'] + "show error another error");
+          }
+        } else {
+          EasyLoading.dismiss();
+          NavigationServices(context).gotohomeScreen();
+        }
+      } else {
+        EasyLoading.dismiss();
+      }
+    } on SocketException {
+      print('bbbbbbbbb');
+    } catch (e) {
+      print('tttttttttttt');
+      print(e.toString());
+    }
+
+    // if (response.statusCode == 200) {
+    // print(response.body);
+
+    //   if (data["message"] == 'Success Connexion') {
+    //     String id_admin = data['id_admin'].toString();
+    //     String email = data['email'];
+    //     String user_name = data['user_name'];
+    //     String tel = data['phone'];
+
+    //     SharedPreferences pref = await SharedPreferences.getInstance();
+    //     await pref.setString('id', encrypt(id_admin));
+    //     // await pref.setString('id_entreprise', id_entreprise);
+    //     await pref.setString('username', encrypt(user_name));
+    //     await pref.setString('email', encrypt(email));
+    //     await pref.setString('phone', encrypt(tel));
+    //     EasyLoading.dismiss();
+    //     Navigator.of(context).pushAndRemoveUntil(
+    //         MaterialPageRoute(builder: (context) => Start()),
+    //         (route) => false);
+    //   }
+    //   if (data["message"] == 'no able') {
+    //     EasyLoading.showError('Login incorrect',
+    //         duration: Duration(seconds: 5));
+    //   }
+    //   if (data["message"] == 'login ou mot de passe incorrect! ') {
+    //     EasyLoading.showError('Login incorrect',
+    //         duration: Duration(seconds: 5));
+    //   }
+    //   if (data["message"] == 'verified_your_account') {
+    //     EasyLoading.showError('verify your email address please',
+    //         duration: Duration(seconds: 5));
+    //   }
+    // } else {
+    //   EasyLoading.showError('verify internet');
+    // }
+    // }
+    //  on SocketException catch (e) {
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(SnackBar(content: Text('verify internet')));
+    // } catch (e) {
+    //   print(e);
+    //   EasyLoading.showError('an error occur');
+    // }
+    // }
   }
 }

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import '../../utils/localfiles.dart';
 import '../../widgets/custom_apbar.dart';
 
-class Otp extends StatefulWidget {
-  const Otp({Key? key}) : super(key: key);
+class Otp2 extends StatefulWidget {
+  const Otp2({Key? key}) : super(key: key);
 
   @override
-  _OtpState createState() => _OtpState();
+  _Otp2State createState() => _Otp2State();
 }
 
-class _OtpState extends State<Otp> {
+class _Otp2State extends State<Otp2> {
   final List<TextEditingController> _otpControllers =
       List.generate(4, (_) => TextEditingController());
 
@@ -27,7 +27,7 @@ class _OtpState extends State<Otp> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: BuildAppbar('Opt Pwd'),
+      appBar: BuildAppbar('Opt Register'),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(

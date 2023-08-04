@@ -1,11 +1,14 @@
 import 'package:find_hotel/screens/auth/otp.dart';
 import 'package:find_hotel/screens/auth/reset_password.dart';
+import 'package:find_hotel/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/routes/routes.dart';
 import 'package:find_hotel/screens/auth/login.dart';
 import 'package:find_hotel/screens/profile/profile_screen.dart';
 
+import '../screens/auth/otp2.dart';
 import '../screens/auth/signup.dart';
+import '../screens/location.dart';
 import '../screens/profile/country_screen.dart';
 import '../screens/profile/currency_screen.dart';
 import '../screens/profile/edit_profile.dart';
@@ -20,7 +23,7 @@ class NavigationServices {
   final BuildContext context;
 
   Future<dynamic> _pushMaterialPageRoute(Widget widget,
-      {bool fullscreenDialog: false}) async {
+      {bool fullscreenDialog= false}) async {
     return await Navigator.push(
       context,
       MaterialPageRoute(
@@ -119,5 +122,19 @@ class NavigationServices {
     return await _pushMaterialPageRoute(ProfileScreen());
   }
 
+  Future<dynamic> gotoOptScreen() async {
+    return await _pushMaterialPageRoute(Otp());
+  }
 
+   Future<dynamic> gotoOpt2Screen() async {
+    return await _pushMaterialPageRoute(Otp2());
+  }
+
+  Future<dynamic> gotohomeScreen() async {
+    return await _pushMaterialPageRoute(HomeScreen());
+  }
+
+  Future<dynamic> gotoSearchScreen() async {
+    return await _pushMaterialPageRoute(SearchLocalisationScreen());
+  }
 }

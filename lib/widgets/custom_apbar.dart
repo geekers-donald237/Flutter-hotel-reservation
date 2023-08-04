@@ -1,3 +1,5 @@
+import 'package:find_hotel/screens/auth/login.dart';
+import 'package:find_hotel/screens/auth/signup.dart';
 import 'package:flutter/material.dart';
 
 AppBar BuildAppbar(String message) {
@@ -28,4 +30,24 @@ AppBar BuildAppbar(String message) {
       ),
     ],
   );
+}
+
+void redirect(BuildContext context, int index) {
+  if (index == 1) {
+    Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => LogInScreen(),
+      ),
+    );
+  } else if (index == 2) {
+    Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => SignUpScreen(),
+      ),
+    );
+  } else if (index == 3) {
+  } else if (index == 4) {
+  } else {}
 }

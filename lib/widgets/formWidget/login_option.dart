@@ -11,17 +11,17 @@ class LoginOption extends StatelessWidget {
           iconImage: Image(
             height: 20,
             width: 20,
-            image: AssetImage(Localfiles.facebook),
+            image: AssetImage(Localfiles.apple),
           ),
-          textButton: 'Facebook',
+          textButton: 'Apple',
         ),
         BuildButton(
           iconImage: Image(
             height: 20,
             width: 20,
-            image: AssetImage(Localfiles.twitter),
+            image: AssetImage(Localfiles.google),
           ),
-          textButton: 'Twitter',
+          textButton: 'Google',
         ),
       ],
     );

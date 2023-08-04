@@ -5,12 +5,10 @@ class CustomIconButton extends StatelessWidget {
     Key? key,
     required this.icon,
     this.onPressed,
-    this.containerSize = 50,
   }) : super(key: key);
 
   final Widget icon;
   final Function()? onPressed;
-  final double containerSize;
 
   @override
   Widget build(BuildContext context) {
