@@ -2,6 +2,7 @@ import 'package:find_hotel/utils/icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/routes/route_names.dart';
+import 'package:ionicons/ionicons.dart';
 import '../gen/theme.dart';
 import '../screens/home_screen.dart';
 import '../screens/map_screen.dart';
@@ -28,8 +29,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _NavBarIcon(
-              icon: CupertinoIcons.search,
-              text: 'Rechercher',
+              icon: Ionicons.home_outline,
               onTap: () {
                 Navigator.pushReplacement(
                   context,
@@ -41,8 +41,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               isSelected: widget.index == 0,
             ),
             _NavBarIcon(
-              icon: CupertinoIcons.heart,
-              text: 'Favoris',
+              icon: Ionicons.bookmark_outline,
               isSelected: widget.index == 1,
               onTap: () {
                 Navigator.pushReplacement(
@@ -54,12 +53,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
               },
             ),
             _NavBarIcon(
-              icon: Icons.playlist_add_check_sharp,
-              text: 'Reservations',
+              icon: Ionicons.ticket_outline,
             ),
             _NavBarIcon(
-              icon: CupertinoIcons.person,
-              text: 'Profile',
+              icon: Ionicons.person_outline,
               isSelected: widget.index == 3,
               onTap: () {
                 NavigationServices(context).gotoProfileScreen();
@@ -76,13 +73,11 @@ class _NavBarIcon extends StatelessWidget {
   const _NavBarIcon({
     Key? key,
     required this.icon,
-    required this.text,
     this.onTap,
     this.isSelected = false,
   }) : super(key: key);
 
   final IconData icon;
-  final String text;
   final Function()? onTap;
   final bool isSelected;
 
@@ -101,16 +96,16 @@ class _NavBarIcon extends StatelessWidget {
               icon,
               color: color,
             ),
-            const SizedBox(height: 5),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 10,
-                fontFamily: FontFamily.workSans,
-                fontWeight: FontWeight.w400,
-                color: color,
-              ),
-            ),
+            SizedBox(height: 5),
+            // Text(
+            //   text,
+            //   style: TextStyle(
+            //     fontSize: 10,
+            //     fontFamily: FontFamily.workSans,
+            //     fontWeight: FontWeight.w400,
+            //     color: color,
+            //   ),
+            // ),
           ],
         ),
       ),

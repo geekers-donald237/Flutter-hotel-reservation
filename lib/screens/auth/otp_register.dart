@@ -1,11 +1,25 @@
-import 'package:find_hotel/routes/route_names.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:find_hotel/routes/route_names.dart';
+import 'package:find_hotel/urls/all_url.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../../api/encrypt.dart';
 import '../../utils/localfiles.dart';
+import 'package:http/http.dart' as http;
+
 import '../../widgets/custom_apbar.dart';
 
 class Otp2 extends StatefulWidget {
-  const Otp2({Key? key}) : super(key: key);
+  const Otp2({Key? key, required this.email, required this.verifCode})
+      : super(key: key);
+
+  final String email;
+  final String verifCode;
 
   @override
   _Otp2State createState() => _Otp2State();
@@ -90,13 +104,17 @@ class _Otp2State extends State<Otp2> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // String otpCode = '';
-                            // for (var controller in _otpControllers) {
-                            //   otpCode += controller.text;
-                            // }
-                            // print(
-                            //     'OTP Code: $otpCode'); // Affichage du code dans la console
-                            NavigationServices(context).gotoResetPassword();
+                            EasyLoading.show(status: "Loading...");
+
+                            String otpCode = '';
+                            for (var controller in _otpControllers) {
+                              otpCode += controller.text;
+                            }
+                            print(
+                                'OTP Code: $otpCode'); // Affichage du code dans la console
+                            if (isCodeValid(otpCode)) {
+                              NavigationServices(context).gotoResetPassword(widget.email);
+                            }
                           },
                           style: ButtonStyle(
                             foregroundColor:
@@ -153,23 +171,53 @@ class _Otp2State extends State<Otp2> {
   bool isCodeValid(String code) {
     // Vérification si le code est vide
     if (code.isEmpty) {
+      EasyLoading.showError('Please fields All field',
+          duration: Duration(seconds: 3));
       return false;
     }
 
     // Vérification si le code contient exactement 4 caractères
     if (code.length != 4) {
+      EasyLoading.showError('Please fields All field',
+          duration: Duration(seconds: 3));
       return false;
     }
 
     // Vérification si le code ne contient que des chiffres
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
+        EasyLoading.showError('Invalid Format ',
+            duration: Duration(seconds: 3));
         return false;
       }
     }
 
     // Si toutes les vérifications sont passées, le code est valide
     return true;
+  }
+
+  void checkcode(String email, String verificationCode) async {
+    var url = Uri.parse(Urls.user);
+
+    try {
+      final response = await http.post(url, headers: {
+        "Accept": "application/json"
+      }, body: {
+        "email": encrypt(email),
+        "code": encrypt(verificationCode),
+        "action": encrypt("rentali_want_to_check_email_user_code_now")
+      });
+      // print(json.decode(response.body));
+      var data = jsonDecode(response.body);
+      if (kDebugMode) {
+        print(data);
+      }
+    } on SocketException {
+      print('bbbbbbbbb');
+    } catch (e) {
+      print('tttttttttttt');
+      print(e.toString());
+    }
   }
 
   Widget _textFieldOTP(
@@ -196,6 +244,9 @@ class _Otp2State extends State<Otp2> {
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           maxLength: 1,
           decoration: InputDecoration(
             counter: Offstage(),

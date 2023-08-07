@@ -1,4 +1,6 @@
+import 'package:find_hotel/screens/auth/signup.dart';
 import 'package:find_hotel/screens/home_screen.dart';
+import 'package:find_hotel/utils/currentuser.dart';
 import 'package:find_hotel/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,11 +39,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Hotel App',
       theme: ThemeData(
         scaffoldBackgroundColor: kwhite,
-        fontFamily: FontFamily.workSans,
-        primarySwatch: ColorName.primarySwatch,
+        // fontFamily: FontFamily.workSans,
+        // primarySwatch: kprimaryCol,
       ),
-      home: isviewed != 0 ? OnBoard() : HomeScreen(),
+      // home: isviewed != 0 ? OnBoard() : CurrentUser(),
+      home: HomeScreen(),
       builder: EasyLoading.init(),
     );
   }
 }
+
+

@@ -32,6 +32,93 @@ AppBar BuildAppbar(String message) {
   );
 }
 
+AppBar searchAppBar(String message, BuildContext context) {
+  return AppBar(
+    title: Text(message),
+    backgroundColor: Colors.black,
+    foregroundColor: Colors.white,
+    elevation: 0,
+    actions: [
+      IconButton(
+          onPressed: () {
+            showSearch(context: context, delegate: CustomSearch());
+          },
+          icon: Icon(Icons.search))
+    ],
+  );
+}
+
+class CustomSearch extends SearchDelegate {
+  List<String> allData = [
+    'American',
+    "Russia",
+    "China",
+    "Italy",
+    "Vietnam",
+    "Germany",
+    "Canada"
+  ];
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, null);
+      },
+      icon: Icon(Icons.arrow_back_ios),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    List<String> matchQuery = [];
+    for (var item in allData) {
+      if (item.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return ListTile(
+          title: Text(result),
+        );
+      },
+    );
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            query = '';
+          },
+          icon: Icon(Icons.clear))
+    ];
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var item in allData) {
+      if (item.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return ListTile(
+          title: Text(result),
+        );
+      },
+    );
+  }
+}
+
 void redirect(BuildContext context, int index) {
   if (index == 1) {
     Navigator.pushReplacement<void, void>(

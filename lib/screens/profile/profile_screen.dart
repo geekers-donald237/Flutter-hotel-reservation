@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/gen/theme.dart';
 import '../../models/setting.dart';
 import '../../models/setting_list_data.dart';
 import '../../routes/route_names.dart';
 import '../../utils/localfiles.dart';
-import '../../widgets/avatar_card.dart';
 import '../../widgets/custom_nav_bar.dart';
 import '../../widgets/setting_tile.dart';
 import '../../widgets/support_card.dart';

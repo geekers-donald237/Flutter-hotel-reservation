@@ -22,7 +22,7 @@ class MapMarkerPrice extends StatelessWidget {
             alignment: Alignment.center,
             child: Icon(
               Icons.arrow_drop_down,
-              color: ColorName.primaryColor,
+              color: kprimaryColor,
               size: 50,
             ),
           ),
@@ -30,7 +30,7 @@ class MapMarkerPrice extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 28),
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
-                color: ColorName.primaryColor,
+                color: kprimaryColor,
                 borderRadius: BorderRadius.circular(8)),
             child: AppText.medium(
               price,

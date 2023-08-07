@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(ColorName.yellow),
+        backgroundColor: MaterialStateProperty.all(kgrey),
         minimumSize: MaterialStateProperty.all(const Size(200, 50)),
         elevation: MaterialStateProperty.all(0),
       ),

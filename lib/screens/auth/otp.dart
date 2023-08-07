@@ -1,12 +1,24 @@
-import 'package:find_hotel/routes/route_names.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:find_hotel/routes/route_names.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../../api/encrypt.dart';
+import '../../urls/all_url.dart';
 import '../../utils/localfiles.dart';
 import '../../widgets/custom_apbar.dart';
+import 'package:http/http.dart' as http;
 
 class Otp extends StatefulWidget {
-  const Otp({Key? key}) : super(key: key);
+  const Otp({Key? key, required this.email, required this.verifCode})
+      : super(key: key);
 
+  final String email;
+  final String verifCode;
   @override
   _OtpState createState() => _OtpState();
 }
@@ -27,7 +39,7 @@ class _OtpState extends State<Otp> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: BuildAppbar('Opt Pwd'),
+      appBar: BuildAppbar('Forget Pwd'),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -90,13 +102,17 @@ class _OtpState extends State<Otp> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // String otpCode = '';
-                            // for (var controller in _otpControllers) {
-                            //   otpCode += controller.text;
-                            // }
-                            // print(
-                            //     'OTP Code: $otpCode'); // Affichage du code dans la console
-                            NavigationServices(context).gotoResetPassword();
+                            EasyLoading.show(status: "Loading...");
+
+                            String otpCode = '';
+                            for (var controller in _otpControllers) {
+                              otpCode += controller.text;
+                            }
+                            print(
+                                'OTP Code: $otpCode'); // Affichage du code dans la console
+                            if (isCodeValid(otpCode)) {
+                              checkcode(widget.email, otpCode);
+                            }
                           },
                           style: ButtonStyle(
                             foregroundColor:
@@ -150,20 +166,77 @@ class _OtpState extends State<Otp> {
     );
   }
 
+  void checkcode(String email, String verificationCode) async {
+    var url = Uri.parse(Urls.user);
+
+    try {
+      final response = await http.post(url, headers: {
+        "Accept": "application/json"
+      }, body: {
+        "email": encrypt(email),
+        "code": encrypt(verificationCode),
+        "action": encrypt("rentali_want_to_check_email_user_code_now")
+      });
+      // print(json.decode(response.body));
+      var data = jsonDecode(response.body);
+      if (kDebugMode) {
+        print(data);
+      }
+
+      if (response.statusCode == 200) {
+        if (data['message'] == 'Success activate your account') {
+          EasyLoading.showSuccess("Success Activate");
+          NavigationServices(context).gotoLoginScreen();
+        }
+        if (data['message'] == "Code is correct") {
+          EasyLoading.showSuccess("Success code");
+          NavigationServices(context).gotoResetPassword(email);
+        }
+      } else {
+        if (data['status'] == 'error') {
+          if (data['message'] == 'Incorrect code') {
+            EasyLoading.showError('Incorrect Code');
+          }
+          if (data['message'] == "User request to delete account") {
+            EasyLoading.showError('Compte Supprime');
+          }
+        } else {
+          if (data['messsage'] == 'Success activate your account') {
+            EasyLoading.showInfo('Compte Active avec Success');
+            NavigationServices(context).gotohomeScreen();
+          }
+        }
+      }
+    } on SocketException {
+      print('bbbbbbbbb');
+      EasyLoading.dismiss();
+    } catch (e) {
+      print('tttttttttttt');
+      print(e.toString());
+      EasyLoading.dismiss();
+    }
+  }
+
   bool isCodeValid(String code) {
     // Vérification si le code est vide
     if (code.isEmpty) {
+      EasyLoading.showError('Please fields All field',
+          duration: Duration(seconds: 3));
       return false;
     }
 
     // Vérification si le code contient exactement 4 caractères
     if (code.length != 4) {
+      EasyLoading.showError('Please fields All field',
+          duration: Duration(seconds: 3));
       return false;
     }
 
     // Vérification si le code ne contient que des chiffres
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
+        EasyLoading.showError('Invalid Format ',
+            duration: Duration(seconds: 3));
         return false;
       }
     }
@@ -181,6 +254,10 @@ class _OtpState extends State<Otp> {
       child: AspectRatio(
         aspectRatio: 1.0,
         child: TextField(
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ], // Only numbers can be entered
           controller: controller,
           autofocus: true,
           onChanged: (value) {
@@ -195,7 +272,6 @@ class _OtpState extends State<Otp> {
           readOnly: false,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          keyboardType: TextInputType.number,
           maxLength: 1,
           decoration: InputDecoration(
             counter: Offstage(),

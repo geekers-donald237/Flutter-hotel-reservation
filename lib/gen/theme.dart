@@ -1,80 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// GENERATED CODE - DO NOT MODIFY BY HAND
-/// *****************************************************
-///  FlutterGen
-/// *****************************************************
-
-// coverage:ignore-file
-// ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal
-
-class FontFamily {
-  FontFamily._();
-
-  /// Font family: WorkSans
-  static const String workSans = 'WorkSans';
-}
-
-/// GENERATED CODE - DO NOT MODIFY BY HAND
-/// *****************************************************
-///  FlutterGen
-/// *****************************************************
-
-// coverage:ignore-file
-// ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal
-
-class ColorName {
-  ColorName._();
-
-  /// Color: #2464cc
-  static const Color blue = Color(0xFF2464CC);
-
-  /// Color: #646c8c
-  static const Color darkGrey = Color(0xFF646C8C);
-
-  /// Color: #9494ac
-  static const Color lightGrey = Color(0xFF9494AC);
-
-  /// Color: #252B5C
-  static const Color primaryColor = Color(0xFF252B5C);
-
-  /// MaterialColor:
-  ///   50: #FFE5E6EB
-  ///   100: #FFBEBFCE
-  ///   200: #FF9295AE
-  ///   300: #FF666B8D
-  ///   400: #FF464B74
-  ///   500: #FF252B5C
-  ///   600: #FF212654
-  ///   700: #FF1B204A
-  ///   800: #FF161A41
-  ///   900: #FF0D1030
-  static const MaterialColor primarySwatch = MaterialColor(
-    0xFF252B5C,
-    <int, Color>{
-      50: Color(0xFFE5E6EB),
-      100: Color(0xFFBEBFCE),
-      200: Color(0xFF9295AE),
-      300: Color(0xFF666B8D),
-      400: Color(0xFF464B74),
-      500: Color(0xFF252B5C),
-      600: Color(0xFF212654),
-      700: Color(0xFF1B204A),
-      800: Color(0xFF161A41),
-      900: Color(0xFF0D1030),
-    },
-  );
-
-  /// Color: #fcd45d
-  static const Color yellow = Color(0xFFFCD45D);
-}
-
 const kPrimaryColor = Color(0xFF1B383A);
 const kSecondaryColor = Color(0xFF59706F);
 const kDarkGreyColor = Color(0xFFA8A8A8);
-const kWhiteColor = Color(0xFFFFFFFF); 
+const kWhiteColor = Color(0xFFFFFFFF);
 const kZambeziColor = Color(0xFF5B5B5B);
 const kBlackColor = Color(0xFF272726);
 const kTextFieldColor = Color(0xFF979797);
@@ -84,13 +13,41 @@ const kblack = Color(0xFF000000);
 const kbrown300 = Color(0xFF8D6E63);
 const kbrown = Color(0xFF795548);
 const kgrey = Color(0xFFC0C0C0);
+const primary = Color(0xFF12376F);
+const Color primaryDark = Color(0xFF0C44A3);
+const Color primaryLight = Color(0xFF43A3F3);
+const Color green = Colors.green;
+Color black = const Color(0xFF000000);
+const Color accent = Color(0xFFFF4081);
+const Color accentDark = Color(0xFFF50057);
+const Color accentLight = Color(0xFFFF80AB);
+const Color grey_3 = Color(0xFFf7f7f7);
+const Color grey_5 = Color(0xFFf2f2f2);
+const Color grey_10 = Color(0xFFe6e6e6);
+const Color grey_20 = Color(0xFFcccccc);
+const Color grey_40 = Color(0xFF999999);
+const Color grey_60 = Color(0xFF666666);
+const Color grey_80 = Color(0xFF37474F);
+const Color grey_90 = Color(0xFF263238);
+const Color grey_95 = Color(0xFF1a1a1a);
+const Color grey_100_ = Color(0xFF0d0d0d);
+const Color transparent = Color(0x00f7f7f7);
+const kprimaryColor = Color(0xff212C42);
+const ksecondryColor = Color(0xff9CA2FF);
+const ksecondryLightColor = Color(0xffEDEFFE);
+const klightContentColor = Color(0xffF1F2F7);
+const yellow = Colors.yellowAccent;
 
+const double kbigFontSize = 25;
+const double knormalFontSize = 18;
+const double ksmallFontSize = 15;
 
+String apiKey = "AIzaSyCRwQ16-quYEmufpTR4ba8tu2chhLwz7Ec";
 
 const kDefaultPadding = EdgeInsets.symmetric(horizontal: 30);
 
 TextStyle titleText =
-    TextStyle(color: kPrimaryColor, fontSize: 32, fontWeight: FontWeight.w700);
+    TextStyle(color: kPrimaryColor, fontSize: 22, fontWeight: FontWeight.w700);
 TextStyle subTitle = TextStyle(
     color: kSecondaryColor, fontSize: 18, fontWeight: FontWeight.w500);
 TextStyle textButton = TextStyle(
@@ -98,3 +55,73 @@ TextStyle textButton = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w700,
 );
+
+class MyTextSample {
+  static TextStyle? display4(BuildContext context) {
+    return Theme.of(context).textTheme.displayLarge;
+  }
+
+  static TextStyle? display3(BuildContext context) {
+    return Theme.of(context).textTheme.displayMedium;
+  }
+
+  static TextStyle? display2(BuildContext context) {
+    return Theme.of(context).textTheme.displaySmall;
+  }
+
+  static TextStyle? display1(BuildContext context) {
+    return Theme.of(context).textTheme.headlineMedium;
+  }
+
+  static TextStyle? headline(BuildContext context) {
+    return Theme.of(context).textTheme.headlineSmall;
+  }
+
+  static TextStyle? title(BuildContext context) {
+    return Theme.of(context).textTheme.titleLarge;
+  }
+
+  static TextStyle medium(BuildContext context) {
+    return Theme.of(context).textTheme.titleMedium!.copyWith(
+          fontSize: 18,
+        );
+  }
+
+  static TextStyle? subhead(BuildContext context) {
+    return Theme.of(context).textTheme.titleMedium;
+  }
+
+  static TextStyle? body2(BuildContext context) {
+    return Theme.of(context).textTheme.bodyLarge;
+  }
+
+  static TextStyle? body1(BuildContext context) {
+    return Theme.of(context).textTheme.bodyMedium;
+  }
+
+  static TextStyle? caption(BuildContext context) {
+    return Theme.of(context).textTheme.bodySmall;
+  }
+
+  static TextStyle? button(BuildContext context) {
+    return Theme.of(context).textTheme.labelLarge!.copyWith(letterSpacing: 1);
+  }
+
+  static TextStyle? subtitle(BuildContext context) {
+    return Theme.of(context).textTheme.titleSmall;
+  }
+
+  static TextStyle? overline(BuildContext context) {
+    return Theme.of(context).textTheme.labelSmall;
+  }
+}
+
+class MyStringsSample {
+  static const String lorem_ipsum =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie.  Fusce quis mauris a enim sollicitudin"
+      "\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie.  Fusce quis mauris a enim sollicitudin";
+  static const String middle_lorem_ipsum =
+      "Flutter is an open-source UI software development kit created by Google. It is used to develop cross-platform applications for Android, iOS, Linux, macOS, Windows, Google Fuchsia, and the web from a single codebase.";
+  static const String card_text =
+      "Cards are surfaces that display content and actions on a single topic.";
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:find_hotel/constants.dart';
+
+import '../gen/theme.dart';
 
 class SupportCard extends StatelessWidget {
   const SupportCard({

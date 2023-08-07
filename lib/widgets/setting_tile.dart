@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:find_hotel/constants.dart';
 import 'package:find_hotel/models/setting.dart';
+
+import '../gen/theme.dart';
 
 class SettingTile extends StatelessWidget {
   final Setting setting;

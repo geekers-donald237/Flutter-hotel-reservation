@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:find_hotel/constants.dart';
 import 'package:find_hotel/models/setting.dart';
 import 'package:find_hotel/widgets/avatar_card.dart';
 import 'package:find_hotel/widgets/setting_tile.dart';

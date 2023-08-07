@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:find_hotel/constants.dart';
 import 'package:find_hotel/utils/localfiles.dart';
+
+import '../gen/theme.dart';
 
 class AvatarCard extends StatelessWidget {
   const AvatarCard({

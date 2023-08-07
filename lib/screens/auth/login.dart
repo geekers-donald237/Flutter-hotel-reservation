@@ -8,6 +8,7 @@ import 'package:find_hotel/screens/auth/signup.dart';
 
 import 'package:find_hotel/widgets/primary_button.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
@@ -26,6 +27,7 @@ class _LogInScreenState extends State<LogInScreen> {
   bool _isObscure = true;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pswController = TextEditingController();
+  String emailc = '', verif_code = '';
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +204,14 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 
+  storeLoginInfo() async {
+    print("Shared pref called");
+    int isLogged = 0;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('isLogged', isLogged);
+    print(prefs.getInt('isLogged'));
+  }
+
   login(String email, String password) async {
     // EasyLoading.show(status: 'Loading');
     var url = Uri.parse(Urls.user);
@@ -229,7 +239,7 @@ class _LogInScreenState extends State<LogInScreen> {
             EasyLoading.showError(
               'Verify your email',
             );
-            NavigationServices(context).gotoOptScreen();
+            NavigationServices(context).gotoOptScreen(email, verif_code);
           } else if (data['message'] == 'Incorrect password') {
             print(data['message'] + "ststus message another");
             EasyLoading.showError(
@@ -245,6 +255,8 @@ class _LogInScreenState extends State<LogInScreen> {
           }
         } else {
           EasyLoading.dismiss();
+          storeLoginInfo();
+
           NavigationServices(context).gotohomeScreen();
         }
       } else {
@@ -256,50 +268,5 @@ class _LogInScreenState extends State<LogInScreen> {
       print('tttttttttttt');
       print(e.toString());
     }
-
-    // if (response.statusCode == 200) {
-    // print(response.body);
-
-    //   if (data["message"] == 'Success Connexion') {
-    //     String id_admin = data['id_admin'].toString();
-    //     String email = data['email'];
-    //     String user_name = data['user_name'];
-    //     String tel = data['phone'];
-
-    //     SharedPreferences pref = await SharedPreferences.getInstance();
-    //     await pref.setString('id', encrypt(id_admin));
-    //     // await pref.setString('id_entreprise', id_entreprise);
-    //     await pref.setString('username', encrypt(user_name));
-    //     await pref.setString('email', encrypt(email));
-    //     await pref.setString('phone', encrypt(tel));
-    //     EasyLoading.dismiss();
-    //     Navigator.of(context).pushAndRemoveUntil(
-    //         MaterialPageRoute(builder: (context) => Start()),
-    //         (route) => false);
-    //   }
-    //   if (data["message"] == 'no able') {
-    //     EasyLoading.showError('Login incorrect',
-    //         duration: Duration(seconds: 5));
-    //   }
-    //   if (data["message"] == 'login ou mot de passe incorrect! ') {
-    //     EasyLoading.showError('Login incorrect',
-    //         duration: Duration(seconds: 5));
-    //   }
-    //   if (data["message"] == 'verified_your_account') {
-    //     EasyLoading.showError('verify your email address please',
-    //         duration: Duration(seconds: 5));
-    //   }
-    // } else {
-    //   EasyLoading.showError('verify internet');
-    // }
-    // }
-    //  on SocketException catch (e) {
-    //   ScaffoldMessenger.of(context)
-    //       .showSnackBar(SnackBar(content: Text('verify internet')));
-    // } catch (e) {
-    //   print(e);
-    //   EasyLoading.showError('an error occur');
-    // }
-    // }
   }
 }

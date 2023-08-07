@@ -25,9 +25,9 @@ class CustomRating extends StatelessWidget {
             height: size,
             width: size,
             decoration: BoxDecoration(
-              color: i <= ratingScore ? ColorName.yellow : Colors.white,
+              color: i <= ratingScore ? yellow : kwhite,
               shape: BoxShape.circle,
-              border: Border.all(color: ColorName.yellow, width: 2),
+              border: Border.all(color: yellow, width: 2),
             ),
           ),
         const SizedBox(width: 12),

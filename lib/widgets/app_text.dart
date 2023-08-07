@@ -12,7 +12,7 @@ class AppText extends Text {
 
   AppText.small(String data,
       {Key? key,
-      this.color = ColorName.primaryColor,
+      this.color = kprimaryColor,
       this.fontWeight = FontWeight.normal,
       TextAlign? textAlign = TextAlign.left,
       int? maxLine,
@@ -26,7 +26,7 @@ class AppText extends Text {
           textAlign: textAlign,
           maxLines: maxLine,
           style: TextStyle(
-            fontFamily: FontFamily.workSans,
+            fontFamily: 'workSans',
             fontSize: fontSize,
             color: color,
             height: height,
@@ -39,7 +39,7 @@ class AppText extends Text {
   AppText.medium(
     String data, {
     Key? key,
-    this.color = ColorName.primaryColor,
+    this.color = kprimaryColor,
     this.fontWeight = FontWeight.w600,
     TextAlign textAlign = TextAlign.left,
     int? maxLine,
@@ -54,7 +54,7 @@ class AppText extends Text {
           textAlign: textAlign,
           maxLines: maxLine,
           style: TextStyle(
-            fontFamily: FontFamily.workSans,
+            fontFamily: 'workSans',
             fontSize: fontSize,
             color: color,
             height: height,
@@ -67,7 +67,7 @@ class AppText extends Text {
 
   AppText.large(String data,
       {Key? key,
-      this.color = ColorName.primaryColor,
+      this.color = kprimaryColor,
       this.fontWeight = FontWeight.bold,
       TextAlign? textAlign = TextAlign.center,
       int? maxLine,
@@ -81,7 +81,7 @@ class AppText extends Text {
           textAlign: textAlign,
           maxLines: maxLine,
           style: TextStyle(
-            fontFamily: FontFamily.workSans,
+            fontFamily: 'workSans',
             fontSize: fontSize,
             color: color,
             height: height,
@@ -101,7 +101,7 @@ class AppTextSpan extends TextSpan {
   final double? letterSpacing;
 
   AppTextSpan.large(String data,
-      {this.color = ColorName.primaryColor,
+      {this.color = kprimaryColor,
       this.fontWeight = FontWeight.bold,
       this.textAlign,
       this.height,
@@ -112,7 +112,7 @@ class AppTextSpan extends TextSpan {
           text: data,
           recognizer: recognizer,
           style: TextStyle(
-            fontFamily: FontFamily.workSans,
+            fontFamily: 'workSans',
             fontSize: fontSize,
             color: color,
             height: height,
@@ -122,7 +122,7 @@ class AppTextSpan extends TextSpan {
         );
 
   AppTextSpan.medium(String data,
-      {this.color = ColorName.primaryColor,
+      {this.color = kprimaryColor,
       this.fontWeight = FontWeight.w600,
       this.textAlign,
       this.height,
@@ -134,7 +134,7 @@ class AppTextSpan extends TextSpan {
           text: data,
           recognizer: recognizer,
           style: TextStyle(
-            fontFamily: FontFamily.workSans,
+            fontFamily: 'workSans',
             fontSize: fontSize,
             color: color,
             height: height,
@@ -145,7 +145,7 @@ class AppTextSpan extends TextSpan {
         );
 
   AppTextSpan.small(String data,
-      {this.color = ColorName.primaryColor,
+      {this.color = kprimaryColor,
       this.fontWeight,
       this.textAlign,
       this.height,
@@ -156,7 +156,7 @@ class AppTextSpan extends TextSpan {
           text: data,
           recognizer: recognizer,
           style: TextStyle(
-            fontFamily: FontFamily.workSans,
+            fontFamily: 'workSans',
             fontSize: fontSize,
             color: color,
             height: height,

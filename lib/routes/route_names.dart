@@ -1,13 +1,14 @@
+import 'package:find_hotel/onboard/onboard.dart';
 import 'package:find_hotel/screens/auth/otp.dart';
 import 'package:find_hotel/screens/auth/reset_password.dart';
 import 'package:find_hotel/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:find_hotel/routes/routes.dart';
 import 'package:find_hotel/screens/auth/login.dart';
 import 'package:find_hotel/screens/profile/profile_screen.dart';
 
-import '../screens/auth/otp2.dart';
+import '../screens/auth/otp_register.dart';
 import '../screens/auth/signup.dart';
+import '../screens/current_location_screen.dart';
 import '../screens/location.dart';
 import '../screens/profile/country_screen.dart';
 import '../screens/profile/currency_screen.dart';
@@ -31,18 +32,14 @@ class NavigationServices {
     );
   }
 
-  void gotoSplashScreen() {
-    Navigator.pushNamedAndRemoveUntil(
-        context, RoutesName.Splash, (Route<dynamic> route) => false);
-  }
-
-  void gotoIntroductionScreen() {
-    Navigator.pushNamedAndRemoveUntil(context, RoutesName.IntroductionScreen,
-        (Route<dynamic> route) => false);
-  }
+ 
 
   Future<dynamic> gotoLoginScreen() async {
     return await _pushMaterialPageRoute(LogInScreen());
+  }
+
+    Future<dynamic> gotoSplashScreen() async {
+    return await _pushMaterialPageRoute(OnBoard());
   }
 
   // Future<dynamic> gotoTabScreen() async {
@@ -96,8 +93,8 @@ class NavigationServices {
     return await _pushMaterialPageRoute(HeplCenterScreen());
   }
 
-  Future<dynamic> gotoResetPassword() async {
-    return await _pushMaterialPageRoute(ResetPassword());
+  Future<dynamic> gotoResetPassword(String email) async {
+    return await _pushMaterialPageRoute(ResetPassword(email: email,));
   }
 
   Future<dynamic> gotoInviteFriend() async {
@@ -122,12 +119,12 @@ class NavigationServices {
     return await _pushMaterialPageRoute(ProfileScreen());
   }
 
-  Future<dynamic> gotoOptScreen() async {
-    return await _pushMaterialPageRoute(Otp());
+   Future<dynamic> gotoOptScreen(String email , String verifcode) async {
+    return await _pushMaterialPageRoute(Otp(email: email, verifCode: verifcode,));
   }
 
-   Future<dynamic> gotoOpt2Screen() async {
-    return await _pushMaterialPageRoute(Otp2());
+   Future<dynamic> gotoOpt2Screen(String email , String verifcode) async {
+    return await _pushMaterialPageRoute(Otp2(email: email, verifCode: verifcode,));
   }
 
   Future<dynamic> gotohomeScreen() async {
@@ -137,4 +134,10 @@ class NavigationServices {
   Future<dynamic> gotoSearchScreen() async {
     return await _pushMaterialPageRoute(SearchLocalisationScreen());
   }
+
+    Future<dynamic> gotoCurrentLocationScrenn() async {
+    return await _pushMaterialPageRoute(CurrentLocationScreen());
+  }
+
+  
 }

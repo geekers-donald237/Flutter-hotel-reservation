@@ -66,42 +66,6 @@ class _OnBoardState extends State<OnBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
-      // appBar: AppBar(
-      //   backgroundColor: currentIndex % 2 == 0 ? kwhite : kblue,
-      //   foregroundColor: kblack,
-      //   elevation: 2.0,
-      //   // actions: [
-      //   //   Padding(
-      //   //     padding: EdgeInsets.symmetric(
-      //   //         horizontal: 10.0, vertical: 2.0), // Espace extérieur horizontal
-      //   //     child: Container(
-      //   //       decoration: BoxDecoration(
-      //   //         // Couleur de fond du TextButton
-      //   //         color: mycolor,
-      //   //         borderRadius: BorderRadius.circular(8.0), // Bordures carrées
-      //   //       ),
-      //   //       child: TextButton(
-      //   //         onPressed: () {
-      //   //           _storeOnboardInfo();
-      //   //           Navigator.pushReplacement(context,
-      //   //               MaterialPageRoute(builder: (context) => HomeScreen()));
-      //   //         },
-      //   //         child: Padding(
-      //   //           padding: EdgeInsets.symmetric(
-      //   //               vertical: 10.0, horizontal: 20.0), // Espace intérieur
-      //   //           child: Text(
-      //   //             "Skip",
-      //   //             style: TextStyle(
-      //   //               fontSize: 15,
-      //   //               color: currentIndex % 2 == 0 ? kblack : kblue,
-      //   //             ),
-      //   //           ),
-      //   //         ),
-      //   //       ),
-      //   //     ),
-      //   //   )
-      //   // ],
-      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: PageView.builder(

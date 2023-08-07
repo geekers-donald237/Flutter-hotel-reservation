@@ -120,7 +120,7 @@ class _HotelTitleSection extends StatelessWidget {
         const SizedBox(height: 5),
         Row(
           children: [
-            Assets.icon.location.svg(color: ColorName.darkGrey, height: 15),
+            Assets.icon.location.svg(color: kDarkGreyColor, height: 15),
             const SizedBox(width: 10),
             AppText.small(hotel.location),
           ],

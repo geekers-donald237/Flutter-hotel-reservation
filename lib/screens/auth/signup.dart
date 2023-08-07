@@ -35,6 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController pswController = TextEditingController();
   final TextEditingController cpswController = TextEditingController();
+  String emailc = '', verif_code = '';
   final Uri _url = Uri.parse('https://flutter.dev');
   bool checkedAgreeTerms = false;
   bool check18YearsOld = false;
@@ -252,9 +253,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           }
         } else {
           EasyLoading.dismiss();
-          NavigationServices(context).gotoOpt2Screen();
+          NavigationServices(context).gotoOpt2Screen(emailc, verif_code);
         }
       } else {
+        EasyLoading.showError('An Error Occur');
         print(data['message'] + "Anotherrrrrr errrroor");
 
         EasyLoading.dismiss();

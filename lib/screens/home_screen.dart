@@ -2,10 +2,13 @@ import 'package:find_hotel/providers/all_accomodation.dart';
 import 'package:find_hotel/providers/all_adults_provider.dart';
 import 'package:find_hotel/providers/all_enfants_provider.dart';
 import 'package:find_hotel/routes/route_names.dart';
+import 'package:find_hotel/screens/location_page.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 import 'package:find_hotel/widgets/date_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
@@ -15,8 +18,9 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_icon_container.dart';
 import '../widgets/custom_nav_bar.dart';
 import '../widgets/custom_number_input.dart';
-import '../widgets/custom_text_field.dart';
 import '../widgets/hotel_card.dart';
+import '../widgets/recommended_places.dart';
+import 'activity_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,33 +33,184 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    
+
     return Scaffold(
-      backgroundColor: Colors.blue,
-      bottomNavigationBar: CustomNavBar(index: 0),
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
+        appBar: BuildAppbar(context),
+        bottomNavigationBar: CustomNavBar(index: 0),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(14),
           children: [
-            Container(
-              height: double.infinity,
-              margin: EdgeInsets.only(top: size.height * 0.25),
-              color: Colors.white,
+            SizedBox(
+              height: height * 0.01,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _HeaderSection(),
-                    _SearchCard(),
-                    SizedBox(height: 20),
-                    _NearbyHotelSection(),
-                  ],
+            const LocationPage(),
+
+            SizedBox(
+              height: height * 0.05,
+            ),
+            _SearchCard(),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Recommendation",
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-              ),
+                TextButton(onPressed: () {}, child: const Text("View All"))
+              ],
             ),
+            const SizedBox(height: 10),
+            const RecommendedPlaces(),
+            const SizedBox(height: 10),
+            CardSign(width: width, height: height),
+            SizedBox(
+              height: height * 0.01,
+            ),
+            ActivitiesScreen(),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       "Nearby From You",
+            //       style: Theme.of(context).textTheme.titleLarge,
+            //     ),
+            //     TextButton(onPressed: () {}, child: const Text("View All"))
+            //   ],
+            // ),
+            // const SizedBox(height: 10),
+            // const NearbyPlaces(),
           ],
+        ));
+  }
+
+  AppBar BuildAppbar(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      foregroundColor: Colors.black,
+      shape: Border(bottom: BorderSide(color: kblack, width: 2)),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Find Hotel",
+            style: TextStyle(color: kblue),
+          ),
+          Text(
+            "Find The Best Deal for Your holidays",
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ],
+      ),
+      actions: const [
+        CustomIconButton(
+          icon: Icon(
+            Ionicons.search_outline,
+            color: kblue,
+          ),
         ),
+        Padding(
+          padding: EdgeInsets.only(left: 8.0, right: 12),
+          child: CustomIconButton(
+            icon: Badge(
+                backgroundColor: accent,
+                child: Icon(
+                  Ionicons.notifications_outline,
+                  color: kblue,
+                )),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CardSign extends StatelessWidget {
+  const CardSign({
+    super.key,
+    required this.width,
+    required this.height,
+  });
+
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Stack(
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            shadowColor: kblack,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 200,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Profitez des réductions immédiates sur tous vos séjours.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: kBlackColor,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Connectez-vous à votre compte.',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            NavigationServices(context).gotoSignScreen();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          child: Text(
+                            'Login Now',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 200,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                      image: AssetImage(Localfiles.introduction3),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -116,7 +271,7 @@ class _NearbyHotelSection extends ConsumerWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
-                color: ColorName.blue,
+                color: kblue,
               ),
             ),
           ],
@@ -255,94 +410,91 @@ class _SearchCard extends ConsumerWidget {
     children = ref.watch(allChildrenProvider);
 
     locationTextController;
-    dateControllerTo.text = DateFormat('dd MMM yyyy').format(DateTime.now());
+    dateControllerTo.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: ColorName.lightGrey.withAlpha(50),
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Assets.icon.location.svg(color: ColorName.blue),
-              const SizedBox(width: 16),
-              InkWell(
-                onTap: () {
-                  NavigationServices(context).gotoSearchScreen();
-                },
-                child: Container(
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                            color: kblue), // Bordure uniquement en bas
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Choose Your Destination",
-                          style: TextStyle(color: kblue),
-                        ),
-                      ],
-                    )),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Assets.icon.calendar.svg(color: ColorName.blue),
-              const SizedBox(width: 16),
-              DateField(dateController: dateControllerTo, label: 'From'),
-              DateField(dateController: dateControllerFrom, label: 'To'),
-            ],
-          ),
-          Row(
-            children: [
-              Assets.icon.profile.svg(color: ColorName.blue),
-              const SizedBox(width: 5),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: InkWell(
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Container(
+        padding: EdgeInsets.all(12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Assets.icon.location.svg(color: kblue),
+                const SizedBox(width: 16),
+                InkWell(
                   onTap: () {
-                    _openPassengerModal(context, ref);
+                    NavigationServices(context).gotoSearchScreen();
                   },
                   child: Container(
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.grey), // Bordure autour du Row
-                        borderRadius: BorderRadius.circular(0),
+                        border: Border(
+                          bottom: BorderSide(
+                              color: kblue), // Bordure uniquement en bas
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("$accomodation Hébgts."),
-                          Text(" $adults Adultes."),
-                          Text(" $children Enfants"),
+                          Text(
+                            "Choose Your Destination",
+                            style: TextStyle(color: kblue),
+                          ),
                         ],
                       )),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          CustomButton(
-            buttonText: 'Search',
-            onPressed: () {},
-          )
-        ],
+              ],
+            ),
+            Row(
+              children: [
+                Assets.icon.calendar.svg(color: kblue),
+                const SizedBox(width: 16),
+                DateField(dateController: dateControllerTo, label: 'From'),
+                DateField(dateController: dateControllerFrom, label: 'To'),
+              ],
+            ),
+            Row(
+              children: [
+                Assets.icon.profile.svg(color: kblue),
+                const SizedBox(width: 5),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: InkWell(
+                    onTap: () {
+                      _openPassengerModal(context, ref);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey), // Bordure autour du Row
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("$accomodation Hébgts."),
+                            Text(" $adults Adultes."),
+                            Text(" $children Enfants"),
+                          ],
+                        )),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            CustomButton(
+              buttonText: 'Search',
+              onPressed: () {},
+            )
+          ],
+        ),
       ),
     );
   }
