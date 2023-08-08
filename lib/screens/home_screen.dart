@@ -35,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final size = MediaQuery.of(context).size;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    
 
     return Scaffold(
         appBar: BuildAppbar(context),
+        drawer: CustomDrawer(),
         bottomNavigationBar: CustomNavBar(index: 0),
         body: ListView(
           physics: const BouncingScrollPhysics(),
@@ -71,8 +71,19 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             CardSign(width: width, height: height),
             SizedBox(
-              height: height * 0.01,
+              height: height * 0.03,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Plus d'options pour vous",
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+
             ActivitiesScreen(),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,6 +99,107 @@ class _HomeScreenState extends State<HomeScreen> {
             // const NearbyPlaces(),
           ],
         ));
+  }
+
+  Widget headerWidget() {
+    const url =
+        'https://media.istockphoto.com/photos/learn-to-love-yourself-first-picture-id1291208214?b=1&k=20&m=1291208214&s=170667a&w=0&h=sAq9SonSuefj3d4WKy4KzJvUiLERXge9VgZO-oqKUOo=';
+    return Row(
+      children: [
+        const CircleAvatar(
+          radius: 40,
+          backgroundImage: NetworkImage(url),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text('Person name',
+                style: TextStyle(fontSize: 14, color: Colors.white)),
+            SizedBox(
+              height: 10,
+            ),
+            Text('person@email.com',
+                style: TextStyle(fontSize: 14, color: Colors.white))
+          ],
+        )
+      ],
+    );
+  }
+
+  Drawer CustomDrawer() {
+    return Drawer(
+      child: Material(
+        color: Colors.black,
+        textStyle: TextStyle(color: kblack),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                headerWidget(),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Divider(
+                  thickness: 1,
+                  height: 10,
+                  color: Colors.grey,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerItem(
+                    name: 'Profile',
+                    icon: Ionicons.person_outline,
+                    onPressed: () {}),
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerItem(
+                    name: 'My Account',
+                    icon: Icons.account_box_rounded,
+                    onPressed: () {}),
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerItem(
+                    name: 'Rapport de bug',
+                    icon: Ionicons.bug_outline,
+                    onPressed: () {}),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Divider(
+                  thickness: 1,
+                  height: 10,
+                  color: Colors.grey,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerItem(
+                    name: 'Setting', icon: Icons.settings, onPressed: () {}),
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerItem(
+                    name: 'A propos de nous',
+                    icon: Icons.info_outline,
+                    onPressed: () {}),
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerItem(
+                    name: 'Log out', icon: Icons.logout, onPressed: () {}),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   AppBar BuildAppbar(BuildContext context) {
@@ -128,6 +240,45 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  const DrawerItem(
+      {Key? key,
+      required this.name,
+      required this.icon,
+      required this.onPressed})
+      : super(key: key);
+
+  final String name;
+  final IconData icon;
+  final Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: SizedBox(
+        height: 40,
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

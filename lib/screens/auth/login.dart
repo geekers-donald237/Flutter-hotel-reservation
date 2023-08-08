@@ -40,7 +40,7 @@ class _LogInScreenState extends State<LogInScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 120,
+                height: 60,
               ),
               Text(
                 'Welcome Back',

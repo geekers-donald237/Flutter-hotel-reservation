@@ -12,9 +12,13 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  String? _currentAddress;
   Position? _currentPosition;
+  String name = "";
+  String street = "";
+  String country = '';
+  String countryCode = '';
 
+  String CurrentAddress = "View Your current Location";
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -67,8 +71,27 @@ class _LocationPageState extends State<LocationPage> {
         position.latitude,
         position.longitude,
       );
-      print(placemarks[0]);
-    } catch (err) {}
+
+      if (placemarks.isNotEmpty) {
+        Placemark firstPlacemark = placemarks[0];
+        name = firstPlacemark.name ?? "";
+        street = firstPlacemark.street ?? "";
+        country = firstPlacemark.country ?? "";
+        countryCode = firstPlacemark.isoCountryCode ?? "";
+
+        // Vous pouvez maintenant utiliser les variables name, street et country selon vos besoins.
+
+        print("Name: $name");
+        print("Street: $street");
+        print("Country: $country");
+
+        setState(() {
+          CurrentAddress = '$firstPlacemark.isoCountryCode - $name ,$street';
+        });
+      }
+    } catch (err) {
+      print("Error: $err");
+    }
   }
 
   @override
@@ -98,7 +121,7 @@ class _LocationPageState extends State<LocationPage> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "United States, New York",
+                    '$name ,$street' ?? 'View Your current Location',
                     style: Theme.of(context).textTheme.labelLarge,
                   )
                 ],

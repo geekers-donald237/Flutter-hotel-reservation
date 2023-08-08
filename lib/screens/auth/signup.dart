@@ -68,147 +68,188 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return _agreedToTerms && _isAdult;
   }
 
+  back() {
+    NavigationServices(context).back(LogInScreen());
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BuildAppbar("Register"),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 40,
-            ),
+    return WillPopScope(
+      onWillPop: () {
+        return back();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          title: Text('register'),
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {
+                NavigationServices(context).back(LogInScreen());
+              },
+              icon: Icon(Icons.arrow_back_ios)),
+          actions: [
             Padding(
-              padding: kDefaultPadding,
-              child: Text(
-                'Create Account',
-                style: titleText,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: Row(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Already a member?',
-                    style: subTitle,
+                    " ",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 10,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LogInScreen()));
-                    },
-                    child: Text(
-                      'Log In',
-                      style: textButton.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 1,
-                      ),
-                    ),
-                  )
                 ],
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: Column(
-                children: [
-                  buildInputForm('User Name', false, usernameController),
-                  buildInputForm('Email', false, emailController),
-                  // buildInputForm('Phone', false, phoneController),
-                  CustomPhoneField(
-                    formKey: _formKey,
-                    focusNode: focusNode,
-                    onPhoneNumberChanged: updatePhoneNumber,
-                    phoneNumber: phoneNumber,
-                  ),
-                  buildInputForm('Password', true, pswController),
-                  buildInputForm('Confirm Password', true, cpswController),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: GestureDetector(
-                  onTap: () {
-                    _launchUrl();
-                  },
-                  child: CheckBox(
-                    'Agree to terms and conditions.  👈',
-                    onChanged: _onTermsChanged,
-                  )),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: CheckBox(
-                'I have at least 18 years old.',
-                onChanged: _onAdultChanged,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: PrimaryButton(
-                buttonText: 'Sign Up',
-                ontap: () {
-                  if (validateForm(
-                      usernameController.text,
-                      emailController.text,
-                      phoneNumber,
-                      pswController.text,
-                      cpswController.text)) {
-                    EasyLoading.show(status: "Loading...");
-                    singnIn(usernameController.text, emailController.text,
-                        pswController.text, phoneNumber);
-                    if (kDebugMode) {
-                      print("sucess");
-                    }
-                    clearController();
-                  }
-                },
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: Text(
-                'Or log in with:',
-                style: subTitle.copyWith(color: kBlackColor),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: LoginOption(),
-            ),
-            SizedBox(
-              height: 20,
             ),
           ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 40,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: Text(
+                  'Create Account',
+                  style: titleText,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: Row(
+                  children: [
+                    Text(
+                      'Already a member?',
+                      style: subTitle,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LogInScreen()));
+                      },
+                      child: Text(
+                        'Log In',
+                        style: textButton.copyWith(
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 1,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: Column(
+                  children: [
+                    buildInputForm('User Name', false, usernameController),
+                    buildInputForm('Email', false, emailController),
+                    // buildInputForm('Phone', false, phoneController),
+                    CustomPhoneField(
+                      formKey: _formKey,
+                      focusNode: focusNode,
+                      onPhoneNumberChanged: updatePhoneNumber,
+                      phoneNumber: phoneNumber,
+                    ),
+                    buildInputForm('Password', true, pswController),
+                    buildInputForm('Confirm Password', true, cpswController),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: GestureDetector(
+                    onTap: () {
+                      _launchUrl();
+                    },
+                    child: CheckBox(
+                      'Agree to terms and conditions.  👈',
+                      onChanged: _onTermsChanged,
+                    )),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: CheckBox(
+                  'I have at least 18 years old.',
+                  onChanged: _onAdultChanged,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: PrimaryButton(
+                  buttonText: 'Sign Up',
+                  ontap: () {
+                    if (validateForm(
+                        usernameController.text,
+                        emailController.text,
+                        phoneNumber,
+                        pswController.text,
+                        cpswController.text)) {
+                      EasyLoading.show(status: "Loading...");
+                      singnIn(usernameController.text, emailController.text,
+                          pswController.text, phoneNumber);
+                      if (kDebugMode) {
+                        print("sucess");
+                      }
+                      clearController();
+                    }
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: Text(
+                  'Or log in with:',
+                  style: subTitle.copyWith(color: kBlackColor),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: kDefaultPadding,
+                child: LoginOption(),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

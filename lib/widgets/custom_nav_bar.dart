@@ -41,7 +41,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               isSelected: widget.index == 0,
             ),
             _NavBarIcon(
-              icon: Ionicons.bookmark_outline,
+              icon: Ionicons.heart_outline,
               isSelected: widget.index == 1,
               onTap: () {
                 Navigator.pushReplacement(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 
+import '../gen/theme.dart';
 import '../models/activity_model.dart';
 
 class ActivitiesScreen extends StatelessWidget {
@@ -59,39 +61,64 @@ class _ActivitiesMasonryGrid extends StatelessWidget {
     );
   }
 
-  InkWell _buildActivityCard(
+  Card _buildActivityCard(
     BuildContext context,
     Activity activity,
     int index,
   ) {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        children: [
-          Hero(
-            tag: '${activity.id}_${activity.title}',
-            child: Container(
-              height: masonryCardHeights[index % 3],
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                image: DecorationImage(
-                  image: AssetImage(activity
-                      .imagePath), // Utilise AssetImage au lieu de Image.asset
-                  fit: BoxFit.cover,
+    return Card(
+      elevation: 0.4,
+      shadowColor: kblack,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {},
+        child: Column(
+          children: [
+            Hero(
+              tag: '${activity.id}_${activity.title}',
+              child: Container(
+                height: masonryCardHeights[index % 2],
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  border: Border(
+                    bottom: BorderSide(color: kgrey),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage(activity
+                        .imagePath), // Utilise AssetImage au lieu de Image.asset
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            activity.title,
-            maxLines: 3,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ],
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Cards Title 1",
+              style: TextStyle(
+                  fontFamily: 'worksans',
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              MyStringsSample.card_text,
+              maxLines: 2,
+              style: MyTextSample.subhead(context)!.copyWith(
+                color: Colors.grey[700],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

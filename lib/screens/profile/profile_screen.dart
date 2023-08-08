@@ -44,8 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BuildViewAndEdit(context),
-                  const SizedBox(height: 10),
                   Column(
                     children: List.generate(
                       settings.length,
@@ -68,57 +66,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  InkWell BuildViewAndEdit(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        NavigationServices(context).gotoEditProfile();
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "John Doe",
-                    style: new TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "View and Edit",
-                    style: new TextStyle(
-                      fontSize: 18,
-                      color: Theme.of(context).disabledColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(right: 24, top: 16, bottom: 16, left: 24),
-            child: Container(
-              width: 70,
-              height: 70,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                child: Image.asset(Localfiles.profile),
-              ),
-            ),
-          )
-        ],
       ),
     );
   }

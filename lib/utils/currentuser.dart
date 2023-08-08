@@ -23,12 +23,18 @@ class _CurrentUserState extends State<CurrentUser> {
 
   @override
   Widget build(BuildContext context) {
-    return isLogged != 0 ? LogInScreen() : HomeScreen();
-
+    return Center(child: CircularProgressIndicator());
   }
 
   void getSharedDataLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isLogged = prefs.getInt('isLogged');
+    if (isLogged != 0) {
+
+      NavigationServices(context).gotoLoginScreen();
+    } else {
+
+      NavigationServices(context).gotohomeScreen();
+    }
   }
 }

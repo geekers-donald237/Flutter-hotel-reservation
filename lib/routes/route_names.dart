@@ -29,9 +29,15 @@ class NavigationServices {
       context,
       MaterialPageRoute(
           builder: (context) => widget, fullscreenDialog: fullscreenDialog),
+
     );
   }
 
+  
+void  back(Widget widget) async {
+   Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => widget), (route) => false);
+}
  
 
   Future<dynamic> gotoLoginScreen() async {
