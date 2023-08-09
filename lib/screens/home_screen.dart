@@ -3,11 +3,14 @@ import 'package:find_hotel/providers/all_adults_provider.dart';
 import 'package:find_hotel/providers/all_enfants_provider.dart';
 import 'package:find_hotel/routes/route_names.dart';
 import 'package:find_hotel/screens/location_page.dart';
+import 'package:find_hotel/urls/all_url.dart';
 import 'package:find_hotel/utils/localfiles.dart';
 import 'package:find_hotel/widgets/date_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:ionicons/ionicons.dart';
 
 import '../gen/assets.gen.dart';
@@ -69,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             const RecommendedPlaces(),
             const SizedBox(height: 10),
-            CardSign(width: width, height: height),
             SizedBox(
               height: height * 0.03,
             ),
@@ -102,13 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget headerWidget() {
-    const url =
-        'https://media.istockphoto.com/photos/learn-to-love-yourself-first-picture-id1291208214?b=1&k=20&m=1291208214&s=170667a&w=0&h=sAq9SonSuefj3d4WKy4KzJvUiLERXge9VgZO-oqKUOo=';
+    const name = "John";
+    const surname = "Doe";
     return Row(
       children: [
         const CircleAvatar(
           radius: 40,
-          backgroundImage: NetworkImage(url),
+          backgroundImage: NetworkImage(Urls.userAvatar + name + "+" + surname),
         ),
         const SizedBox(
           width: 20,
@@ -116,12 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text('Person name',
-                style: TextStyle(fontSize: 14, color: Colors.white)),
+            Text(name, style: TextStyle(fontSize: 14, color: Colors.white)),
             SizedBox(
               height: 10,
             ),
-            Text('person@email.com',
+            Text('$name$surname@gmail.com',
                 style: TextStyle(fontSize: 14, color: Colors.white))
           ],
         )
@@ -132,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Drawer CustomDrawer() {
     return Drawer(
       child: Material(
-        color: Colors.black,
+        color: Colors.white,
         textStyle: TextStyle(color: kblack),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
@@ -152,21 +153,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 15,
                 ),
                 DrawerItem(
-                    name: 'Profile',
-                    icon: Ionicons.person_outline,
-                    onPressed: () {}),
+                    name: AppLocalizations.of(context)!.drawer_person,
+                    icon: Ionicons.person,
+                    onPressed: () {
+                      NavigationServices(context).gotoEditProfile();
+                    }),
                 const SizedBox(
                   height: 15,
                 ),
                 DrawerItem(
-                    name: 'My Account',
+                    name: AppLocalizations.of(context)!.drawer_account,
                     icon: Icons.account_box_rounded,
                     onPressed: () {}),
                 const SizedBox(
                   height: 15,
                 ),
                 DrawerItem(
-                    name: 'Rapport de bug',
+                    name: AppLocalizations.of(context)!.drawer_bug_report,
                     icon: Ionicons.bug_outline,
                     onPressed: () {}),
                 const SizedBox(
@@ -181,19 +184,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 15,
                 ),
                 DrawerItem(
-                    name: 'Setting', icon: Icons.settings, onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: 'A propos de nous',
+                    name: AppLocalizations.of(context)!.drawer_propos,
                     icon: Icons.info_outline,
                     onPressed: () {}),
                 const SizedBox(
                   height: 15,
                 ),
                 DrawerItem(
-                    name: 'Log out', icon: Icons.logout, onPressed: () {}),
+                    name: AppLocalizations.of(context)!.drawer_logout,
+                    icon: Icons.logout,
+                    onPressed: () {}),
               ],
             ),
           ),
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Find Hotel",
+            "Rental",
             style: TextStyle(color: kblue),
           ),
           Text(
@@ -278,90 +278,6 @@ class DrawerItem extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CardSign extends StatelessWidget {
-  const CardSign({
-    super.key,
-    required this.width,
-    required this.height,
-  });
-
-  final double width;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            shadowColor: kblack,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Profitez des réductions immédiates sur tous vos séjours.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: kBlackColor,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Connectez-vous à votre compte.',
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            NavigationServices(context).gotoSignScreen();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          child: Text(
-                            'Login Now',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 200,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      image: AssetImage(Localfiles.introduction3),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

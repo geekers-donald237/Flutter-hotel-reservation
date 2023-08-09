@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:find_hotel/routes/route_names.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:find_hotel/urls/all_url.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../api/encrypt.dart';
+import '../../gen/theme.dart';
 import '../../utils/localfiles.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,15 +25,28 @@ class Otp2 extends StatefulWidget {
   final String verifCode;
 
   @override
-  _Otp2State createState() => _Otp2State();
+  _Otp2State createState() => _Otp2State(email,verifCode);
 }
 
 class _Otp2State extends State<Otp2> {
+  String email = '';
+  String verifCode = '';
+
+  _Otp2State(
+      String email,
+      String verifCode,) {
+    super.initState();
+    this.email = email;
+    this.verifCode = verifCode;
+  }
+
+
   final List<TextEditingController> _otpControllers =
       List.generate(4, (_) => TextEditingController());
 
   @override
   void dispose() {
+    EasyLoading.dismiss();
     for (var controller in _otpControllers) {
       controller.dispose();
     }
@@ -41,7 +57,7 @@ class _Otp2State extends State<Otp2> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: BuildAppbar('Opt Register'),
+      appBar: BuildAppbar('Otp'),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -61,16 +77,16 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 24),
                 Text(
-                  'Verification',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.valid_btn,
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
-                  "Enter your OTP code number",
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.enter_your_otp,
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black38,
@@ -104,23 +120,27 @@ class _Otp2State extends State<Otp2> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            EasyLoading.show(status: "Loading...");
+
 
                             String otpCode = '';
                             for (var controller in _otpControllers) {
                               otpCode += controller.text;
                             }
-                            print(
-                                'OTP Code: $otpCode'); // Affichage du code dans la console
+                            if (kDebugMode) {
+                              print('OTP Code: $otpCode');
+                            } // Affichage du code dans la console
+                            if (kDebugMode) {
+                              print(email);
+                            }
                             if (isCodeValid(otpCode)) {
-                              NavigationServices(context).gotoResetPassword(widget.email);
+                              checkcode(email,otpCode);
                             }
                           },
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black),
+                                MaterialStateProperty.all<Color>(ksecondryColor),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -131,7 +151,7 @@ class _Otp2State extends State<Otp2> {
                           child: Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
-                              'Verify',
+                              AppLocalizations.of(context)!.valid_btn,
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
@@ -142,7 +162,7 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Didn't you receive any code?",
+                  AppLocalizations.of(context)!.code_pas_recu,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -152,7 +172,7 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Resend New Code",
+                  AppLocalizations.of(context)!.resend_code,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -171,23 +191,26 @@ class _Otp2State extends State<Otp2> {
   bool isCodeValid(String code) {
     // Vérification si le code est vide
     if (code.isEmpty) {
-      EasyLoading.showError('Please fields All field',
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.error_all_fields,
+      );
       return false;
     }
 
     // Vérification si le code contient exactement 4 caractères
     if (code.length != 4) {
-      EasyLoading.showError('Please fields All field',
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.error_all_fields,
+      );
       return false;
     }
 
     // Vérification si le code ne contient que des chiffres
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
-        EasyLoading.showError('Invalid Format ',
-            duration: Duration(seconds: 3));
+        EasyLoading.showError(
+          AppLocalizations.of(context)!.invalid_code,
+        );
         return false;
       }
     }
@@ -197,6 +220,7 @@ class _Otp2State extends State<Otp2> {
   }
 
   void checkcode(String email, String verificationCode) async {
+    EasyLoading.show(status: AppLocalizations.of(context)!.loading);
     var url = Uri.parse(Urls.user);
 
     try {
@@ -205,18 +229,44 @@ class _Otp2State extends State<Otp2> {
       }, body: {
         "email": encrypt(email),
         "code": encrypt(verificationCode),
-        "action": encrypt("rentali_want_to_check_email_user_code_now")
+        "action": encrypt("rentali_want_to_check_email_user_code_now_for_register")
       });
       // print(json.decode(response.body));
       var data = jsonDecode(response.body);
       if (kDebugMode) {
         print(data);
       }
+      if (response.statusCode == 200) {
+        if (data['message'] == "Code is correct") {
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
+          NavigationServices(context).gotoLoginScreen();
+        }
+      } else {
+        if (data['status'] == 'error') {
+          if (data['message'] == 'Incorrect code') {
+            EasyLoading.showError(AppLocalizations.of(context)!.invalid_code);
+          }if(data['message'] == 'This email not exist'){
+              EasyLoading.showError(AppLocalizations.of(context)!.verifier_email);
+          }else{
+            EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+          }
+        } else {
+          EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+        }
+      }
     } on SocketException {
-      print('bbbbbbbbb');
+      if (kDebugMode) {
+        print('internet error');
+      }
+      EasyLoading.showError(AppLocalizations.of(context)!.verified_internet);
     } catch (e) {
-      print('tttttttttttt');
-      print(e.toString());
+      if (kDebugMode) {
+        print('try catch dans otp register');
+      }
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      EasyLoading.showError(AppLocalizations.of(context)!.try_again);
     }
   }
 

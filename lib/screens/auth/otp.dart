@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:find_hotel/gen/theme.dart';
 import 'package:find_hotel/routes/route_names.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,15 +23,26 @@ class Otp extends StatefulWidget {
   final String email;
   final String verifCode;
   @override
-  _OtpState createState() => _OtpState();
+  _OtpState createState() => _OtpState(email,verifCode);
 }
 
 class _OtpState extends State<Otp> {
+  String email = '';
+  String verifCode = '';
+
+  _OtpState(
+      String email,
+      String verifCode,) {
+    super.initState();
+    this.email = email;
+    this.verifCode = verifCode;
+  }
   final List<TextEditingController> _otpControllers =
       List.generate(4, (_) => TextEditingController());
 
   @override
   void dispose() {
+    EasyLoading.dismiss();
     for (var controller in _otpControllers) {
       controller.dispose();
     }
@@ -36,14 +50,21 @@ class _OtpState extends State<Otp> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    EasyLoading.dismiss();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: BuildAppbar('Forget Pwd'),
+      appBar: BuildAppbar(AppLocalizations.of(context)!.appbar_forget_message),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
             child: Column(
               children: [
                 Container(
@@ -59,7 +80,7 @@ class _OtpState extends State<Otp> {
                 ),
                 SizedBox(height: 24),
                 Text(
-                  'Verification',
+                  AppLocalizations.of(context)!.valid_btn,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -67,7 +88,7 @@ class _OtpState extends State<Otp> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Enter your OTP code number",
+                  AppLocalizations.of(context)!.enter_your_otp,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -102,7 +123,6 @@ class _OtpState extends State<Otp> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            EasyLoading.show(status: "Loading...");
 
                             String otpCode = '';
                             for (var controller in _otpControllers) {
@@ -111,14 +131,15 @@ class _OtpState extends State<Otp> {
                             print(
                                 'OTP Code: $otpCode'); // Affichage du code dans la console
                             if (isCodeValid(otpCode)) {
-                              checkcode(widget.email, otpCode);
+                              print(email);
+                              checkcode(email, otpCode);
                             }
                           },
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black),
+                                MaterialStateProperty.all<Color>(ksecondryColor),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -129,7 +150,7 @@ class _OtpState extends State<Otp> {
                           child: Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
-                              'Verify',
+                              AppLocalizations.of(context)!.valid_btn,
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
@@ -140,7 +161,7 @@ class _OtpState extends State<Otp> {
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Didn't you receive any code?",
+                  AppLocalizations.of(context)!.code_pas_recu,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -150,7 +171,7 @@ class _OtpState extends State<Otp> {
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Resend New Code",
+                  AppLocalizations.of(context)!.resend_code,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -167,6 +188,9 @@ class _OtpState extends State<Otp> {
   }
 
   void checkcode(String email, String verificationCode) async {
+    EasyLoading.show(
+        status: AppLocalizations.of(context)!.loading);
+
     var url = Uri.parse(Urls.user);
 
     try {
@@ -184,59 +208,64 @@ class _OtpState extends State<Otp> {
       }
 
       if (response.statusCode == 200) {
-        if (data['message'] == 'Success activate your account') {
-          EasyLoading.showSuccess("Success Activate");
-          NavigationServices(context).gotoLoginScreen();
-        }
         if (data['message'] == "Code is correct") {
-          EasyLoading.showSuccess("Success code");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
           NavigationServices(context).gotoResetPassword(email);
+        }else{
+          EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
         }
       } else {
         if (data['status'] == 'error') {
           if (data['message'] == 'Incorrect code') {
-            EasyLoading.showError('Incorrect Code');
+            EasyLoading.showInfo(AppLocalizations.of(context)!.invalid_code);
           }
           if (data['message'] == "User request to delete account") {
-            EasyLoading.showError('Compte Supprime');
+            EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
           }
-        } else {
-          if (data['messsage'] == 'Success activate your account') {
-            EasyLoading.showInfo('Compte Active avec Success');
-            NavigationServices(context).gotohomeScreen();
+          if(data['message'] == 'This email not exist'){
+            EasyLoading.showInfo(AppLocalizations.of(context)!.incorrect_email);
+          }else{
+            EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
           }
         }
       }
     } on SocketException {
-      print('bbbbbbbbb');
-      EasyLoading.dismiss();
+      EasyLoading.showInfo(AppLocalizations.of(context)!.verified_internet);
+      if (kDebugMode) {
+        print('internet error');
+      }
     } catch (e) {
-      print('tttttttttttt');
-      print(e.toString());
-      EasyLoading.dismiss();
+      if (kDebugMode) {
+        print('try catch for check code in otp');
+      }
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
     }
   }
 
   bool isCodeValid(String code) {
     // Vérification si le code est vide
     if (code.isEmpty) {
-      EasyLoading.showError('Please fields All field',
-          duration: Duration(seconds: 3));
+      AppLocalizations.of(context)!.error_all_fields;
+
       return false;
     }
 
     // Vérification si le code contient exactement 4 caractères
     if (code.length != 4) {
-      EasyLoading.showError('Please fields All field',
-          duration: Duration(seconds: 3));
+      AppLocalizations.of(context)!.error_all_fields;
+
       return false;
     }
 
     // Vérification si le code ne contient que des chiffres
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
-        EasyLoading.showError('Invalid Format ',
-            duration: Duration(seconds: 3));
+       EasyLoading.showError(
+          AppLocalizations.of(context)!.invalid_code,
+        );
         return false;
       }
     }

@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:label="find_hotel"
+        android:label="Rental"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
                   android:value="AIzaSyCiV9iwGdbgxbzJ5KrDfrHbKaE4MnHV5rg"/>
                 

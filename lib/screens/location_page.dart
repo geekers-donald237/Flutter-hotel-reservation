@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/localfiles.dart';
 
@@ -18,31 +19,30 @@ class _LocationPageState extends State<LocationPage> {
   String country = '';
   String countryCode = '';
 
-  String CurrentAddress = "View Your current Location";
+  String CurrentAddress = "";
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(AppLocalizations.of(context)!.location_service_disable)));
       return false;
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.localization_denied)));
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.denied_permently)));
       return false;
     }
     return true;
@@ -84,10 +84,6 @@ class _LocationPageState extends State<LocationPage> {
         print("Name: $name");
         print("Street: $street");
         print("Country: $country");
-
-        setState(() {
-          CurrentAddress = '$firstPlacemark.isoCountryCode - $name ,$street';
-        });
       }
     } catch (err) {
       print("Error: $err");
@@ -114,14 +110,14 @@ class _LocationPageState extends State<LocationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Your Location",
+                    AppLocalizations.of(context)!.your_location,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Theme.of(context).primaryColor,
                         ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '$name ,$street' ?? 'View Your current Location',
+                    '$name $street',
                     style: Theme.of(context).textTheme.labelLarge,
                   )
                 ],

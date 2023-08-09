@@ -1,16 +1,51 @@
 # find_hotel
 
-A new Flutter project.
+#to create splash screen
+add dependancy
+flutter_native_splash: ^2.2.9
 
-## Getting Started
+then configuration
+`flutter_native_splash:
+    color: "#ffffff"
+    image: assets/logo/logo.png
+    branding: assets/logo/logo.png
+    color_dark: "#121212"
+    image_dark: assets/logo/dark_logo.png
+    branding_dark: assets/logo/dark_logo.png
+    android_12:
+    image: assets/logo/logo.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/logo/dark_logo.png
+    icon_background_color_dark: "#121212"`
 
-This project is a starting point for a Flutter application.
+web: false
+#command
+ `flutter pub run flutter_native_splash:create`
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#for Icon App
+    `dev_dependencies:
+        flutter_test:
+        sdk: flutter
+        flutter_lints: ^2.0.0
+        flutter_launcher_icons: "^0.13.0"`
+
+#configure
+    `flutter_icons:
+        android: "launcher_icon"
+        ios: true
+        image_path: "assets/logo/logo.png"
+        adaptive_icon_foreground: "assets/logo/logo.png"`
+
+# command
+    `flutter pub get
+        flutter pub run flutter_launcher_icons
+    `
+
+#change app name
+    `flutter pub add flutter_rename_app_plus3`
+#configure
+    `flutter_rename_app_plus:
+        application_name: Rental`
+    `flutter pub run flutter_rename_app_plus3`

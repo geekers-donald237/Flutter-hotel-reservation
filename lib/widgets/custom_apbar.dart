@@ -2,9 +2,11 @@ import 'package:find_hotel/screens/auth/login.dart';
 import 'package:find_hotel/screens/auth/signup.dart';
 import 'package:flutter/material.dart';
 
+import '../gen/theme.dart';
+
 AppBar BuildAppbar(String message) {
   return AppBar(
-    backgroundColor: Colors.black,
+    backgroundColor: ksecondryColor,
     foregroundColor: Colors.white,
     elevation: 0,
     title: Text(message),
@@ -35,7 +37,7 @@ AppBar BuildAppbar(String message) {
 AppBar searchAppBar(String message, BuildContext context) {
   return AppBar(
     title: Text(message),
-    backgroundColor: Colors.black,
+    backgroundColor: ksecondryColor,
     foregroundColor: Colors.white,
     elevation: 0,
     actions: [

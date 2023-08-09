@@ -16,11 +16,6 @@ class Setting {
 
 final List<Setting> settings = [
   Setting(
-    title: "Change Password",
-    route: "/",
-    icon: FontAwesomeIcons.lock,
-  ),
-  Setting(
     title: "Credits Coupons",
     route: "/",
     icon: FontAwesomeIcons.gift,
@@ -28,11 +23,6 @@ final List<Setting> settings = [
 ];
 
 final List<Setting> settings2 = [
-  Setting(
-    title: "Payement text",
-    route: "/",
-    icon: CupertinoIcons.ellipsis_vertical_circle_fill,
-  ),
   Setting(
     title: "Invite Friend",
     route: "/",

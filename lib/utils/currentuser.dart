@@ -30,11 +30,10 @@ class _CurrentUserState extends State<CurrentUser> {
   void getSharedDataLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isLogged = prefs.getInt('isLogged');
-    if (isLogged != 0) {
-
+    print('logged shared $isLogged');
+    if (isLogged != 0 || isLogged == null) {
       NavigationServices(context).gotoLoginScreen();
     } else {
-
       NavigationServices(context).gotohomeScreen();
     }
   }

@@ -43,9 +43,12 @@ dependencies:
   geocoding: ^2.1.0
   intl: ^0.17.0
   flutter_config: ^2.0.2
+  smooth_page_indicator: ^1.1.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_native_splash: ^2.2.9
-  
+  info_popup: ^3.0.5  
+  flutter_rename_app_plus3: ^1.2.1
+
 
 flutter_gen:
   integrations:
@@ -58,6 +61,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.13.0"
 
   # run build runner: flutter packages pub run build_runner build --delete-conflicting-outputs
   build_runner: ^2.3.2
@@ -76,20 +80,33 @@ flutter:
     - assets/icon/amenities/
     - assets/image/
     - .env
+    - assets/logo/
+
+flutter_rename_app_plus:
+  application_name: Rental
+  application_id: com.android.rental
+  bundle_id: com.ios.rental
+  ios_bundle_name: rental
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/logo.png"
+  adaptive_icon_foreground: "assets/logo/logo.png"
 
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/image/illustration-1.png
-  #branding: assets/image/illustration-1.png
+  image: assets/logo/logo.png
+  #branding: assets/logo/logo.png
   color_dark: "#121212"
-  image_dark: assets/image/illustration-1.png
-  branding_dark: assets/image/illustration-1.png
+  image_dark: assets/logo/dark_logo.png
+  branding_dark: assets/logo/dark_logo.png
 
   android_12:
-    image: assets/image/illustration-1.png
+    image: assets/logo/logo.png
     icon_background_color: "#ffffff"
-    image_dark: assets/image/illustration-1.png
+    image_dark: assets/logo/dark_logo.png
     icon_background_color_dark: "#121212"
 
   web: false
@@ -137,5 +154,5 @@ flutter_native_splash:
     - family:  Icons
       fonts:
       - asset: assets/fonts/Icons.ttf      
-flutter_intl:
-  enabled: true
+#flutter_intl:
+#  enabled: true
