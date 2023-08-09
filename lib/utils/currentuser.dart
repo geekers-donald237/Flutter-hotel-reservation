@@ -17,13 +17,14 @@ class _CurrentUserState extends State<CurrentUser> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     getSharedDataLogin();
+    super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
+    return const Center(child: CircularProgressIndicator());
   }
 
   void getSharedDataLogin() async {

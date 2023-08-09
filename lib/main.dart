@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         // fontFamily: FontFamily.workSans,
         // primarySwatch: kprimaryCol,
       ),
-      home: isviewed != 0 ? OnBoard() : CurrentUser(),
+      home: isviewed != 0 ? OnBoard() : const CurrentUser(),
       builder: EasyLoading.init(),
     );
   }

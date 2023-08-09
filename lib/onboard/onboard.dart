@@ -45,6 +45,7 @@ class _OnBoardState extends State<OnBoard> {
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
+    _storeOnboardInfo();
     super.initState();
   }
 
@@ -120,8 +121,8 @@ class _OnBoardState extends State<OnBoard> {
                         children: [
                           InkWell(
                             onTap: () async {
-                              _storeOnboardInfo();
-                              NavigationServices(context).gotohomeScreen();
+
+                              NavigationServices(context).gotoLoginScreen();
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,

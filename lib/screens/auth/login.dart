@@ -32,7 +32,17 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BuildAppbar('Login'),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: Text("Login"),
+        centerTitle: true,
+          automaticallyImplyLeading: false,
+        actions: [
+          IconButton(onPressed: (){}, icon: const Icon(Icons.info)),
+        ],
+      ),
       body: Padding(
         padding: kDefaultPadding,
         child: SingleChildScrollView(
@@ -121,15 +131,17 @@ class _LogInScreenState extends State<LogInScreen> {
                   }
                 },
               ),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 10,
               ),
-              Text(
-                'Or log in with:',
-                style: subTitle.copyWith(color: kBlackColor),
+              Center(
+                child: Text(
+                  'Or log in with:',
+                  style: subTitle.copyWith(color: kBlackColor),
+                ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               LoginOption(),
             ],
