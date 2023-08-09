@@ -11,6 +11,8 @@ import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
 import '../../urls/all_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/reset_form.dart';
@@ -28,7 +30,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BuildAppbar('reset Pwd'),
+      appBar: BuildAppbar(AppLocalizations.of(context)!.forget_psw),
       body: SingleChildScrollView(
         child: Padding(
           padding: kDefaultPadding,
@@ -39,14 +41,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 height: 250,
               ),
               Text(
-                'Check Your Email Address',
+                AppLocalizations.of(context)!.verifier_email,
                 style: titleText,
               ),
               SizedBox(
                 height: 5,
               ),
               Text(
-                'Please enter your email address',
+                AppLocalizations.of(context)!.enter_email,
                 style: subTitle.copyWith(fontWeight: FontWeight.w600),
               ),
               SizedBox(
@@ -59,9 +61,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 height: 40,
               ),
               PrimaryButton(
-                buttonText: 'Reset Password',
+                buttonText:AppLocalizations.of(context)!.reset_psw,
                 ontap: () {
-                  EasyLoading.show(status: "Loading.....");
+                  EasyLoading.show(status: AppLocalizations.of(context)!.loading);
                   if (validateEmail(emailcontroller.text)) {
                     saveCode(emailcontroller.text.trim());
                   } else {
@@ -96,13 +98,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         if (data['status'] == 'error') {
           if (data['message'] == 'User request to delete account') {
             EasyLoading.showError(
-              'Le Compte a ete supprime',
+              AppLocalizations.of(context)!.error_delete_account,
             );
           }
 
           if (data['message'] == 'This email not exist') {
             EasyLoading.showError(
-              'Email Already exits',
+              AppLocalizations.of(context)!.email_not_exits,
             );
           }
         } else if (data['status'] == 'success') {
@@ -129,7 +131,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   bool validateEmail(String value) {
     if (value.isEmpty) {
-      EasyLoading.showError('Please fields All field',
+      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
           duration: Duration(seconds: 3));
       return false; // Message d'erreur si l'email est vide
     }
@@ -137,7 +139,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     // Vérification si l'email est au bon format en utilisant une expression régulière
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(value)) {
-      EasyLoading.showError('Invalid Email Address',
+      EasyLoading.showError(AppLocalizations.of(context)!.invalid_email,
           duration: Duration(seconds: 3));
       return false; // Message d'erreur si l'email est incorrect
     }

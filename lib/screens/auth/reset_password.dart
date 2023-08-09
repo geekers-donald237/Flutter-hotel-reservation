@@ -5,6 +5,7 @@ import 'package:find_hotel/routes/route_names.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
@@ -29,7 +30,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BuildAppbar('Reset Pwd'),
+      appBar: BuildAppbar(AppLocalizations.of(context)!.reset_psw),
       body: Padding(
         padding: kDefaultPadding,
         child: SingleChildScrollView(
@@ -40,7 +41,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 height: 120,
               ),
               Text(
-                'Reset Your Pwd',
+                AppLocalizations.of(context)!.reset_psw,
                 style: titleText,
               ),
               SizedBox(
@@ -48,17 +49,22 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               Column(
                 children: [
-                  buildInputForm('Password', true, pswController),
-                  buildInputForm('Confirm Password', true, cpswController),
+                  buildInputForm(AppLocalizations.of(context)!.input_pass, true,
+                      pswController),
+                  buildInputForm(
+                      AppLocalizations.of(context)!.input_confirm_pass,
+                      true,
+                      cpswController),
                 ],
               ),
               SizedBox(
                 height: 20,
               ),
               PrimaryButton(
-                buttonText: 'Reset',
+                buttonText: AppLocalizations.of(context)!.reset_psw,
                 ontap: () {
-                  EasyLoading.show(status: 'Loading');
+                  EasyLoading.show(
+                      status: AppLocalizations.of(context)!.loading);
                   if (validateLoginForm(
                       pswController.text, cpswController.text)) {
                     resetPassword(pswController.text, widget.email);
@@ -122,18 +128,19 @@ class _ResetPasswordState extends State<ResetPassword> {
   bool validateLoginForm(String password, String cpassword) {
     // Vérification si aucun champ n'est vide
     if (cpassword.isEmpty || password.isEmpty) {
-      EasyLoading.showError('Please fields All field',
+      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
           duration: Duration(seconds: 3));
       return false;
     }
 
     if (cpassword != password) {
-      EasyLoading.showError('Password doesn\'t macth',
+      EasyLoading.showError(AppLocalizations.of(context)!.password_doest_match,
           duration: Duration(seconds: 3));
+
       return false;
     } else {
       if (password.length < 6) {
-        EasyLoading.showError('Password is Too Short',
+        EasyLoading.showError(AppLocalizations.of(context)!.password_short,
             duration: Duration(seconds: 3));
       }
     }
@@ -160,14 +167,13 @@ class _ResetPasswordState extends State<ResetPassword> {
       }
       if (response.statusCode == 400) {
         if (data['message'] == 'This email not exist') {
-          EasyLoading.showError("Invalid Email Address");
+          AppLocalizations.of(context)!.email_not_exits;
         } else if (data['message'] == 'User request to delete account') {
-          EasyLoading.showError('Compte Supprime');
+          AppLocalizations.of(context)!.error_delete_account;
         } else {
-          EasyLoading.showError('Mail Not Send');
+          AppLocalizations.of(context)!.mail_not_sent;
         }
       } else {
-        EasyLoading.showSuccess("Password reset Succefuly");
         NavigationServices(context).gotoLoginScreen();
       }
     } on SocketException {

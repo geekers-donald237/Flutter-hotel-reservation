@@ -4,10 +4,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/screens/auth/forgot_password.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:find_hotel/screens/auth/signup.dart';
 
 import 'package:find_hotel/widgets/primary_button.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:info_popup/info_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/encrypt.dart';
@@ -31,111 +35,158 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BuildAppbar('Login'),
-      body: Padding(
-        padding: kDefaultPadding,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 60,
-              ),
-              Text(
-                'Welcome Back',
-                style: titleText,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: [
-                  Text(
-                    'New to this app?',
-                    style: subTitle,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpScreen(),
+    return WillPopScope(
+      onWillPop: () async {
+        _showExitConfirmationDialog(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: BuildAppbar(AppLocalizations.of(context)!.login_key),
+        body: Padding(
+          padding: kDefaultPadding,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.login_message,
+                  style: titleText,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.new_to_app,
+                      style: subTitle,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.register,
+                        style: textButton.copyWith(
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 1,
                         ),
-                      );
-                    },
-                    child: Text(
-                      'Sign Up',
-                      style: textButton.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 1,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Column(
-                children: [
-                  buildInputForm('Email', false, emailController),
-                  buildInputForm('Password', true, pswController),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ResetPasswordScreen()));
-                },
-                child: Text(
-                  'Forgot password?',
-                  style: TextStyle(
-                    color: kZambeziColor,
-                    fontSize: 14,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 1,
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: [
+                    buildInputForm('Email', false, emailController),
+                    buildInputForm(AppLocalizations.of(context)!.input_pass,
+                        true, pswController),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ResetPasswordScreen()));
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.forget_psw,
+                    style: TextStyle(
+                      color: kZambeziColor,
+                      fontSize: 14,
+                      decoration: TextDecoration.underline,
+                      decorationThickness: 1,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              PrimaryButton(
-                buttonText: 'Log In',
-                ontap: () {
-                  if (validateLoginForm(
-                      emailController.text, pswController.text)) {
-                    EasyLoading.show(status: "Loading...");
+                SizedBox(
+                  height: 20,
+                ),
+                PrimaryButton(
+                  buttonText: AppLocalizations.of(context)!.login_key,
+                  ontap: () {
+                    if (validateLoginForm(
+                        emailController.text, pswController.text)) {
+                      EasyLoading.show(
+                          status: AppLocalizations.of(context)!.loading);
 
-                    login(emailController.text, pswController.text);
-                    // clearController();
-                  }
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Or log in with:',
-                style: subTitle.copyWith(color: kBlackColor),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              LoginOption(),
-            ],
+                      login(emailController.text, pswController.text);
+                      // clearController();
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.or_login_with + ":",
+                  style: subTitle.copyWith(color: kBlackColor),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                LoginOption(),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            // Supprimer les bords
+            borderRadius: BorderRadius.circular(0),
+          ),
+          title: Text(AppLocalizations.of(context)!.exit_title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!.exit_text),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.exit_response_non),
+              onPressed: () {
+                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.exit_response_oui),
+              onPressed: () {
+                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                SystemNavigator.pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -148,15 +199,16 @@ class _LogInScreenState extends State<LogInScreen> {
   bool validateLoginForm(String email, String password) {
     // Vérification si aucun champ n'est vide
     if (email.isEmpty || password.isEmpty) {
-      EasyLoading.showError('Please fields All field',
+      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
           duration: Duration(seconds: 3));
+
       return false;
     }
 
     // Vérification si l'email est au bon format
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
-      EasyLoading.showError('Invalid Email Address',
+      EasyLoading.showError(AppLocalizations.of(context)!.invalid_email,
           duration: Duration(seconds: 3));
       return false;
     }
@@ -207,6 +259,7 @@ class _LogInScreenState extends State<LogInScreen> {
   storeLoginInfo() async {
     print("Shared pref called");
     int isLogged = 0;
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('isLogged', isLogged);
     print(prefs.getInt('isLogged'));
@@ -237,17 +290,17 @@ class _LogInScreenState extends State<LogInScreen> {
           if (data['message'] == 'Verify your email') {
             print(data['message'] + "ststus message email");
             EasyLoading.showError(
-              'Verify your email',
+              AppLocalizations.of(context)!.verifier_email,
             );
             NavigationServices(context).gotoOptScreen(email, verif_code);
           } else if (data['message'] == 'Incorrect password') {
             print(data['message'] + "ststus message another");
             EasyLoading.showError(
-              'Incorrect password',
+              AppLocalizations.of(context)!.incorrect_psw,
             );
           } else if (data['message'] == 'This email not exist') {
             EasyLoading.showError(
-              'Incorrect email',
+              AppLocalizations.of(context)!.incorrect_email,
             );
           } else {
             EasyLoading.dismiss();
@@ -255,6 +308,14 @@ class _LogInScreenState extends State<LogInScreen> {
           }
         } else {
           EasyLoading.dismiss();
+          String email = data['email'];
+          String user_name = data['user_name'];
+          String tel = data['phone'];
+           SharedPreferences pref = await SharedPreferences.getInstance();
+          await pref.setString('username', encrypt(user_name));
+          await pref.setString('email', encrypt(email));
+          await pref.setString('phone', encrypt(tel));
+       
           storeLoginInfo();
 
           NavigationServices(context).gotohomeScreen();

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:find_hotel/routes/route_names.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:find_hotel/urls/all_url.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ class _Otp2State extends State<Otp2> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: BuildAppbar('Opt Register'),
+      appBar: BuildAppbar('tttttt register'),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -61,7 +63,7 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 24),
                 Text(
-                  'Verification',
+                  AppLocalizations.of(context)!.valid_btn,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -69,7 +71,7 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Enter your OTP code number",
+                  AppLocalizations.of(context)!.enter_your_otp,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -104,7 +106,8 @@ class _Otp2State extends State<Otp2> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            EasyLoading.show(status: "Loading...");
+                            EasyLoading.show(
+                                status: AppLocalizations.of(context)!.loading);
 
                             String otpCode = '';
                             for (var controller in _otpControllers) {
@@ -113,7 +116,8 @@ class _Otp2State extends State<Otp2> {
                             print(
                                 'OTP Code: $otpCode'); // Affichage du code dans la console
                             if (isCodeValid(otpCode)) {
-                              NavigationServices(context).gotoResetPassword(widget.email);
+                              NavigationServices(context)
+                                  .gotoResetPassword(widget.email);
                             }
                           },
                           style: ButtonStyle(
@@ -131,7 +135,7 @@ class _Otp2State extends State<Otp2> {
                           child: Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
-                              'Verify',
+                              AppLocalizations.of(context)!.valid_btn,
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
@@ -142,7 +146,7 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Didn't you receive any code?",
+                  AppLocalizations.of(context)!.code_pas_recu,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -152,7 +156,7 @@ class _Otp2State extends State<Otp2> {
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Resend New Code",
+                  AppLocalizations.of(context)!.resend_code,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -171,23 +175,26 @@ class _Otp2State extends State<Otp2> {
   bool isCodeValid(String code) {
     // Vérification si le code est vide
     if (code.isEmpty) {
-      EasyLoading.showError('Please fields All field',
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.error_all_fields,
+      );
       return false;
     }
 
     // Vérification si le code contient exactement 4 caractères
     if (code.length != 4) {
-      EasyLoading.showError('Please fields All field',
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.error_all_fields,
+      );
       return false;
     }
 
     // Vérification si le code ne contient que des chiffres
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
-        EasyLoading.showError('Invalid Format ',
-            duration: Duration(seconds: 3));
+        EasyLoading.showError(
+          AppLocalizations.of(context)!.invalid_code,
+        );
         return false;
       }
     }
@@ -212,11 +219,35 @@ class _Otp2State extends State<Otp2> {
       if (kDebugMode) {
         print(data);
       }
+
+      if (response.statusCode == 200) {
+        if (data['message'] == 'Success activate your account') {
+          NavigationServices(context).gotoLoginScreen();
+        }
+        if (data['message'] == "Code is correct") {
+          NavigationServices(context).gotoResetPassword(email);
+        }
+      } else {
+        if (data['status'] == 'error') {
+          if (data['message'] == 'Incorrect code') {
+            AppLocalizations.of(context)!.invalid_code;
+          }
+          if (data['message'] == "User request to delete account") {
+            AppLocalizations.of(context)!.error_delete_account;
+          }
+        } else {
+          if (data['messsage'] == 'Success activate your account') {
+            NavigationServices(context).gotohomeScreen();
+          }
+        }
+      }
     } on SocketException {
       print('bbbbbbbbb');
+      EasyLoading.dismiss();
     } catch (e) {
       print('tttttttttttt');
       print(e.toString());
+      EasyLoading.dismiss();
     }
   }
 

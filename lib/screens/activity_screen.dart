@@ -61,22 +61,15 @@ class _ActivitiesMasonryGrid extends StatelessWidget {
     );
   }
 
-  Card _buildActivityCard(
+  Container _buildActivityCard(
     BuildContext context,
     Activity activity,
     int index,
   ) {
-    return Card(
-      elevation: 0.4,
-      shadowColor: kblack,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
-        ),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () {},
+    return Container(
+      child: Card(
+        elevation: 5.0,
+        margin: EdgeInsets.all(8.0),
         child: Column(
           children: [
             Hero(
@@ -99,23 +92,24 @@ class _ActivitiesMasonryGrid extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Cards Title 1",
-              style: TextStyle(
-                  fontFamily: 'worksans',
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              MyStringsSample.card_text,
-              maxLines: 2,
-              style: MyTextSample.subhead(context)!.copyWith(
-                color: Colors.grey[700],
-              ),
+            Column(
+              children: [
+                Container(
+                  child: Text("Cards Title 1",
+                      // style: titleTextStyle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
+                  margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                      margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                      child: Text(
+                        'items[index].subtitle',
+                      )),
+                ),
+              ],
             ),
           ],
         ),

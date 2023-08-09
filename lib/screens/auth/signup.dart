@@ -18,6 +18,8 @@ import '../../urls/all_url.dart';
 import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/custom_phone_field.dart';
 import '../../widgets/formWidget/login_option.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'login.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -84,13 +86,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
           elevation: 0,
-          title: Text('register'),
+          title: Text(
+            AppLocalizations.of(context)!.register,
+          ),
           centerTitle: true,
           leading: IconButton(
               onPressed: () {
                 NavigationServices(context).back(LogInScreen());
               },
-              icon: Icon(Icons.arrow_back_ios)),
+              icon: Icon(Icons.arrow_back)),
           actions: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
@@ -122,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: kDefaultPadding,
                 child: Text(
-                  'Create Account',
+                  AppLocalizations.of(context)!.register,
                   style: titleText,
                 ),
               ),
@@ -134,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Already a member?',
+                      AppLocalizations.of(context)!.already_member + "?",
                       style: subTitle,
                     ),
                     SizedBox(
@@ -148,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 builder: (context) => LogInScreen()));
                       },
                       child: Text(
-                        'Log In',
+                        AppLocalizations.of(context)!.login_key,
                         style: textButton.copyWith(
                           decoration: TextDecoration.underline,
                           decorationThickness: 1,
@@ -165,7 +169,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 padding: kDefaultPadding,
                 child: Column(
                   children: [
-                    buildInputForm('User Name', false, usernameController),
+                    buildInputForm(
+                        AppLocalizations.of(context)!.user_name_input,
+                        false,
+                        usernameController),
                     buildInputForm('Email', false, emailController),
                     // buildInputForm('Phone', false, phoneController),
                     CustomPhoneField(
@@ -174,8 +181,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPhoneNumberChanged: updatePhoneNumber,
                       phoneNumber: phoneNumber,
                     ),
-                    buildInputForm('Password', true, pswController),
-                    buildInputForm('Confirm Password', true, cpswController),
+                    buildInputForm(AppLocalizations.of(context)!.input_pass,
+                        true, pswController),
+                    buildInputForm(
+                        AppLocalizations.of(context)!.input_confirm_pass,
+                        true,
+                        cpswController),
                   ],
                 ),
               ),
@@ -189,7 +200,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _launchUrl();
                     },
                     child: CheckBox(
-                      'Agree to terms and conditions.  👈',
+                      AppLocalizations.of(context)!.agree_terms_and_condition +
+                          " 👈",
                       onChanged: _onTermsChanged,
                     )),
               ),
@@ -199,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: kDefaultPadding,
                 child: CheckBox(
-                  'I have at least 18 years old.',
+                  AppLocalizations.of(context)!.least_18_years,
                   onChanged: _onAdultChanged,
                 ),
               ),
@@ -209,7 +221,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: kDefaultPadding,
                 child: PrimaryButton(
-                  buttonText: 'Sign Up',
+                  buttonText: AppLocalizations.of(context)!.register,
                   ontap: () {
                     if (validateForm(
                         usernameController.text,
@@ -217,7 +229,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         phoneNumber,
                         pswController.text,
                         cpswController.text)) {
-                      EasyLoading.show(status: "Loading...");
+                      EasyLoading.show(
+                          status: AppLocalizations.of(context)!.loading);
                       singnIn(usernameController.text, emailController.text,
                           pswController.text, phoneNumber);
                       if (kDebugMode) {
@@ -234,7 +247,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: kDefaultPadding,
                 child: Text(
-                  'Or log in with:',
+                  AppLocalizations.of(context)!.or_login_with,
                   style: subTitle.copyWith(color: kBlackColor),
                 ),
               ),
@@ -257,7 +270,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   singnIn(String username, String email, String password,
       String phoneNumber) async {
-    EasyLoading.show(status: 'Loading');
+    EasyLoading.show(status: AppLocalizations.of(context)!.loading);
     var url = Uri.parse(Urls.user);
     // try {
 
@@ -280,13 +293,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (data['status'] == 'error') {
           if (data['message'] == 'email already exist') {
             print(data['message'] + "ststus message email");
-            EasyLoading.showError(
-              'Email already in use',
-            );
+            EasyLoading.showError(AppLocalizations.of(context)!.email_in_use,
+                duration: Duration(seconds: 3));
           } else if (data['message'] == 'phone number already exist') {
             print(data['message'] + "ststus message another");
             EasyLoading.showError(
-              'Phone Numnber Already exits',
+              AppLocalizations.of(context)!.phone_number_exist,
             );
           } else {
             EasyLoading.dismiss();
@@ -297,7 +309,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           NavigationServices(context).gotoOpt2Screen(emailc, verif_code);
         }
       } else {
-        EasyLoading.showError('An Error Occur');
+        EasyLoading.showError(AppLocalizations.of(context)!.an_error_occur);
         print(data['message'] + "Anotherrrrrr errrroor");
 
         EasyLoading.dismiss();
@@ -312,50 +324,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print(e.toString());
       EasyLoading.dismiss();
     }
-    // if (response.statusCode == 200) {
-    // print(response.body);
-
-    //   if (data["message"] == 'Success Connexion') {
-    //     String id_admin = data['id_admin'].toString();
-    //     String email = data['email'];
-    //     String user_name = data['user_name'];
-    //     String tel = data['phone'];
-
-    //     SharedPreferences pref = await SharedPreferences.getInstance();
-    //     await pref.setString('id', encrypt(id_admin));
-    //     // await pref.setString('id_entreprise', id_entreprise);
-    //     await pref.setString('username', encrypt(user_name));
-    //     await pref.setString('email', encrypt(email));
-    //     await pref.setString('phone', encrypt(tel));
-    //     EasyLoading.dismiss();
-    //     Navigator.of(context).pushAndRemoveUntil(
-    //         MaterialPageRoute(builder: (context) => Start()),
-    //         (route) => false);
-    //   }
-    //   if (data["message"] == 'no able') {
-    //     EasyLoading.showError('Login incorrect',
-    //         duration: Duration(seconds: 5));
-    //   }
-    //   if (data["message"] == 'login ou mot de passe incorrect! ') {
-    //     EasyLoading.showError('Login incorrect',
-    //         duration: Duration(seconds: 5));
-    //   }
-    //   if (data["message"] == 'verified_your_account') {
-    //     EasyLoading.showError('verify your email address please',
-    //         duration: Duration(seconds: 5));
-    //   }
-    // } else {
-    //   EasyLoading.showError('verify internet');
-    // }
-    // }
-    //  on SocketException catch (e) {
-    //   ScaffoldMessenger.of(context)
-    //       .showSnackBar(SnackBar(content: Text('verify internet')));
-    // } catch (e) {
-    //   print(e);
-    //   EasyLoading.showError('an error occur');
-    // }
-    // }
   }
 
   void clearController() {
@@ -375,7 +343,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password.isEmpty ||
         confirmPassword.isEmpty ||
         !validateCheckBoxes()) {
-      EasyLoading.showError('Please fields All field',
+      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
           duration: Duration(seconds: 3));
 
       return false;
@@ -383,12 +351,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // Vérification si le mot de passe et la confirmation du mot de passe sont identiques
     if (password != confirmPassword) {
-      EasyLoading.showError('Password doesnt macth',
+      EasyLoading.showError(AppLocalizations.of(context)!.password_doest_match,
           duration: Duration(seconds: 3));
 
       return false;
     } else if ((password == confirmPassword) && password.length < 6) {
-      EasyLoading.showError('Password is too short',
+      EasyLoading.showError(AppLocalizations.of(context)!.password_short,
           duration: Duration(seconds: 3));
 
       return false;
@@ -398,7 +366,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
       // showSnackBar(context, 'Invalid Email Address');
-      EasyLoading.showError('Invalid Email Address',
+      EasyLoading.showError(AppLocalizations.of(context)!.invalid_email,
           duration: Duration(seconds: 3));
 
       return false;
@@ -458,3 +426,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 }
+

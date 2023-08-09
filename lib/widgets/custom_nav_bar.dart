@@ -44,23 +44,16 @@ class _CustomNavBarState extends State<CustomNavBar> {
               icon: Ionicons.heart_outline,
               isSelected: widget.index == 1,
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => MapScreen()),
-                  ),
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: ((context) => MapScreen()),
+                //   ),
+                // );
               },
             ),
             _NavBarIcon(
               icon: Ionicons.ticket_outline,
-            ),
-            _NavBarIcon(
-              icon: Ionicons.person_outline,
-              isSelected: widget.index == 3,
-              onTap: () {
-                NavigationServices(context).gotoProfileScreen();
-              },
             ),
           ],
         ),

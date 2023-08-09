@@ -5,19 +5,13 @@ class OnboardModel {
   String img;
   String text;
   String desc;
-  Color bg;
-  Color button;
 
   OnboardModel({
     required this.img,
     required this.text,
     required this.desc,
-    required this.bg,
-    required this.button,
   });
 }
-
-
 
 class OnboardWidget extends StatelessWidget {
   final OnboardModel model;
@@ -26,30 +20,39 @@ class OnboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(model.img),
-            Text(
-              model.text,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(model.img),
+              Text(
+                model.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 27.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'worksans',
+                ),
               ),
-            ),
-            Text(
-              model.desc,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
+              SizedBox(
+                height: 8,
               ),
-            ),
-            // Vous pouvez ajouter d'autres widgets pour afficher les propriétés de votre modèle.
-          ],
+              Text(
+                model.desc,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontFamily: 'Montserrat',
+                ),
+              ),
+              SizedBox(
+                height: 38,
+              ),
+            ],
+          ),
         ),
       ),
     );
