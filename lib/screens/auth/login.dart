@@ -33,7 +33,7 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: kblue,
         foregroundColor: Colors.white,
         elevation: 0,
         title: Text("Login"),
@@ -63,26 +63,20 @@ class _LogInScreenState extends State<LogInScreen> {
                 children: [
                   Text(
                     'New to this app?',
-                    style: subTitle,
                   ),
                   SizedBox(
                     width: 5,
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpScreen(),
-                        ),
-                      );
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => SignUpScreen()),
+                              (route) => false);
                     },
-                    child: Text(
+                    child: const Text(
                       'Sign Up',
-                      style: textButton.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 1,
-                      ),
+                      style: TextStyle(color: Colors.blue),
                     ),
                   ),
                 ],
@@ -124,8 +118,6 @@ class _LogInScreenState extends State<LogInScreen> {
                 ontap: () {
                   if (validateLoginForm(
                       emailController.text, pswController.text)) {
-                    EasyLoading.show(status: "Loading...");
-
                     login(emailController.text, pswController.text);
                     // clearController();
                   }
@@ -225,7 +217,7 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   login(String email, String password) async {
-    // EasyLoading.show(status: 'Loading');
+    EasyLoading.show(status: "Loading...");
     var url = Uri.parse(Urls.user);
     // try {
 
