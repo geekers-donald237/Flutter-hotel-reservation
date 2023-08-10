@@ -41,51 +41,51 @@ class _LogInScreenState extends State<LogInScreen> {
         return false;
       },
       child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: ksecondryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        title: Text(AppLocalizations.of(context)!.login_key),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.info)),
-        ],
-      ),
-      body: Padding(
-        padding: kDefaultPadding,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 60,
-              ),
-              Text(
-                AppLocalizations.of(context)!.login_message,
-                style: titleText,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.new_to_app,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => SignUpScreen()),
-                              (route) => false);
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.register,
-                      style: const TextStyle(color: Colors.blue),
+        appBar: AppBar(
+          backgroundColor: ksecondryColor,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          title: Text(AppLocalizations.of(context)!.login_key),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.info)),
+          ],
+        ),
+        body: Padding(
+          padding: kDefaultPadding,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.login_message,
+                  style: titleText,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.new_to_app,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()),
+                            (route) => false);
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.register,
+                        style: const TextStyle(color: kblue),
                       ),
                     ),
                   ],
@@ -120,39 +120,37 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                   ),
                 ),
-              
-              SizedBox(
-                height: 20,
-              ),
-              PrimaryButton(
-                buttonText: AppLocalizations.of(context)!.login_key,
-                ontap: () {
-                  if (validateLoginForm(
-                      emailController.text.trim(), pswController.text)) {
-                    login(emailController.text.trim(), pswController.text);
-                    // clearController();
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: Text(
-                  AppLocalizations.of(context)!.or_login_with,
-                  style: subTitle.copyWith(color: kBlackColor),
+                SizedBox(
+                  height: 20,
                 ),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              LoginOption(),
-            ],
-        
+                PrimaryButton(
+                  buttonText: AppLocalizations.of(context)!.login_key,
+                  ontap: () {
+                    if (validateLoginForm(
+                        emailController.text.trim(), pswController.text)) {
+                      login(emailController.text.trim(), pswController.text);
+                      // clearController();
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.or_login_with,
+                    style: subTitle.copyWith(color: kBlackColor),
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                LoginOption(),
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 
@@ -264,7 +262,7 @@ class _LogInScreenState extends State<LogInScreen> {
   storeLoginInfo() async {
     print("Shared pref called");
     int isLogged = 0;
-    
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('isLogged', isLogged);
     print(prefs.getInt('isLogged'));
@@ -290,8 +288,6 @@ class _LogInScreenState extends State<LogInScreen> {
         print(data);
       }
 
-
-
       if (response.statusCode == 200) {
         if (data['status'] == 'error') {
           if (data['message'] == 'Verify your email') {
@@ -299,22 +295,29 @@ class _LogInScreenState extends State<LogInScreen> {
               print(data['message'] + "status message email");
             }
             var user_get = data['data'];
-            EasyLoading.showError(AppLocalizations.of(context)!.verifier_email,);
-            NavigationServices(context).gotoOptScreen(email, user_get['code_verif'].toString());
+            EasyLoading.showError(
+              AppLocalizations.of(context)!.verifier_email,
+            );
+            NavigationServices(context)
+                .gotoOptScreen(email, user_get['code_verif'].toString());
           } else if (data['message'] == 'Incorrect password') {
             if (kDebugMode) {
               print(data['message'] + "status message another");
             }
-            EasyLoading.showError(AppLocalizations.of(context)!.incorrect_psw,
+            EasyLoading.showError(
+              AppLocalizations.of(context)!.incorrect_psw,
             );
           } else if (data['message'] == 'This email not exist') {
-            EasyLoading.showError(AppLocalizations.of(context)!.incorrect_email,
+            EasyLoading.showError(
+              AppLocalizations.of(context)!.incorrect_email,
             );
           } else if (data['message'] == 'mail not send') {
-            EasyLoading.showError(AppLocalizations.of(context)!.verified_internet,
+            EasyLoading.showError(
+              AppLocalizations.of(context)!.verified_internet,
             );
           } else if (data['message'] == 'User request to delete account') {
-            EasyLoading.showError(AppLocalizations.of(context)!.incorrect_psw,
+            EasyLoading.showError(
+              AppLocalizations.of(context)!.incorrect_psw,
             );
           } else {
             EasyLoading.dismiss();
@@ -328,23 +331,27 @@ class _LogInScreenState extends State<LogInScreen> {
           String email = user_detail['email'];
           String user_name = user_detail['user_name'];
           String tel = user_detail['phone_number'];
-           SharedPreferences pref = await SharedPreferences.getInstance();
+          SharedPreferences pref = await SharedPreferences.getInstance();
           await pref.setString('username', encrypt(user_name));
           await pref.setString('email', encrypt(email));
           await pref.setString('phone', encrypt(tel));
-       
+
           storeLoginInfo();
 
           NavigationServices(context).gotohomeScreen();
         }
       } else {
-        EasyLoading.showError(AppLocalizations.of(context)!.try_again,);
+        EasyLoading.showError(
+          AppLocalizations.of(context)!.try_again,
+        );
       }
     } on SocketException {
       if (kDebugMode) {
         print('bbbbbbbbb');
       }
-      EasyLoading.showError(AppLocalizations.of(context)!.verified_internet,);
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.verified_internet,
+      );
     } catch (e) {
       if (kDebugMode) {
         print('Try cathc for login to the App ################');
@@ -352,7 +359,9 @@ class _LogInScreenState extends State<LogInScreen> {
       if (kDebugMode) {
         print(e.toString());
       }
-      EasyLoading.showError(AppLocalizations.of(context)!.try_again,);
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.try_again,
+      );
     }
   }
 }

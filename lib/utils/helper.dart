@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import '../gen/theme.dart';
 import '../widgets/custom_dialog.dart';
 
 Future<bool> showCommonPopup(
@@ -61,7 +62,7 @@ void configLoading() {
     ..backgroundColor = Colors.green
     ..indicatorColor = Colors.yellow
     ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..maskColor = kblue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false
     ..customAnimation = CustomAnimation();

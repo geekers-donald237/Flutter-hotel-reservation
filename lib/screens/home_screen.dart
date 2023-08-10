@@ -8,6 +8,7 @@ import 'package:find_hotel/urls/all_url.dart';
 import 'package:find_hotel/utils/localfiles.dart';
 import 'package:find_hotel/widgets/date_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,74 +35,119 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future<void> _showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            // Supprimer les bords
+            borderRadius: BorderRadius.circular(0),
+          ),
+          title: Text(AppLocalizations.of(context)!.exit_title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!.exit_text),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.exit_response_non),
+              onPressed: () {
+                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.exit_response_oui),
+              onPressed: () {
+                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                SystemNavigator.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-        appBar: BuildAppbar(context),
-        drawer: CustomDrawer(),
-        bottomNavigationBar: CustomNavBar(index: 0),
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(14),
-          children: [
-            SizedBox(
-              height: height * 0.01,
-            ),
-            const LocationPage(),
+    return WillPopScope(
+      onWillPop: () async {
+        _showExitConfirmationDialog(context);
+        return false;
+      },
+      child: Scaffold(
+          appBar: BuildAppbar(context),
+          drawer: CustomDrawer(),
+          bottomNavigationBar: CustomNavBar(index: 0),
+          body: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(14),
+            children: [
+              SizedBox(
+                height: height * 0.01,
+              ),
+              const LocationPage(),
 
-            SizedBox(
-              height: height * 0.05,
-            ),
-            _SearchCard(),
-            const SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Recommendation",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                TextButton(onPressed: () {}, child: const Text("View All"))
-              ],
-            ),
-            const SizedBox(height: 10),
-            const RecommendedPlaces(),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: height * 0.03,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Plus d'options pour vous",
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ],
-            ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              _SearchCard(),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Recommendation",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  TextButton(onPressed: () {}, child: const Text("View All"))
+                ],
+              ),
+              const SizedBox(height: 10),
+              const RecommendedPlaces(),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Plus d'options pour vous",
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ],
+              ),
 
-            ActivitiesScreen(),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text(
-            //       "Nearby From You",
-            //       style: Theme.of(context).textTheme.titleLarge,
-            //     ),
-            //     TextButton(onPressed: () {}, child: const Text("View All"))
-            //   ],
-            // ),
-            // const SizedBox(height: 10),
-            // const NearbyPlaces(),
-          ],
-        ));
+              ActivitiesScreen(),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "Nearby From You",
+              //       style: Theme.of(context).textTheme.titleLarge,
+              //     ),
+              //     TextButton(onPressed: () {}, child: const Text("View All"))
+              //   ],
+              // ),
+              // const SizedBox(height: 10),
+              // const NearbyPlaces(),
+            ],
+          )),
+    );
   }
 
   Widget headerWidget() {
@@ -119,12 +165,12 @@ class _HomeScreenState extends State<HomeScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text(name, style: TextStyle(fontSize: 14, color: Colors.white)),
+            Text(name, style: TextStyle(fontSize: 14, color: kDarkGreyColor)),
             SizedBox(
               height: 10,
             ),
             Text('$name$surname@gmail.com',
-                style: TextStyle(fontSize: 14, color: Colors.white))
+                style: TextStyle(fontSize: 14, color: kDarkGreyColor))
           ],
         )
       ],
@@ -268,14 +314,14 @@ class DrawerItem extends StatelessWidget {
             Icon(
               icon,
               size: 20,
-              color: Colors.white,
+              color: kblack,
             ),
             const SizedBox(
               width: 40,
             ),
             Text(
               name,
-              style: const TextStyle(fontSize: 20, color: Colors.white),
+              style: const TextStyle(fontSize: 20, color: kgrey),
             )
           ],
         ),
@@ -472,11 +518,11 @@ class _SearchCard extends ConsumerWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // destination = "Ma Position Actuelle";
-                          // ref
-                          //     .read(LocationCurrentProvider.notifier)
-                          //     .update((state) => destination);
-                          // Navigator.of(context).pop();
+                          destination = "proche de Moi";
+                          ref
+                              .read(LocationCurrentProvider.notifier)
+                              .update((state) => destination);
+                          Navigator.of(context).pop();
                         },
                         child: Text('Utiliser ma position'),
                       ),

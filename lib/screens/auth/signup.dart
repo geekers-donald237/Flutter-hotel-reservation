@@ -138,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Text(
                         AppLocalizations.of(context)!.login_key,
                         style: textButton.copyWith(
-                          color: Colors.blue,
+                          color: kblue,
                           decoration: TextDecoration.underline,
                           decorationThickness: 1,
                         ),
@@ -213,9 +213,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         phoneNumber,
                         pswController.text,
                         cpswController.text)) {
-
-                      singnIn(usernameController.text, emailController.text.trim(),
-                          pswController.text, phoneNumber);
+                      singnIn(
+                          usernameController.text,
+                          emailController.text.trim(),
+                          pswController.text,
+                          phoneNumber);
                       // if (kDebugMode) {
                       //   print("success");
                       // }
@@ -292,7 +294,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           }
         } else {
           EasyLoading.dismiss();
-          NavigationServices(context).gotoOpt2Screen(email, user_data['code_verif'].toString());
+          NavigationServices(context)
+              .gotoOpt2Screen(email, user_data['code_verif'].toString());
         }
       } else {
         EasyLoading.showError(AppLocalizations.of(context)!.an_error_occur);
@@ -412,4 +415,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 }
-
