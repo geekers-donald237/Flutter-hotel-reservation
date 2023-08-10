@@ -88,6 +88,7 @@
     "location_service_disable":"Les services de localisation sont désactivés. Veuillez activer les services",
       "localization_denied":"Les autorisations de localisation sont refusées",
      "denied_permently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations",
-     "votre_emplacement":"Votre emplacement"
+     "votre_emplacement":"Votre emplacement",
+     "choose_loca":" Entrer la Destination"
 
 }

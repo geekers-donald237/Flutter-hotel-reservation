@@ -44,7 +44,7 @@ class _SearchLocalisationScreenState extends State<SearchLocalisationScreen> {
     }
   }
 
-  @override
+  @override        
   Widget build(BuildContext context) {
     return Scaffold(
       key: homeScaffoldKey,
@@ -55,7 +55,7 @@ class _SearchLocalisationScreenState extends State<SearchLocalisationScreen> {
             padding: EdgeInsets.all(12),
             child: ElevatedButton.icon(
               onPressed: () {
-                NavigationServices(context).gotoCurrentLocationScrenn();
+               
               },
               icon: Icon(
                 Icons.pin_drop_outlined,

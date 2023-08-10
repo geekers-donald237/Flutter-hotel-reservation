@@ -5,7 +5,6 @@ import 'package:find_hotel/routes/route_names.dart';
 import 'package:ionicons/ionicons.dart';
 import '../gen/theme.dart';
 import '../screens/home_screen.dart';
-import '../screens/map_screen.dart';
 
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({
@@ -44,12 +43,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               icon: Ionicons.heart_outline,
               isSelected: widget.index == 1,
               onTap: () {
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: ((context) => MapScreen()),
-                //   ),
-                // );
+                
               },
             ),
             _NavBarIcon(

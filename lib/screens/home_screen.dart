@@ -1,6 +1,7 @@
 import 'package:find_hotel/providers/all_accomodation.dart';
 import 'package:find_hotel/providers/all_adults_provider.dart';
 import 'package:find_hotel/providers/all_enfants_provider.dart';
+import 'package:find_hotel/providers/current_location.dart';
 import 'package:find_hotel/routes/route_names.dart';
 import 'package:find_hotel/screens/location_page.dart';
 import 'package:find_hotel/urls/all_url.dart';
@@ -283,38 +284,6 @@ class DrawerItem extends StatelessWidget {
   }
 }
 
-class _HeaderSection extends StatelessWidget {
-  const _HeaderSection({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Find Hotel',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-                color: Colors.white,
-              ),
-            ),
-            CustomIconButton(
-              icon: Assets.icon.notification.svg(height: 25),
-            ),
-          ],
-        ),
-        const Padding(
-          padding: EdgeInsets.all(10.0),
-        )
-      ],
-    );
-  }
-}
-
 class _NearbyHotelSection extends ConsumerWidget {
   const _NearbyHotelSection({Key? key}) : super(key: key);
 
@@ -369,7 +338,8 @@ class _SearchCard extends ConsumerWidget {
   int accomodation = 0;
   int adults = 0;
   int children = 0;
-
+  TextEditingController destinationController = TextEditingController();
+  String destination = '';
   void _openPassengerModal(BuildContext context, WidgetRef ref) async {
     showModalBottomSheet(
       context: context,
@@ -468,6 +438,71 @@ class _SearchCard extends ConsumerWidget {
     );
   }
 
+  void _openDestinationDialog(BuildContext context, WidgetRef ref) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        bool isButtonDisabled = true; // Par défaut, le bouton est désactivé
+
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return AlertDialog(
+              title: Text('Saisissez votre destination'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: destinationController,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.length >= 3) {
+                          isButtonDisabled = false;
+                        } else {
+                          isButtonDisabled = true;
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Eg: Yaounde,obili',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // destination = "Ma Position Actuelle";
+                          // ref
+                          //     .read(LocationCurrentProvider.notifier)
+                          //     .update((state) => destination);
+                          // Navigator.of(context).pop();
+                        },
+                        child: Text('Utiliser ma position'),
+                      ),
+                      ElevatedButton(
+                        onPressed: isButtonDisabled
+                            ? null // Désactiver le bouton si isButtonDisabled est vrai
+                            : () {
+                                destination = destinationController.text;
+                                ref
+                                    .read(LocationCurrentProvider.notifier)
+                                    .update((state) => destination);
+                                Navigator.of(context).pop();
+                              },
+                        child: Text('Valider'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationTextController = TextEditingController();
@@ -475,6 +510,7 @@ class _SearchCard extends ConsumerWidget {
     accomodation = ref.watch(allAccomodationProvider);
     adults = ref.watch(allAdultsProvider);
     children = ref.watch(allChildrenProvider);
+    destination = ref.watch(LocationCurrentProvider);
 
     locationTextController;
     dateControllerTo.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -490,30 +526,29 @@ class _SearchCard extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Assets.icon.location.svg(color: kblue),
-                const SizedBox(width: 16),
-                InkWell(
-                  onTap: () {
-                    NavigationServices(context).gotoSearchScreen();
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: kblue), // Bordure uniquement en bas
+                Assets.icon.location
+                    .svg(color: kblue), // Remplacez kBlue par votre couleur
+                const SizedBox(width: 10),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      _openDestinationDialog(context, ref);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey), // Bordure autour du Row
+                          borderRadius: BorderRadius.circular(0),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Choose Your Destination",
-                            style: TextStyle(color: kblue),
-                          ),
-                        ],
-                      )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(destination),
+                          ],
+                        )),
+                  ),
                 ),
               ],
             ),
@@ -529,28 +564,30 @@ class _SearchCard extends ConsumerWidget {
               children: [
                 Assets.icon.profile.svg(color: kblue),
                 const SizedBox(width: 5),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: InkWell(
-                    onTap: () {
-                      _openPassengerModal(context, ref);
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey), // Bordure autour du Row
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("$accomodation Hébgts."),
-                            Text(" $adults Adultes."),
-                            Text(" $children Enfants"),
-                          ],
-                        )),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        _openPassengerModal(context, ref);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey), // Bordure autour du Row
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("$accomodation Hébgts."),
+                              Text(" $adults Adultes."),
+                              Text(" $children Enfants"),
+                            ],
+                          )),
+                    ),
                   ),
                 ),
               ],
