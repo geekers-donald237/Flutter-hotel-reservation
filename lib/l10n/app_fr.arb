@@ -1,4 +1,12 @@
 {
+    "taxi_now": "Taxi",
+    "fly_now": "Vol",
+    "rent_car": "Location de voiture",
+    "your_stay": "Séjours",
+    "profil_now": "Profil",
+    "reservation_now": "Reservations",
+    "favorite_like": "favoris",
+    "home_page": "Acceuil",
     "success_success": "Opération réusit",
     "try_again": "Réessayez",
     "verified_internet": "Probleme d'internet",

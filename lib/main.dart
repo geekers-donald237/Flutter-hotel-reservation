@@ -1,3 +1,4 @@
+import 'package:find_hotel/api/encrypt.dart';
 import 'package:find_hotel/screens/auth/signup.dart';
 import 'package:find_hotel/screens/home_screen.dart';
 import 'package:find_hotel/utils/currentuser.dart';
@@ -15,10 +16,12 @@ import 'gen/theme.dart';
 import 'l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'onboard/onboard.dart';
+import 'onboard/splashScreen.dart';
 
 // import 'package:localizations/l10n/l10n.dart';
 
 int? isviewed;
+String? email_share_preference;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,6 +32,7 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   await dotenv.load(fileName: ".env");
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  email_share_preference = decrypt(prefs.getString('email').toString());
   isviewed = prefs.getInt('onBoard');
   runApp(const ProviderScope(child: MyApp()));
   configLoading();
@@ -48,16 +52,14 @@ class MyApp extends StatelessWidget {
         // primarySwatch: kprimaryCol,
       ),
 
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
       supportedLocales: L10n.all,
-       home: isviewed != 0 ? OnBoard() : HomeScreen(),
-//      home: HomeScreen(),
-
+       home: isviewed != 0 ? OnBoard() : SplashScreen(),
       builder: EasyLoading.init(),
     );
   }

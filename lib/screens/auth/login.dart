@@ -260,12 +260,16 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   storeLoginInfo() async {
-    print("Shared pref called");
+    if (kDebugMode) {
+      print("Shared pref called");
+    }
     int isLogged = 0;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('isLogged', isLogged);
-    print(prefs.getInt('isLogged'));
+    if (kDebugMode) {
+      print(prefs.getInt('isLogged'));
+    }
   }
 
   login(String email, String password) async {
@@ -338,7 +342,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
           storeLoginInfo();
 
-          NavigationServices(context).gotohomeScreen();
+          NavigationServices(context).gotoBottomScreen(0);
         }
       } else {
         EasyLoading.showError(
