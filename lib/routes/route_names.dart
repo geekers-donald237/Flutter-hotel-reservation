@@ -7,7 +7,6 @@ import 'package:find_hotel/screens/auth/login.dart';
 
 import '../screens/auth/otp_register.dart';
 import '../screens/auth/signup.dart';
-import '../screens/current_location_screen.dart';
 import '../screens/edit_profile.dart';
 import '../screens/location.dart';
 
@@ -19,36 +18,30 @@ class NavigationServices {
   final BuildContext context;
 
   Future<dynamic> _pushMaterialPageRoute(Widget widget,
-      {bool fullscreenDialog= false}) async {
+      {bool fullscreenDialog = false}) async {
     return await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => widget, fullscreenDialog: fullscreenDialog),
-
     );
   }
 
-  
-void  back(Widget widget) async {
-   Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => widget), (route) => false);
-}
- 
+  void back(Widget widget) async {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => widget), (route) => false);
+  }
 
   Future<dynamic> gotoLoginScreen() async {
     return await _pushMaterialPageRoute(LogInScreen());
   }
 
-    Future<dynamic> gotoSplashScreen() async {
+  Future<dynamic> gotoSplashScreen() async {
     return await _pushMaterialPageRoute(OnBoard());
   }
-
-
 
   Future<dynamic> gotoSignScreen() async {
     return await _pushMaterialPageRoute(SignUpScreen());
   }
-
 
   Future<dynamic> gotoCurrentUserScreen() async {
     return await _pushMaterialPageRoute(CurrentUser());
@@ -58,20 +51,24 @@ void  back(Widget widget) async {
     return await _pushMaterialPageRoute(EditProfile());
   }
 
-  
   Future<dynamic> gotoResetPassword(String email) async {
-    return await _pushMaterialPageRoute(ResetPassword(email: email,));
+    return await _pushMaterialPageRoute(ResetPassword(
+      email: email,
+    ));
   }
 
-  
-   
-
-   Future<dynamic> gotoOptScreen(String email , String verifcode) async {
-    return await _pushMaterialPageRoute(Otp(email: email, verifCode: verifcode,));
+  Future<dynamic> gotoOptScreen(String email, String verifcode) async {
+    return await _pushMaterialPageRoute(Otp(
+      email: email,
+      verifCode: verifcode,
+    ));
   }
 
-   Future<dynamic> gotoOpt2Screen(String email , String verifcode) async {
-    return await _pushMaterialPageRoute(Otp2(email: email, verifCode: verifcode,));
+  Future<dynamic> gotoOpt2Screen(String email, String verifcode) async {
+    return await _pushMaterialPageRoute(Otp2(
+      email: email,
+      verifCode: verifcode,
+    ));
   }
 
   Future<dynamic> gotohomeScreen() async {
@@ -81,10 +78,4 @@ void  back(Widget widget) async {
   Future<dynamic> gotoSearchScreen() async {
     return await _pushMaterialPageRoute(SearchLocalisationScreen());
   }
-
-    Future<dynamic> gotoCurrentLocationScrenn() async {
-    return await _pushMaterialPageRoute(CurrentLocationScreen());
-  }
-
-  
 }

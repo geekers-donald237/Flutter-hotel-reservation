@@ -87,6 +87,6 @@
      "location_service_disable" : "Location services are disabled. Please enable the services",
      "localization_denied": "Location permissions are denied",
     "denied_permently" : "Location permissions are permanently denied, we cannot request permissions",
-    "your_location" : "Your Location"
-
+    "your_location" : "Your Location",
+    "choose_loca":" Enter Your Destination"
 }
