@@ -1,5 +1,6 @@
 import 'package:find_hotel/screens/home/stay.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -164,118 +165,163 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
     );
   }
 
+  Future<void> _showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+      false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            // Supprimer les bords
+            borderRadius: BorderRadius.circular(0),
+          ),
+          title: Text(AppLocalizations.of(context)!.exit_title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!.exit_text),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.exit_response_non),
+              onPressed: () {
+                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.exit_response_oui),
+              onPressed: () {
+                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                SystemNavigator.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-          length: 4,
-          child: Scaffold(
-            drawer: CustomDrawer(),
-            appBar: AppBar(
-              shape: Border(bottom: BorderSide(color: kblack, width: 2)),
-              flexibleSpace: Container(
+    return WillPopScope(
+      onWillPop: ()async{
+        _showExitConfirmationDialog(context);
+        return false;
+      },
+      child: DefaultTabController(
+            length: 4,
+            child: Scaffold(
+              drawer: CustomDrawer(),
+              appBar: AppBar(
+                shape: Border(bottom: BorderSide(color: kblack, width: 2)),
+                flexibleSpace: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [
+                            ksecondryColor,
+                            ksecondryColor,
+                          ],
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp)),
+                ),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Rental",
+                      style: TextStyle(color: kwhite),
+                    ),
+                    Text(
+                      "Find The Best Deal for Your holidays",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ],
+                ),
+                actions: const [
+                  CustomIconButton(
+                    icon: Icon(
+                      Ionicons.search_outline,
+                      color: kwhite,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0, right: 12),
+                    child: CustomIconButton(
+                      icon: Badge(
+                          backgroundColor: accent,
+                          child: Icon(
+                            Ionicons.notifications_outline,
+                            color: kwhite,
+                          )),
+                    ),
+                  ),
+                ],
+                bottom: TabBar(
+                    controller: _tabController, // Connect the TabBar to the TabController
+                    indicatorColor: Colors.white,
+                    indicatorWeight: 6,
+                    isScrollable: true,
+                    //onTap: onPressed,
+                    tabs: [
+                      Tab(
+                        text: AppLocalizations.of(context)!.your_stay,
+                        icon: const Icon(
+                          Ionicons.home_sharp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Tab(
+                        text: AppLocalizations.of(context)!.rent_car,
+                        icon: const Icon(
+                          Ionicons.car_sport_sharp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Tab(
+                        text: AppLocalizations.of(context)!.fly_now,
+                        icon: const Icon(
+                          Ionicons.airplane_sharp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Tab(
+                        text: AppLocalizations.of(context)!.taxi_now,
+                        icon: const Icon(
+                          Ionicons.car,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]),
+              ),
+              body: Container(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         colors: [
-                          ksecondryColor,
-                          ksecondryColor,
+                          Colors.white,
+                          Colors.blueGrey,
                         ],
                         begin: FractionalOffset(0.0, 0.0),
                         end: FractionalOffset(1.0, 0.0),
                         stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp)),
-              ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Rental",
-                    style: TextStyle(color: kwhite),
-                  ),
-                  Text(
-                    "Find The Best Deal for Your holidays",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
-              ),
-              actions: const [
-                CustomIconButton(
-                  icon: Icon(
-                    Ionicons.search_outline,
-                    color: kwhite,
-                  ),
+                        tileMode: TileMode.clamp)
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0, right: 12),
-                  child: CustomIconButton(
-                    icon: Badge(
-                        backgroundColor: accent,
-                        child: Icon(
-                          Ionicons.notifications_outline,
-                          color: kwhite,
-                        )),
-                  ),
-                ),
-              ],
-
-              bottom: TabBar(
-                  controller: _tabController, // Connect the TabBar to the TabController
-                  indicatorColor: Colors.white,
-                  indicatorWeight: 6,
-                  isScrollable: true,
-                  //onTap: onPressed,
-                  tabs: [
-                    Tab(
-                      text: AppLocalizations.of(context)!.your_stay,
-                      icon: const Icon(
-                        Ionicons.home_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(context)!.rent_car,
-                      icon: const Icon(
-                        Ionicons.car_sport_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(context)!.fly_now,
-                      icon: const Icon(
-                        Ionicons.airplane_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(context)!.taxi_now,
-                      icon: const Icon(
-                        Ionicons.car,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ]),
-            ),
-            body: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [
-                        Colors.white,
-                        Colors.blueGrey,
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp)
+                child: TabBarView(
+                  controller: _tabController, // Connect the TabBarView to the TabController
+                  children: [
+                    mytabs[0],
+                    mytabs[1],
+                    mytabs[2],
+                    mytabs[3],
+                  ],),
               ),
-              child: TabBarView(
-                controller: _tabController, // Connect the TabBarView to the TabController
-                children: [
-                  mytabs[0],
-                  mytabs[1],
-                  mytabs[2],
-                  mytabs[3],
-                ],),
-            ),
-          )
-      );
+            )
+        ),
+    );
   }
 }
