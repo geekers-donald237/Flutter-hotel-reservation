@@ -21,7 +21,6 @@ import 'onboard/splashScreen.dart';
 // import 'package:localizations/l10n/l10n.dart';
 
 int? isviewed;
-String? email_share_preference;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -32,7 +31,6 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   await dotenv.load(fileName: ".env");
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  email_share_preference = decrypt(prefs.getString('email').toString());
   isviewed = prefs.getInt('onBoard');
   runApp(const ProviderScope(child: MyApp()));
   configLoading();
