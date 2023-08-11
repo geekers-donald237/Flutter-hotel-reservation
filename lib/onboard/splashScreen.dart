@@ -86,9 +86,9 @@ class _SplashScreenState extends State<SplashScreen> {
         if (kDebugMode) {
           print(e.toString());
         }
-        EasyLoading.showError(
-          AppLocalizations.of(context)!.try_again,
-        );
+        // EasyLoading.showError(
+        //   AppLocalizations.of(context)!.try_again,
+        // );
         timer?.cancel();
         NavigationServices(context).gotoLoginScreen();
       }
