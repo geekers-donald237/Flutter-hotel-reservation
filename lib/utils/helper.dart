@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../gen/theme.dart';
 import '../widgets/custom_dialog.dart';
@@ -67,7 +68,6 @@ void configLoading() {
     ..dismissOnTap = false
     ..customAnimation = CustomAnimation();
 }
-
 
 class CustomAnimation extends EasyLoadingAnimation {
   CustomAnimation();

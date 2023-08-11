@@ -89,6 +89,7 @@
       "localization_denied":"Les autorisations de localisation sont refusées",
      "denied_permently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations",
      "votre_emplacement":"Votre emplacement",
-     "choose_loca":" Entrer la Destination"
+     "choose_loca":" Entrer la Destination",
+     "app_version":"Version : "
 
 }

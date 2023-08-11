@@ -28,7 +28,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _NavBarIcon(
-              icon: Ionicons.home_outline,
+              icon: Ionicons.search,
               onTap: () {
                 Navigator.pushReplacement(
                   context,
@@ -38,16 +38,17 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 );
               },
               isSelected: widget.index == 0,
+              text: 'Rechercher',
             ),
             _NavBarIcon(
               icon: Ionicons.heart_outline,
               isSelected: widget.index == 1,
-              onTap: () {
-                
-              },
+              onTap: () {},
+              text: 'Favoris',
             ),
             _NavBarIcon(
               icon: Ionicons.ticket_outline,
+              text: 'Reservations',
             ),
           ],
         ),
@@ -62,17 +63,19 @@ class _NavBarIcon extends StatelessWidget {
     required this.icon,
     this.onTap,
     this.isSelected = false,
+    required this.text,
   }) : super(key: key);
 
   final IconData icon;
   final Function()? onTap;
   final bool isSelected;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     final color = isSelected ? kblue : kblack;
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: onTap,
         child: Column(
@@ -82,17 +85,17 @@ class _NavBarIcon extends StatelessWidget {
             Icon(
               icon,
               color: color,
+              size: 25,
             ),
             SizedBox(height: 5),
-            // Text(
-            //   text,
-            //   style: TextStyle(
-            //     fontSize: 10,
-            //     fontFamily: FontFamily.workSans,
-            //     fontWeight: FontWeight.w400,
-            //     color: color,
-            //   ),
-            // ),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: color,
+              ),
+            ),
           ],
         ),
       ),

@@ -44,7 +44,6 @@ class RecommendedPlaces extends StatelessWidget {
                           child: Image.asset(
                             recommendedPlaces[index].image,
                             width: double.maxFinite,
-                            
                             fit: BoxFit.cover,
                             height: 150,
                           ),

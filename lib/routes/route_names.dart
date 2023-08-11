@@ -1,7 +1,9 @@
 import 'package:find_hotel/onboard/onboard.dart';
 import 'package:find_hotel/screens/auth/otp.dart';
 import 'package:find_hotel/screens/auth/reset_password.dart';
+import 'package:find_hotel/screens/home/taxi.dart';
 import 'package:find_hotel/screens/home_screen.dart';
+import 'package:find_hotel/test.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/screens/auth/login.dart';
 
@@ -78,4 +80,10 @@ class NavigationServices {
   Future<dynamic> gotoSearchScreen() async {
     return await _pushMaterialPageRoute(SearchLocalisationScreen());
   }
+
+   Future<dynamic> gototestScreen() async {
+    return await _pushMaterialPageRoute(Test());
+  }
+
+
 }

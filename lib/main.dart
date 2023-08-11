@@ -1,6 +1,4 @@
-import 'package:find_hotel/screens/auth/signup.dart';
 import 'package:find_hotel/screens/home_screen.dart';
-import 'package:find_hotel/utils/currentuser.dart';
 import 'package:find_hotel/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

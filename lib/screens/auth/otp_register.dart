@@ -25,7 +25,7 @@ class Otp2 extends StatefulWidget {
   final String verifCode;
 
   @override
-  _Otp2State createState() => _Otp2State(email,verifCode);
+  _Otp2State createState() => _Otp2State(email, verifCode);
 }
 
 class _Otp2State extends State<Otp2> {
@@ -33,13 +33,13 @@ class _Otp2State extends State<Otp2> {
   String verifCode = '';
 
   _Otp2State(
-      String email,
-      String verifCode,) {
+    String email,
+    String verifCode,
+  ) {
     super.initState();
     this.email = email;
     this.verifCode = verifCode;
   }
-
 
   final List<TextEditingController> _otpControllers =
       List.generate(4, (_) => TextEditingController());
@@ -120,8 +120,6 @@ class _Otp2State extends State<Otp2> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-
-
                             String otpCode = '';
                             for (var controller in _otpControllers) {
                               otpCode += controller.text;
@@ -133,14 +131,14 @@ class _Otp2State extends State<Otp2> {
                               print(email);
                             }
                             if (isCodeValid(otpCode)) {
-                              checkcode(email,otpCode);
+                              checkcode(email, otpCode);
                             }
                           },
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(ksecondryColor),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                ksecondryColor),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -229,7 +227,8 @@ class _Otp2State extends State<Otp2> {
       }, body: {
         "email": encrypt(email),
         "code": encrypt(verificationCode),
-        "action": encrypt("rentali_want_to_check_email_user_code_now_for_register")
+        "action":
+            encrypt("rentali_want_to_check_email_user_code_now_for_register")
       });
       // print(json.decode(response.body));
       var data = jsonDecode(response.body);
@@ -238,16 +237,18 @@ class _Otp2State extends State<Otp2> {
       }
       if (response.statusCode == 200) {
         if (data['message'] == "Code is correct") {
-          EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
+          EasyLoading.showSuccess(
+              AppLocalizations.of(context)!.success_success);
           NavigationServices(context).gotoLoginScreen();
         }
       } else {
         if (data['status'] == 'error') {
           if (data['message'] == 'Incorrect code') {
             EasyLoading.showError(AppLocalizations.of(context)!.invalid_code);
-          }if(data['message'] == 'This email not exist'){
-              EasyLoading.showError(AppLocalizations.of(context)!.verifier_email);
-          }else{
+          }
+          if (data['message'] == 'This email not exist') {
+            EasyLoading.showError(AppLocalizations.of(context)!.verifier_email);
+          } else {
             EasyLoading.showError(AppLocalizations.of(context)!.try_again);
           }
         } else {

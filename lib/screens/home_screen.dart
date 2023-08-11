@@ -1,11 +1,10 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:find_hotel/providers/all_accomodation.dart';
 import 'package:find_hotel/providers/all_adults_provider.dart';
 import 'package:find_hotel/providers/all_enfants_provider.dart';
 import 'package:find_hotel/providers/current_location.dart';
 import 'package:find_hotel/routes/route_names.dart';
-import 'package:find_hotel/screens/location_page.dart';
 import 'package:find_hotel/urls/all_url.dart';
-import 'package:find_hotel/utils/localfiles.dart';
 import 'package:find_hotel/widgets/date_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:ionicons/ionicons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
@@ -96,23 +96,22 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: height * 0.01,
               ),
-              const LocationPage(),
-
               SizedBox(
                 height: height * 0.05,
               ),
               _SearchCard(),
-              const SizedBox(
-                height: 15,
+
+              SizedBox(
+                height: height * 0.10,
               ),
+
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Recommendation",
+                    "Option a proximite pour ce soir",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  TextButton(onPressed: () {}, child: const Text("View All"))
                 ],
               ),
               const SizedBox(height: 10),
@@ -133,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               ActivitiesScreen(),
+
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Divider(
                   thickness: 1,
                   height: 10,
-                  color: Colors.grey,
+                  color: yellow,
                 ),
                 const SizedBox(
                   height: 15,
@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Divider(
                   thickness: 1,
                   height: 10,
-                  color: Colors.grey,
+                  color: yellow,
                 ),
                 const SizedBox(
                   height: 15,
@@ -240,6 +240,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 DrawerItem(
                     name: AppLocalizations.of(context)!.drawer_logout,
                     icon: Icons.logout,
+                    onPressed: () {
+                      deleteLoginInfo();
+                    }),
+                DrawerItem(
+                    name: AppLocalizations.of(context)!.app_version +
+                        Urls.appVersion,
+                    icon: Icons.verified_sharp,
                     onPressed: () {}),
               ],
             ),
@@ -247,6 +254,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  deleteLoginInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLogged');
+    NavigationServices(context).gotoLoginScreen();
   }
 
   AppBar BuildAppbar(BuildContext context) {
@@ -386,6 +399,15 @@ class _SearchCard extends ConsumerWidget {
   int children = 0;
   TextEditingController destinationController = TextEditingController();
   String destination = '';
+  List<DateTime?> _dialogCalendarPickerValue = [
+    DateTime(2023, 2, 10),
+    DateTime(2023, 5, 13),
+  ];
+
+  String startDate = 'yyyy - mm';
+
+  String endDate = 'dd';
+
   void _openPassengerModal(BuildContext context, WidgetRef ref) async {
     showModalBottomSheet(
       context: context,
@@ -549,102 +571,240 @@ class _SearchCard extends ConsumerWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locationTextController = TextEditingController();
-    final dateControllerFrom = TextEditingController();
-    accomodation = ref.watch(allAccomodationProvider);
-    adults = ref.watch(allAdultsProvider);
-    children = ref.watch(allChildrenProvider);
-    destination = ref.watch(LocationCurrentProvider);
+  String _getValueText(
+    CalendarDatePicker2Type datePickerType,
+    List<DateTime?> values,
+  ) {
+    values =
+        values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
+    var valueText = (values.isNotEmpty ? values[0] : null)
+        .toString()
+        .replaceAll('00:00:00.000', '');
 
-    locationTextController;
-    dateControllerTo.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    if (datePickerType == CalendarDatePicker2Type.multi) {
+      valueText = values.isNotEmpty
+          ? values
+              .map((v) => v.toString().replaceAll('00:00:00.000', ''))
+              .join(', ')
+          : 'null';
+    } else if (datePickerType == CalendarDatePicker2Type.range) {
+      if (values.isNotEmpty) {
+        final startDate = values[0].toString().replaceAll('00:00:00.000', '');
+        final endDate = values.length > 1
+            ? values[1].toString().replaceAll('00:00:00.000', '')
+            : 'null';
+        valueText = '$startDate to $endDate';
+      } else {
+        return 'null';
+      }
+    }
 
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        padding: EdgeInsets.all(12),
+    return valueText;
+  }
+
+  _buildCalendarDialogButton(BuildContext context) {
+    const dayTextStyle =
+        TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
+
+    final config = CalendarDatePicker2WithActionButtonsConfig(
+      dayTextStyle: dayTextStyle,
+      calendarType: CalendarDatePicker2Type.range,
+      selectedDayHighlightColor: kblue,
+      closeDialogOnCancelTapped: true,
+      firstDayOfWeek: 1,
+      weekdayLabelTextStyle: const TextStyle(
+        color: Colors.black87,
+        fontWeight: FontWeight.bold,
+      ),
+      controlsTextStyle: const TextStyle(
+        color: Colors.black,
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+      centerAlignModePicker: true,
+      customModePickerIcon: const SizedBox(),
+      selectedDayTextStyle: dayTextStyle.copyWith(color: Colors.white),
+    );
+    return StatefulBuilder(builder: (BuildContext context, setState) {
+      return Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Assets.icon.location
-                    .svg(color: kblue), // Remplacez kBlue par votre couleur
-                const SizedBox(width: 10),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Icon(Icons.calendar_month),
+                ),
+                Expanded(
+                    child: InkWell(
+                  onTap: () async {
+                    final values = await showCalendarDatePicker2Dialog(
+                      context: context,
+                      config: config,
+                      dialogSize: const Size(325, 400),
+                      borderRadius: BorderRadius.circular(15),
+                      value: _dialogCalendarPickerValue,
+                      dialogBackgroundColor: Colors.white,
+                    );
+                    if (values != null) {
+                      // ignore: avoid_print
+                      print(_getValueText(
+                        config.calendarType,
+                        values,
+                      ));
+                      setState(() {
+                        _dialogCalendarPickerValue = values;
+                      });
+                      setState(() {
+                        startDate =
+                            formatDateToDay(_dialogCalendarPickerValue[0]!);
+                        endDate =
+                            formatDateToDay(_dialogCalendarPickerValue[1]!);
+                      });
+
+                      setState(() {
+                        startDate;
+                        endDate;
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 16.0),
+                    child: Text(
+                      '${startDate} - ${endDate}',
+                    ),
+                  ),
+                ))
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  String formatDateToDay(DateTime dateTime) {
+    final days = ['lun.', 'mar.', 'merc.', 'jeu.', 'ven.', 'sam.', 'dim.'];
+    final months = [
+      'janvier',
+      'février',
+      'mars',
+      'avril',
+      'mai',
+      'juin',
+      'juillet',
+      'août',
+      'septembre',
+      'octobre',
+      'novembre',
+      'décembre'
+    ];
+
+    String dayOfWeek = days[dateTime.weekday - 1];
+    int day = dateTime.day;
+    String month = months[dateTime.month - 1];
+
+    return '$dayOfWeek $day $month';
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    accomodation = ref.watch(allAccomodationProvider);
+    adults = ref.watch(allAdultsProvider);
+    children = ref.watch(allChildrenProvider);
+    destination = ref.watch(LocationCurrentProvider);
+
+    return Container(
+      padding: EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.yellow,
+          width: 4,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Première Row
+          Container(
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Icon(Ionicons.search),
+                ),
+                // const SizedBox(width: 10),
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      _openDestinationDialog(context, ref);
+                      // _openDestinationDialog(context, ref);
+                      NavigationServices(context).gototestScreen();
                     },
                     child: Container(
-                        padding: EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey), // Bordure autour du Row
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(destination),
-                          ],
-                        )),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Assets.icon.calendar.svg(color: kblue),
-                const SizedBox(width: 16),
-                DateField(dateController: dateControllerTo, label: 'From'),
-                DateField(dateController: dateControllerFrom, label: 'To'),
-              ],
-            ),
-            Row(
-              children: [
-                Assets.icon.profile.svg(color: kblue),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        _openPassengerModal(context, ref);
-                      },
-                      child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Colors.grey), // Bordure autour du Row
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("$accomodation Hébgts."),
-                              Text(" $adults Adultes."),
-                              Text(" $children Enfants"),
-                            ],
-                          )),
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(destination),
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            CustomButton(
-              buttonText: 'Search',
-              onPressed: () {},
-            )
-          ],
-        ),
+          ),
+          Divider(
+            thickness: 4, // Épaisseur du Divider
+            color: yellow,
+          ),
+          // Deuxième Row
+          _buildCalendarDialogButton(context),
+          Divider(
+            thickness: 4,
+            color: yellow,
+          ),
+          // Troisième Row
+          Container(
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Icon(
+                    Icons.person_outlined,
+                    size: 30,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                InkWell(
+                  onTap: () {
+                    _openPassengerModal(context, ref);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("$accomodation Hébgts."),
+                        Text(" $adults Adultes."),
+                        Text(" $children Enfants"),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            thickness: 4,
+            color: yellow,
+          ),
+          CustomButton(
+            buttonText: 'Search',
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

@@ -88,5 +88,6 @@
      "localization_denied": "Location permissions are denied",
     "denied_permently" : "Location permissions are permanently denied, we cannot request permissions",
     "your_location" : "Your Location",
-    "choose_loca":" Enter Your Destination"
+    "choose_loca":" Enter Your Destination",
+    "app_version":"Version : "
 }
