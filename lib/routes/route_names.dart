@@ -12,6 +12,7 @@ import '../screens/auth/signup.dart';
 import '../screens/edit_profile.dart';
 import '../screens/location.dart';
 
+import '../utils/bottom_bar.dart';
 import '../utils/currentuser.dart';
 
 class NavigationServices {
@@ -70,6 +71,12 @@ class NavigationServices {
     return await _pushMaterialPageRoute(Otp2(
       email: email,
       verifCode: verifcode,
+    ));
+  }
+
+  Future<dynamic> gotoBottomScreen(int id) async {
+    return await _pushMaterialPageRoute(BottomBar(
+      id: id
     ));
   }
 
