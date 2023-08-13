@@ -42,3 +42,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+Documents/rental.keystore.jks
+Documents/private_key.pepk
