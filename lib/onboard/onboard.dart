@@ -8,7 +8,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../screens/auth/login.dart';
-import '../screens/home_screen.dart';
 import '../utils/Helpers.dart';
 import 'onboard_model.dart';
 

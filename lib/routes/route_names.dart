@@ -2,8 +2,6 @@ import 'package:find_hotel/onboard/onboard.dart';
 import 'package:find_hotel/screens/auth/otp.dart';
 import 'package:find_hotel/screens/auth/reset_password.dart';
 import 'package:find_hotel/screens/home/taxi.dart';
-import 'package:find_hotel/screens/home_screen.dart';
-import 'package:find_hotel/test.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/screens/auth/login.dart';
 
@@ -13,7 +11,6 @@ import '../screens/edit_profile.dart';
 import '../screens/location.dart';
 
 import '../utils/bottom_bar.dart';
-import '../utils/currentuser.dart';
 
 class NavigationServices {
   NavigationServices(this.context);
@@ -46,9 +43,6 @@ class NavigationServices {
     return await _pushMaterialPageRoute(SignUpScreen());
   }
 
-  Future<dynamic> gotoCurrentUserScreen() async {
-    return await _pushMaterialPageRoute(CurrentUser());
-  }
 
   Future<dynamic> gotoEditProfile() async {
     return await _pushMaterialPageRoute(EditProfile());
@@ -80,9 +74,9 @@ class NavigationServices {
     ));
   }
 
-  Future<dynamic> gotohomeScreen() async {
-    return await _pushMaterialPageRoute(HomeScreen());
-  }
+  // Future<dynamic> gotohomeScreen() async {
+  //   return await _pushMaterialPageRoute(HomeScreen());
+  // }
 
   Future<dynamic> gotoSearchScreen() async {
     return await _pushMaterialPageRoute(SearchLocalisationScreen());

@@ -331,14 +331,14 @@ class _LogInScreenState extends State<LogInScreen> {
           }
         } else {
           EasyLoading.dismiss();
-          // var user_detail = data['data'];
-          // String email = user_detail['email'];
-          // String user_name = user_detail['user_name'];
-          // String tel = user_detail['phone_number'];
-          // SharedPreferences pref = await SharedPreferences.getInstance();
-          // await pref.setString('username', encrypt(user_name));
-          // await pref.setString('email', encrypt(email));
-          // await pref.setString('phone', encrypt(tel));
+          var user_detail = data['data'];
+          String email = user_detail['email'];
+          String user_name = user_detail['user_name'];
+          String tel = user_detail['phone_number'];
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          await pref.setString('username', encrypt(user_name));
+          await pref.setString('email', encrypt(email));
+          await pref.setString('phone', encrypt(tel));
 
           storeLoginInfo();
 

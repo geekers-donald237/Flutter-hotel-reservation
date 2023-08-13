@@ -16,6 +16,7 @@
 // }
 
 import 'package:find_hotel/gen/theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -23,6 +24,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Test extends StatefulWidget {
   const Test({super.key});
@@ -74,39 +76,44 @@ class _TestState extends State<Test> {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => _currentPosition = position);
-      _getAddressFromLatLng(_currentPosition!);
+      // _getAddressFromLatLng(_currentPosition!);
     }).catchError((e) {
       debugPrint(e);
     });
   }
 
-  Future<void> _getAddressFromLatLng(Position position) async {
-    position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best)
-        .timeout(Duration(seconds: 5));
+  // Future<void> _getAddressFromLatLng(Position position) async {
+  //   position = await Geolocator.getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.best)
+  //       .timeout(Duration(seconds: 5));
 
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
+  //   try {
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(
+  //       position.latitude,
+  //       position.longitude,
+  //     );
 
-      if (placemarks.isNotEmpty) {
-        Placemark firstPlacemark = placemarks[0];
-        name = firstPlacemark.name ?? "";
-        street = firstPlacemark.street ?? "";
-        country = firstPlacemark.country ?? "";
-        countryCode = firstPlacemark.isoCountryCode ?? "";
+  //     if (placemarks.isNotEmpty) {
+  //       Placemark firstPlacemark = placemarks[0];
+  //       name = firstPlacemark.name ?? "";
+  //       street = firstPlacemark.street ?? "";
+  //       country = firstPlacemark.country ?? "";
+  //       countryCode = firstPlacemark.isoCountryCode ?? "";
 
-        // Vous pouvez maintenant utiliser les variables name, street et country selon vos besoins.
+  //       // Vous pouvez maintenant utiliser les variables name, street et country selon vos besoins.
 
-        print("Name: $name");
-        print("Street: $street");
-        print("Country: $country");
-      }
-    } catch (err) {
-      print("Error: $err");
-    }
+  //       print("Name: $name");
+  //       print("Street: $street");
+  //       print("Country: $country");
+  //     }
+  //   } catch (err) {
+  //     print("Error: $err");
+  //   }
+  // }
+
+  storeDestinationInfo(String Destination) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('destination', Destination);
   }
 
   @override
@@ -141,7 +148,11 @@ class _TestState extends State<Test> {
               title: "Proche de Votre Emplacement",
               icon: Ionicons.locate_outline,
               textColor: kblue,
-              ontap: _getCurrentPosition,
+              ontap: () async {
+                _getCurrentPosition();
+                await storeDestinationInfo('Utiliser Ma Position');
+                Navigator.of(context).pop();
+              },
             ),
             SizedBox(
               height: 10,

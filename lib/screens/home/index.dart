@@ -8,7 +8,6 @@ import '../../routes/route_names.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'package:find_hotel/urls/all_url.dart';
 
-
 class IndexScreen extends StatefulWidget {
   const IndexScreen({
     Key? key,
@@ -19,9 +18,8 @@ class IndexScreen extends StatefulWidget {
   State<IndexScreen> createState() => _IndexScreenState(status);
 }
 
-class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStateMixin {
-
-
+class _IndexScreenState extends State<IndexScreen>
+    with SingleTickerProviderStateMixin {
   int status = 0;
   _IndexScreenState(int status) {
     super.initState();
@@ -29,9 +27,6 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
   }
 
   String idadmin2 = '';
-
-
-
 
   List<Widget> mytabs = [];
   List<Widget> tabs1 = [];
@@ -48,7 +43,8 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
     ];
 
     _tabController = TabController(length: mytabs.length, vsync: this);
-    _tabController.index = status; // Set the initial index after initializing the TabController
+    _tabController.index =
+        status; // Set the initial index after initializing the TabController
   }
 
   @override
@@ -57,7 +53,6 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
     super.dispose();
   }
 
-
   //int _tabIndex = status;
 
   void onPressed(int tabIndex) {
@@ -65,6 +60,7 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
       status = tabIndex;
     });
   }
+
   Widget headerWidget() {
     const name = "John";
     const surname = "Doe";
@@ -166,116 +162,143 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-          length: 4,
-          child: Scaffold(
-            drawer: CustomDrawer(),
-            appBar: AppBar(
-              shape: Border(bottom: BorderSide(color: kblack, width: 2)),
-              flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [
-                          ksecondryColor,
-                          ksecondryColor,
-                        ],
-                        begin: FractionalOffset(0.0, 0.0),
-                        end: FractionalOffset(1.0, 0.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp)),
-              ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Rental",
-                    style: TextStyle(color: kwhite),
-                  ),
-                  Text(
-                    "Find The Best Deal for Your holidays",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
-              ),
-              actions: const [
-                CustomIconButton(
-                  icon: Icon(
-                    Ionicons.search_outline,
-                    color: kwhite,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0, right: 12),
-                  child: CustomIconButton(
-                    icon: Badge(
-                        backgroundColor: accent,
-                        child: Icon(
-                          Ionicons.notifications_outline,
-                          color: kwhite,
-                        )),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kblue,
+        toolbarHeight: 80, // Ajustez la hauteur de l'AppBar
 
-              bottom: TabBar(
-                  controller: _tabController, // Connect the TabBar to the TabController
-                  indicatorColor: Colors.white,
-                  indicatorWeight: 6,
-                  isScrollable: true,
-                  //onTap: onPressed,
-                  tabs: [
-                    Tab(
-                      text: AppLocalizations.of(context)!.your_stay,
-                      icon: const Icon(
-                        Ionicons.home_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(context)!.rent_car,
-                      icon: const Icon(
-                        Ionicons.car_sport_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(context)!.fly_now,
-                      icon: const Icon(
-                        Ionicons.airplane_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(context)!.taxi_now,
-                      icon: const Icon(
-                        Ionicons.car,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ]),
+        elevation: 0,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Rental",
+              style: TextStyle(color: kwhite),
             ),
-            body: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [
-                        Colors.white,
-                        Colors.blueGrey,
+            Text(
+              AppLocalizations.of(context)!.the_best_deal_for_your_holidays,
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+          ],
+        ),
+        actions: const [
+          CustomIconButton(
+            icon: Icon(
+              Ionicons.search_outline,
+              color: kwhite,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 8.0, right: 12),
+            child: CustomIconButton(
+              icon: Badge(
+                  backgroundColor: accent,
+                  child: Icon(
+                    Ionicons.notifications_outline,
+                    color: kwhite,
+                  )),
+            ),
+          ),
+        ],
+      ),
+      drawer: CustomDrawer(),
+      body: DefaultTabController(
+          length: 3,
+          child: Column(
+            children: [
+              Material(
+                child: Container(
+                  color: kblue,
+                  height: 60,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: TabBar(
+                      isScrollable: true,
+                      physics: ClampingScrollPhysics(),
+                      unselectedLabelColor: kwhite,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: kwhite, width: 2),
+                      ),
+                      tabs: [
+                        Tab(
+                          child: Row(
+                            children: [
+                              SizedBox(width: 15),
+                              Icon(
+                                Ionicons.home_outline,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                AppLocalizations.of(context)!.your_stay,
+                              ),
+                              SizedBox(width: 15),
+                            ],
+                          ),
+                        ),
+                        Tab(
+                          child: Row(
+                            children: [
+                              SizedBox(width: 15),
+                              Icon(
+                                Ionicons.car_sport_sharp,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                AppLocalizations.of(context)!.rent_car,
+                              ),
+                              SizedBox(width: 15),
+                            ],
+                          ),
+                        ),
+                        Tab(
+                          child: Row(
+                            children: [
+                              SizedBox(width: 15),
+                              Icon(
+                                Ionicons.airplane_sharp,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                AppLocalizations.of(context)!.fly_now,
+                              ),
+                              SizedBox(width: 15),
+                            ],
+                          ),
+                        ),
+                        Tab(
+                          child: Row(
+                            children: [
+                              SizedBox(width: 15),
+                              Icon(
+                                Ionicons.car_outline,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                AppLocalizations.of(context)!.taxi_now,
+                              ),
+                              SizedBox(width: 15),
+                            ],
+                          ),
+                        ),
                       ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp)
+                    ),
+                  ),
+                ),
               ),
-              child: TabBarView(
-                controller: _tabController, // Connect the TabBarView to the TabController
-                children: [
-                  mytabs[0],
-                  mytabs[1],
-                  mytabs[2],
-                  mytabs[3],
-                ],),
-            ),
-          )
-      );
+              Expanded(
+                  child: TabBarView(children: [
+                StayScreen(),
+                Center(
+                  child: Text('ddddd'),
+                ),
+                Center(
+                  child: Text('ddddd'),
+                ),
+              ]))
+            ],
+          )),
+    );
   }
 }

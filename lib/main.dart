@@ -1,5 +1,4 @@
-import 'package:find_hotel/screens/auth/signup.dart';
-import 'package:find_hotel/screens/home_screen.dart';
+import 'package:find_hotel/utils/bottom_bar.dart';
 import 'package:find_hotel/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +54,8 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate
       ],
       supportedLocales: L10n.all,
-       home: isviewed != 0 ? OnBoard() : SplashScreen(),
+      //  home: isviewed != 0 ? OnBoard() : SplashScreen(),
+      home: BottomBar(id: 0),
       builder: EasyLoading.init(),
     );
   }

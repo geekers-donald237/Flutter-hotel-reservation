@@ -23,6 +23,8 @@ class Localfiles {
   static const String introduction2 = BaseImageUrl + 'introduction2.png';
   static const String introduction3 = BaseImageUrl + 'introduction3.png';
   static const String illustration3 = BaseImageUrl + 'illustration-3.png';
+  static const String illustration = BaseImageUrl + 'illustration.png';
+
   static const String carte = BaseImageUrl + 'map.png';
 
   /*************** SVG PATH *********************/

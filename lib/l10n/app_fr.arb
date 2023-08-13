@@ -98,6 +98,17 @@
      "denied_permently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations",
      "votre_emplacement":"Votre emplacement",
      "choose_loca":" Entrer la Destination",
-     "app_version":"Version : "
+     "app_version":"Version : ",
+
+     
+     "fav_save" : "Enregistrez vos favoris" ,
+     "fav_create": "Creez des listes de vos etablissements preferes pour les partager,les comparer et les reserver facilement",
+     "fav_create_liste" : "Creer votre liste",
+     "index_actifs" : "Actifs",
+     "index_passes" : "Passes",
+     "index_anul" : "Annules",
+     "other_destination" : "Quelle sera votre prochaine  Destination",
+     "voyage_passe" : "Redecouvrez Vos Voyages passes",
+     "change_program" : "Changement de programme"
 
 }
