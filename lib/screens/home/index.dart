@@ -9,7 +9,6 @@ import '../../routes/route_names.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'package:find_hotel/urls/all_url.dart';
 
-
 class IndexScreen extends StatefulWidget {
   const IndexScreen({
     Key? key,
@@ -20,9 +19,8 @@ class IndexScreen extends StatefulWidget {
   State<IndexScreen> createState() => _IndexScreenState(status);
 }
 
-class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStateMixin {
-
-
+class _IndexScreenState extends State<IndexScreen>
+    with SingleTickerProviderStateMixin {
   int status = 0;
   _IndexScreenState(int status) {
     super.initState();
@@ -30,9 +28,6 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
   }
 
   String idadmin2 = '';
-
-
-
 
   List<Widget> mytabs = [];
   List<Widget> tabs1 = [];
@@ -49,7 +44,8 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
     ];
 
     _tabController = TabController(length: mytabs.length, vsync: this);
-    _tabController.index = status; // Set the initial index after initializing the TabController
+    _tabController.index =
+        status; // Set the initial index after initializing the TabController
   }
 
   @override
@@ -58,7 +54,6 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
     super.dispose();
   }
 
-
   //int _tabIndex = status;
 
   void onPressed(int tabIndex) {
@@ -66,6 +61,7 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
       status = tabIndex;
     });
   }
+
   Widget headerWidget() {
     const name = "John";
     const surname = "Doe";
@@ -267,7 +263,13 @@ class _IndexScreenState extends State<IndexScreen> with SingleTickerProviderStat
                     indicatorColor: Colors.white,
                     indicatorWeight: 6,
                     isScrollable: true,
-                    //onTap: onPressed,
+                    physics: ClampingScrollPhysics(),
+                      unselectedLabelColor: kwhite,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: kwhite, width: 2),
+                      ),
                     tabs: [
                       Tab(
                         text: AppLocalizations.of(context)!.your_stay,

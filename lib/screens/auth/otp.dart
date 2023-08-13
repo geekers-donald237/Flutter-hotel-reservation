@@ -23,7 +23,7 @@ class Otp extends StatefulWidget {
   final String email;
   final String verifCode;
   @override
-  _OtpState createState() => _OtpState(email,verifCode);
+  _OtpState createState() => _OtpState(email, verifCode);
 }
 
 class _OtpState extends State<Otp> {
@@ -31,8 +31,9 @@ class _OtpState extends State<Otp> {
   String verifCode = '';
 
   _OtpState(
-      String email,
-      String verifCode,) {
+    String email,
+    String verifCode,
+  ) {
     super.initState();
     this.email = email;
     this.verifCode = verifCode;
@@ -123,7 +124,6 @@ class _OtpState extends State<Otp> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-
                             String otpCode = '';
                             for (var controller in _otpControllers) {
                               otpCode += controller.text;
@@ -138,8 +138,8 @@ class _OtpState extends State<Otp> {
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(ksecondryColor),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                ksecondryColor),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -188,8 +188,7 @@ class _OtpState extends State<Otp> {
   }
 
   void checkcode(String email, String verificationCode) async {
-    EasyLoading.show(
-        status: AppLocalizations.of(context)!.loading);
+    EasyLoading.show(status: AppLocalizations.of(context)!.loading);
 
     var url = Uri.parse(Urls.user);
 
@@ -209,9 +208,10 @@ class _OtpState extends State<Otp> {
 
       if (response.statusCode == 200) {
         if (data['message'] == "Code is correct") {
-          EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
+          EasyLoading.showSuccess(
+              AppLocalizations.of(context)!.success_success);
           NavigationServices(context).gotoResetPassword(email);
-        }else{
+        } else {
           EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
         }
       } else {
@@ -222,9 +222,9 @@ class _OtpState extends State<Otp> {
           if (data['message'] == "User request to delete account") {
             EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
           }
-          if(data['message'] == 'This email not exist'){
+          if (data['message'] == 'This email not exist') {
             EasyLoading.showInfo(AppLocalizations.of(context)!.incorrect_email);
-          }else{
+          } else {
             EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
           }
         }
@@ -263,7 +263,7 @@ class _OtpState extends State<Otp> {
     // Vérification si le code ne contient que des chiffres
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
-       EasyLoading.showError(
+        EasyLoading.showError(
           AppLocalizations.of(context)!.invalid_code,
         );
         return false;

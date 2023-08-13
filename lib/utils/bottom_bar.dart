@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:badges/badges.dart' as badges;
 import 'package:find_hotel/gen/theme.dart';
+import 'package:find_hotel/screens/reservations/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,12 +11,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:ionicons/ionicons.dart';
 
+import '../screens/favoris/favoris.dart';
 import '../screens/home/index.dart';
 
 class BottomBar extends StatefulWidget {
   static const String routeName = '/actual-home';
   final int? id;
-  const BottomBar({Key? key,required this.id}) : super(key: key);
+  const BottomBar({Key? key, required this.id}) : super(key: key);
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -27,14 +29,17 @@ class _BottomBarState extends State<BottomBar> {
   double bottomBarBorderWidth = 5;
 
   List<Widget> pages = [
-    const IndexScreen(status: 0,),
+    const IndexScreen(
+      status: 0,
+    ),
+    FavorisScreen(),
+    const ReservationIndex(),
     Text('first'),
-    Text('first'),
-    Text('first'),
-   //  const AccountScreen(),
-   //  const HomeScreen(),
-   //  ProfilePage(),
-   //  const CartScreen(),
+
+    //  const AccountScreen(),
+    //  const HomeScreen(),
+    //  ProfilePage(),
+    //  const CartScreen(),
   ];
 
   void updatePage(int page) {
@@ -74,6 +79,7 @@ class _BottomBarState extends State<BottomBar> {
     _page = widget.id;
     super.initState();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -81,6 +87,7 @@ class _BottomBarState extends State<BottomBar> {
     setState(() {});
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -97,8 +104,8 @@ class _BottomBarState extends State<BottomBar> {
           items: [
             BottomNavigationBarItem(
               backgroundColor: kwhite,
-                icon: const Icon(Icons.search_rounded),
-                label: AppLocalizations.of(context)!.home_page,
+              icon: const Icon(Icons.search_rounded),
+              label: AppLocalizations.of(context)!.home_page,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Ionicons.heart_outline),
@@ -106,12 +113,13 @@ class _BottomBarState extends State<BottomBar> {
             ),
             BottomNavigationBarItem(
                 icon: const Icon(Ionicons.ticket_outline),
-                label: AppLocalizations.of(context)!.reservation_now
-            ),
+                label: AppLocalizations.of(context)!.reservation_now),
             BottomNavigationBarItem(
-                icon: const Icon(Icons.info_outline,color: Colors.green,),
+                icon: const Icon(
+                  Icons.info_outline,
+                  color: Colors.green,
+                ),
                 label: AppLocalizations.of(context)!.profil_now),
-
           ],
         ),
       ),

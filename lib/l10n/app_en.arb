@@ -96,5 +96,15 @@
      "localization_denied": "Location permissions are denied",
     "denied_permently" : "Location permissions are permanently denied, we cannot request permissions",
     "your_location" : "Your Location",
-    "choose_loca":" Enter Your Destination"
+    "choose_loca":" Enter Your Destination",
+    "app_version":"Version : ",
+    "fav_save": "Save your favorites",
+    "fav_create": "Create lists of your favorite establishments to easily share compare and book",
+    "fav_create_liste": "Create your list",
+    "index_actif": "Assets",
+      "index_passes": "Passes",
+      "index_anul": "Cancelled",
+      "other_destination": "What will be your next Destination",
+      "voyage_passe": "Rediscover Your Past Trips",
+      "change_program": "Program change"
 }

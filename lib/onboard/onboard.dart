@@ -8,7 +8,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../screens/auth/login.dart';
-import '../screens/home_screen.dart';
 import '../utils/Helpers.dart';
 import 'onboard_model.dart';
 
@@ -21,7 +20,6 @@ class _OnBoardState extends State<OnBoard> {
   bool onLastPage = false;
   PageController _controller = PageController();
   Color mycolor = kblue;
-
 
   @override
   void initState() {
@@ -44,7 +42,6 @@ class _OnBoardState extends State<OnBoard> {
     print(prefs.getInt('onBoard'));
   }
 
-
   final List<dynamic> _imageList = [
     'assets/image/illustration-1.png',
     'assets/image/illustration-2.png',
@@ -56,7 +53,6 @@ class _OnBoardState extends State<OnBoard> {
     'assets/images/introduction3.png',
   ];
   int _currentIndex = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +71,17 @@ class _OnBoardState extends State<OnBoard> {
       body: Stack(
         children: <Widget>[
           PageView.builder(
-            itemBuilder: (context, index) =>
-                getPage(
-                    isDarkMode(context)
-                        ? _darkimageList[index]
-                        : _imageList[index],
-                    _titlesList[index],
-                    _subtitlesList[index],
-                    context,
-                    isDarkMode(context)
-                        ? (index + 1) == _darkimageList.length
-                        : (index + 1) == _imageList.length),
+            itemBuilder: (context, index) => getPage(
+                isDarkMode(context) ? _darkimageList[index] : _imageList[index],
+                _titlesList[index],
+                _subtitlesList[index],
+                context,
+                isDarkMode(context)
+                    ? (index + 1) == _darkimageList.length
+                    : (index + 1) == _imageList.length),
             controller: pageController,
             itemCount:
-            isDarkMode(context) ? _darkimageList.length : _imageList.length,
+                isDarkMode(context) ? _darkimageList.length : _imageList.length,
             onPageChanged: (int index) {
               setState(() {
                 _currentIndex = index;
@@ -101,14 +94,8 @@ class _OnBoardState extends State<OnBoard> {
                   right: 13,
                   bottom: 17,
                   child: Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.94,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.94,
+                      height: MediaQuery.of(context).size.height * 0.1,
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -124,28 +111,27 @@ class _OnBoardState extends State<OnBoard> {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => LogInScreen()),
-                                  (route) => false);
+                              (route) => false);
                         },
-                      )))
-          ),
+                      )))),
           Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 130),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SmoothPageIndicator(
-                    controller: pageController,
-                    count: _imageList.length,
-                    effect: const ScrollingDotsEffect(
-                        spacing: 20,
-                        activeDotColor: ksecondryColor,
-                        dotColor: Color(0XFFFBDBD1),
-                        dotWidth: 7,
-                        dotHeight: 7,
-                        fixedCenter: false),
-                  ),
-                ),
-              )),
+            padding: const EdgeInsets.only(bottom: 130),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SmoothPageIndicator(
+                controller: pageController,
+                count: _imageList.length,
+                effect: const ScrollingDotsEffect(
+                    spacing: 20,
+                    activeDotColor: ksecondryColor,
+                    dotColor: Color(0XFFFBDBD1),
+                    dotWidth: 7,
+                    dotHeight: 7,
+                    fixedCenter: false),
+              ),
+            ),
+          )),
           Visibility(
             visible: _currentIndex + 1 == _imageList.length,
             child: Positioned(
@@ -160,7 +146,7 @@ class _OnBoardState extends State<OnBoard> {
                     child: Icon(Icons.chevron_left,
                         size: 40,
                         color:
-                        isDarkMode(context) ? Color(0xffFFFFFF) : null))),
+                            isDarkMode(context) ? Color(0xffFFFFFF) : null))),
           ),
           Visibility(
             visible: _currentIndex + 2 == _imageList.length,
@@ -190,7 +176,7 @@ class _OnBoardState extends State<OnBoard> {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => LogInScreen()),
-                                (route) => false);
+                            (route) => false);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.skip_skip_,
@@ -207,14 +193,8 @@ class _OnBoardState extends State<OnBoard> {
                   child: InkWell(
                       onTap: () {},
                       child: Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.94,
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.1,
+                          width: MediaQuery.of(context).size.width * 0.94,
+                          height: MediaQuery.of(context).size.height * 0.1,
                           padding: EdgeInsets.all(10),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -244,68 +224,59 @@ class _OnBoardState extends State<OnBoard> {
       BuildContext context, bool isLastPage) {
     return Container(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+            child: Container(
+                //  height:  MediaQuery.of(context).size.height*0.55,
+                width: MediaQuery.of(context).size.width * 1,
+                decoration: BoxDecoration(
+                    color: isDarkMode(context)
+                        ? Color(0XFF242528)
+                        : Color(0XFFFCEEE9),
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.elliptical(400, 180),
+                        bottomRight: Radius.elliptical(400, 180))),
                 child: Container(
-                  //  height:  MediaQuery.of(context).size.height*0.55,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 1,
-                    decoration: BoxDecoration(
-                        color: isDarkMode(context)
-                            ? Color(0XFF242528)
-                            : Color(0XFFFCEEE9),
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.elliptical(400, 180),
-                            bottomRight: Radius.elliptical(400, 180))),
-                    child: Container(
-                      margin: EdgeInsets.only(right: 40, left: 40, top: 30),
+                  margin: EdgeInsets.only(right: 40, left: 40, top: 30),
 
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(image), fit: BoxFit.contain)),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(image), fit: BoxFit.contain)),
 
-                      //  child:
-                      //       Image.asset(
-                      //           image,
-                      //           width: 50.00,
-                      //           fit: BoxFit.contain,
-                      //         )
-                    ))),
-            SizedBox(height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.08),
-            Text(
-              _titlesList,
+                  //  child:
+                  //       Image.asset(
+                  //           image,
+                  //           width: 50.00,
+                  //           fit: BoxFit.contain,
+                  //         )
+                ))),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+        Text(
+          _titlesList,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color:
+                  isDarkMode(context) ? Color(0xffFFFFFF) : Color(0XFF333333),
+              fontFamily: 'Poppinsm',
+              fontSize: 20),
+        ),
+        Padding(
+            padding: const EdgeInsets.only(right: 35, left: 35, top: 30),
+            child: Text(
+              _subtitlesList,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color:
-                  isDarkMode(context) ? Color(0xffFFFFFF) : Color(0XFF333333),
-                  fontFamily: 'Poppinsm',
-                  fontSize: 20),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(right: 35, left: 35, top: 30),
-                child: Text(
-                  _subtitlesList,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color:
+                color:
                     isDarkMode(context) ? Color(0xffFFFFFF) : Color(0XFF333333),
-                    fontFamily: 'Poppinsl',
-                    height: 2,
-                    letterSpacing: 1.2,
-                  ),
-                )),
-            SizedBox(height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.25),
-          ],
-        ));
+                fontFamily: 'Poppinsl',
+                height: 2,
+                letterSpacing: 1.2,
+              ),
+            )),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.25),
+      ],
+    ));
   }
 }

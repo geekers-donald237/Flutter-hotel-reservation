@@ -19,12 +19,16 @@ class CustomButton extends StatelessWidget {
       style: ButtonStyle(
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(0),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(kgrey),
+        backgroundColor: MaterialStateProperty.all(kblue),
         minimumSize: MaterialStateProperty.all(const Size(200, 50)),
         elevation: MaterialStateProperty.all(0),
+        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+            vertical: 2,
+            horizontal:
+                25)), // Ajustez les valeurs de padding comme vous le souhaitez
       ),
       child: AppText.medium(
         buttonText,
