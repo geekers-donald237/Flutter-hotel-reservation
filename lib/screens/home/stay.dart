@@ -4,12 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../gen/theme.dart';
 import '../../models/hotel_model.dart';
 import '../../providers/all_hotels_provider.dart';
+import '../../utils/localfiles.dart';
+import '../../widgets/app_text.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_icon_button.dart';
 import '../../widgets/custom_number_input.dart';
+import '../../widgets/custom_rating.dart';
 import '../../widgets/hotel_card.dart';
 import '../../widgets/nearby_places.dart';
 import '../../widgets/recommended_places.dart';
@@ -33,7 +37,6 @@ class StayScreen extends StatefulWidget {
 }
 
 class _StayScreenState extends State<StayScreen> {
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -41,61 +44,65 @@ class _StayScreenState extends State<StayScreen> {
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        body: ListView(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.all(14),
-      children: [
-        SizedBox(
-          height: height * 0.05,
-        ),
-        _SearchCard(),
-        const SizedBox(
-          height: 15,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.recommendation,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            TextButton(
-                onPressed: () {},
-                child: Text(AppLocalizations.of(context)!.view_all_hotel))
-          ],
-        ),
-        const SizedBox(height: 10),
-        const RecommendedPlaces(),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: height * 0.03,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.more_option_hotel,
-              textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ],
-        ),
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(14),
+        children: [
+          SizedBox(
+            height: height * 0.05,
+          ),
+          _SearchCard(),
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.recommendation,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(AppLocalizations.of(context)!.view_all_hotel))
+            ],
+          ),
+          const SizedBox(height: 10),
+          const RecommendedPlaces(),
+          const SizedBox(height: 10),
+          // SizedBox(
+          //   height: height * 0.03,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       AppLocalizations.of(context)!.more_option_hotel,
+          //       textAlign: TextAlign.start,
+          //       style: Theme.of(context).textTheme.titleLarge,
+          //     ),
+          //   ],
+          // ),
 
-        // ActivitiesScreen(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Nearby From You",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            TextButton(onPressed: () {}, child: const Text("View All"))
-          ],
-        ),
-        const SizedBox(height: 10),
-        const NearbyPlaces(),
-      ],
-    ));
+          // ActivitiesScreen(),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Nearby From You",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              TextButton(onPressed: () {}, child: const Text("View All"))
+            ],
+          ),
+          const SizedBox(height: 10),
+          _NearbyHotelSection(),
+
+          // const NearbyPlaces(),
+        ],
+      ),
+    );
   }
 
   Widget headerWidget() {
@@ -245,27 +252,27 @@ class _NearbyHotelSection extends ConsumerWidget {
     final hotels = ref.watch(allHotelsProvider);
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Nearby hotels',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              'See all',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: kblue,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: const [
+        //     Text(
+        //       'Nearby hotels',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //       ),
+        //     ),
+        //     Text(
+        //       'See all',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //         color: kblue,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // const SizedBox(height: 4),
         hotels.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, stack) => Text('Error: $err'),

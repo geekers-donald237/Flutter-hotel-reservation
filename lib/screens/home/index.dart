@@ -165,7 +165,7 @@ class _IndexScreenState extends State<IndexScreen>
     return showDialog<void>(
       context: context,
       barrierDismissible:
-      false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
+          false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -196,100 +196,170 @@ class _IndexScreenState extends State<IndexScreen>
             ),
           ],
         );
-        actions: const [
-          CustomIconButton(
-            icon: Icon(
-              Ionicons.search_outline,
-              color: kwhite,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 8.0, right: 12),
-            child: CustomIconButton(
-              icon: Badge(
-                  backgroundColor: accent,
-                  child: Icon(
-                    Ionicons.notifications_outline,
-                    color: kwhite,
-                  )),
-            ),
-          ),
-        ],
-      ),
-      drawer: CustomDrawer(),
-      body: DefaultTabController(
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        _showExitConfirmationDialog(context);
+        return false;
+      },
+      child: DefaultTabController(
           length: 4,
-          child: Column(
-            children: [
-              Material(
-                child: Container(
-                  color: kblue,
-                  height: 60,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: TabBar(
-                      isScrollable: true,
-                      physics: ClampingScrollPhysics(),
-                      unselectedLabelColor: kwhite,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: kwhite, width: 2),
-                      ),
-                    tabs: [
-                      Tab(
-                        text: AppLocalizations.of(context)!.your_stay,
-                        icon: const Icon(
-                          Ionicons.home_sharp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Tab(
-                        text: AppLocalizations.of(context)!.rent_car,
-                        icon: const Icon(
-                          Ionicons.car_sport_sharp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Tab(
-                        text: AppLocalizations.of(context)!.fly_now,
-                        icon: const Icon(
-                          Ionicons.airplane_sharp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Tab(
-                        text: AppLocalizations.of(context)!.taxi_now,
-                        icon: const Icon(
-                          Ionicons.car,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ]),
-              ),
-              body: Container(
+          child: Scaffold(
+            drawer: CustomDrawer(),
+            appBar: AppBar(
+              elevation: 0,
+              toolbarHeight: 80,
+              // shape: Border(bottom: BorderSide(color: kblack, width: 2)),
+              flexibleSpace: Container(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         colors: [
-                          Colors.white,
-                          Colors.blueGrey,
+                          ksecondryColor,
+                          ksecondryColor,
                         ],
                         begin: FractionalOffset(0.0, 0.0),
                         end: FractionalOffset(1.0, 0.0),
                         stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp)
-                ),
-                child: TabBarView(
-                  controller: _tabController, // Connect the TabBarView to the TabController
-                  children: [
-                    mytabs[0],
-                    mytabs[1],
-                    mytabs[2],
-                    mytabs[3],
-                  ],),
+                        tileMode: TileMode.clamp)),
               ),
-            )
-        ),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Rental",
+                    style: TextStyle(color: kwhite),
+                  ),
+                  Text(
+                    "Find The Best Deal for Your holidays",
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
+              ),
+              actions: const [
+                CustomIconButton(
+                  icon: Icon(
+                    Ionicons.search_outline,
+                    color: kwhite,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0, right: 12),
+                  child: CustomIconButton(
+                    icon: Badge(
+                        backgroundColor: accent,
+                        child: Icon(
+                          Ionicons.notifications_outline,
+                          color: kwhite,
+                        )),
+                  ),
+                ),
+              ],
+              bottom: TabBar(
+                padding: EdgeInsets.only(bottom: 6),
+                controller:
+                    _tabController, // Connect the TabBar to the TabController
+                indicatorColor: Colors.white,
+                indicatorWeight: 6,
+                isScrollable: true,
+                physics: ClampingScrollPhysics(),
+                unselectedLabelColor: kwhite,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: kwhite, width: 2),
+                ),
+                tabs: [
+                  Tab(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        Icon(
+                          Ionicons.home_outline,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          AppLocalizations.of(context)!.your_stay,
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        Icon(
+                          Ionicons.car_sport_sharp,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          AppLocalizations.of(context)!.rent_car,
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        Icon(
+                          Ionicons.airplane_sharp,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          AppLocalizations.of(context)!.fly_now,
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        Icon(
+                          Ionicons.car_outline,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          AppLocalizations.of(context)!.taxi_now,
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            body: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [
+                        Colors.white,
+                        Colors.blueGrey,
+                      ],
+                      begin: FractionalOffset(0.0, 0.0),
+                      end: FractionalOffset(1.0, 0.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp)),
+              child: TabBarView(
+                controller:
+                    _tabController, // Connect the TabBarView to the TabController
+                children: [
+                  mytabs[0],
+                  mytabs[1],
+                  mytabs[2],
+                  mytabs[3],
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
