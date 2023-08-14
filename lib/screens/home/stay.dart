@@ -16,6 +16,7 @@ import '../../widgets/custom_number_input.dart';
 import '../../widgets/custom_rating.dart';
 import '../../widgets/hotel_card.dart';
 import '../../widgets/nearby_places.dart';
+import '../../widgets/nearby_places.dart';
 import '../../widgets/recommended_places.dart';
 import '../activity_screen.dart';
 
@@ -79,10 +80,28 @@ class _StayScreenState extends State<StayScreen> {
           //     Text(
           //       AppLocalizations.of(context)!.more_option_hotel,
           //       textAlign: TextAlign.start,
+          //       AppLocalizations.of(context)!.more_option_hotel,
+          //       textAlign: TextAlign.start,
           //       style: Theme.of(context).textTheme.titleLarge,
           //     ),
           //   ],
           // ),
+
+          // ActivitiesScreen(),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Nearby From You",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              TextButton(onPressed: () {}, child: const Text("View All"))
+            ],
+          ),
+          const SizedBox(height: 10),
+          _NearbyHotelSection(),
+
 
           // ActivitiesScreen(),
 
@@ -252,6 +271,27 @@ class _NearbyHotelSection extends ConsumerWidget {
     final hotels = ref.watch(allHotelsProvider);
     return Column(
       children: [
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: const [
+        //     Text(
+        //       'Nearby hotels',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //       ),
+        //     ),
+        //     Text(
+        //       'See all',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //         color: kblue,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // const SizedBox(height: 4),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //   children: const [
