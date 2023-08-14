@@ -113,18 +113,19 @@ class _StayScreenState extends State<StayScreen> {
           SizedBox(
             height: height * 0.03,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.more_option_hotel,
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       AppLocalizations.of(context)!.more_option_hotel,
+          //       textAlign: TextAlign.start,
+          //       style: Theme.of(context).textTheme.titleLarge,
+          //     ),
+          //   ],
+          // ),
 
           // ActivitiesScreen(),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -136,7 +137,9 @@ class _StayScreenState extends State<StayScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const NearbyPlaces(),
+          _NearbyHotelSection(),
+
+          // const NearbyPlaces(),
         ],
       )),
     );
@@ -289,27 +292,27 @@ class _NearbyHotelSection extends ConsumerWidget {
     final hotels = ref.watch(allHotelsProvider);
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Nearby hotels',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              'See all',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: kblue,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: const [
+        //     Text(
+        //       'Nearby hotels',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //       ),
+        //     ),
+        //     Text(
+        //       'See all',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //         color: kblue,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // const SizedBox(height: 4),
         hotels.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, stack) => Text('Error: $err'),
