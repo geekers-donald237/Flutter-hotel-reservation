@@ -99,6 +99,7 @@ class RecommendedPlaces extends StatelessWidget {
                     ),
                   ],
                 ),
+                
                 // child: Container(
                 //   margin: EdgeInsets.only(top: 10),
                 //   decoration: BoxDecoration(

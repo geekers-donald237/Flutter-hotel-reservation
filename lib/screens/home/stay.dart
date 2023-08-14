@@ -4,19 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../gen/assets.gen.dart';
 import '../../gen/theme.dart';
 import '../../models/hotel_model.dart';
 import '../../providers/all_hotels_provider.dart';
-import '../../utils/localfiles.dart';
-import '../../widgets/app_text.dart';
 import '../../widgets/custom_button.dart';
-import '../../widgets/custom_icon_button.dart';
 import '../../widgets/custom_number_input.dart';
-import '../../widgets/custom_rating.dart';
 import '../../widgets/hotel_card.dart';
-import '../../widgets/nearby_places.dart';
-import '../../widgets/nearby_places.dart';
+
 import '../../widgets/recommended_places.dart';
 import '../activity_screen.dart';
 
@@ -70,54 +64,50 @@ class _StayScreenState extends State<StayScreen> {
           ),
           const SizedBox(height: 10),
           const RecommendedPlaces(),
-          const SizedBox(height: 10),
-          // SizedBox(
-          //   height: height * 0.03,
-          // ),
+          SizedBox(
+            height: height * 0.03,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.more_option_hotel,
+                textAlign: TextAlign.start,
+                semanticsLabel: AppLocalizations.of(context)!.more_option_hotel,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
+          ),
+
+          ActivitiesScreen(),
+
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
           //   children: [
           //     Text(
-          //       AppLocalizations.of(context)!.more_option_hotel,
-          //       textAlign: TextAlign.start,
-          //       AppLocalizations.of(context)!.more_option_hotel,
-          //       textAlign: TextAlign.start,
+          //       "Nearby From You",
           //       style: Theme.of(context).textTheme.titleLarge,
           //     ),
+          //     TextButton(onPressed: () {}, child: const Text("View All"))
           //   ],
           // ),
+          // const SizedBox(height: 10),
+          // _NearbyHotelSection(),
 
           // ActivitiesScreen(),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Nearby From You",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              TextButton(onPressed: () {}, child: const Text("View All"))
-            ],
-          ),
-          const SizedBox(height: 10),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       "Nearby From You",
+          //       style: Theme.of(context).textTheme.titleLarge,
+          //     ),
+          //     TextButton(onPressed: () {}, child: const Text("View All"))
+          //   ],
+          // ),
+          // const SizedBox(height: 10),
           _NearbyHotelSection(),
-
-          // ActivitiesScreen(),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Nearby From You",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              TextButton(onPressed: () {}, child: const Text("View All"))
-            ],
-          ),
-          const SizedBox(height: 10),
-          _NearbyHotelSection(),
-
-          // const NearbyPlaces(),
         ],
       ),
     );
