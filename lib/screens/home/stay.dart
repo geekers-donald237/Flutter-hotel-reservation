@@ -4,13 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../gen/theme.dart';
 import '../../models/hotel_model.dart';
 import '../../providers/all_hotels_provider.dart';
+import '../../utils/localfiles.dart';
+import '../../widgets/app_text.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_icon_button.dart';
 import '../../widgets/custom_number_input.dart';
+import '../../widgets/custom_rating.dart';
 import '../../widgets/hotel_card.dart';
+import '../../widgets/nearby_places.dart';
 import '../../widgets/nearby_places.dart';
 import '../../widgets/recommended_places.dart';
 import '../activity_screen.dart';
@@ -33,14 +38,14 @@ class StayScreen extends StatefulWidget {
 }
 
 class _StayScreenState extends State<StayScreen> {
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-          body: ListView(
+      body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(14),
         children: [
@@ -64,40 +69,56 @@ class _StayScreenState extends State<StayScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const RecommendedPlaces(),
-          const SizedBox(height: 10),
+          const RecommendedPlaces(hotel: null,),
           SizedBox(
             height: height * 0.03,
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text(
-          //       AppLocalizations.of(context)!.more_option_hotel,
-          //       textAlign: TextAlign.start,
-          //       style: Theme.of(context).textTheme.titleLarge,
-          //     ),
-          //   ],
-          // ),
-
-          // ActivitiesScreen(),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Nearby From You",
+                AppLocalizations.of(context)!.more_option_hotel,
+                textAlign: TextAlign.start,
+                semanticsLabel: AppLocalizations.of(context)!.more_option_hotel,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              TextButton(onPressed: () {}, child: const Text("View All"))
             ],
           ),
-          const SizedBox(height: 10),
-          _NearbyHotelSection(),
+
+          ActivitiesScreen(),
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       "Nearby From You",
+          //       style: Theme.of(context).textTheme.titleLarge,
+          //     ),
+          //     TextButton(onPressed: () {}, child: const Text("View All"))
+          //   ],
+          // ),
+          // const SizedBox(height: 10),
+          // _NearbyHotelSection(),
+
+          // ActivitiesScreen(),
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       "Nearby From You",
+          //       style: Theme.of(context).textTheme.titleLarge,
+          //     ),
+          //     TextButton(onPressed: () {}, child: const Text("View All"))
+          //   ],
+          // ),
+          // const SizedBox(height: 10),
+          // _NearbyHotelSection(),
 
           // const NearbyPlaces(),
         ],
-      ));
+      ),
+    );
   }
 
   Widget headerWidget() {
@@ -203,9 +224,9 @@ class _StayScreenState extends State<StayScreen> {
 class DrawerItem extends StatelessWidget {
   const DrawerItem(
       {Key? key,
-      required this.name,
-      required this.icon,
-      required this.onPressed})
+        required this.name,
+        required this.icon,
+        required this.onPressed})
       : super(key: key);
 
   final String name;
@@ -247,6 +268,27 @@ class _NearbyHotelSection extends ConsumerWidget {
     final hotels = ref.watch(allHotelsProvider);
     return Column(
       children: [
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: const [
+        //     Text(
+        //       'Nearby hotels',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //       ),
+        //     ),
+        //     Text(
+        //       'See all',
+        //       style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 14,
+        //         color: kblue,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // const SizedBox(height: 4),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //   children: const [
@@ -340,7 +382,7 @@ class _SearchCard extends ConsumerWidget {
                     children: [
                       Expanded(
                         child:
-                            Text(AppLocalizations.of(context)!.adults_number),
+                        Text(AppLocalizations.of(context)!.adults_number),
                       ),
                       CustomNumberInput(
                         value: adults,
@@ -415,9 +457,9 @@ class _SearchCard extends ConsumerWidget {
   }
 
   String _getValueText(
-    CalendarDatePicker2Type datePickerType,
-    List<DateTime?> values,
-  ) {
+      CalendarDatePicker2Type datePickerType,
+      List<DateTime?> values,
+      ) {
     values =
         values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
     var valueText = (values.isNotEmpty ? values[0] : null)
@@ -427,8 +469,8 @@ class _SearchCard extends ConsumerWidget {
     if (datePickerType == CalendarDatePicker2Type.multi) {
       valueText = values.isNotEmpty
           ? values
-              .map((v) => v.toString().replaceAll('00:00:00.000', ''))
-              .join(', ')
+          .map((v) => v.toString().replaceAll('00:00:00.000', ''))
+          .join(', ')
           : 'null';
     } else if (datePickerType == CalendarDatePicker2Type.range) {
       if (values.isNotEmpty) {
@@ -447,7 +489,7 @@ class _SearchCard extends ConsumerWidget {
 
   _buildCalendarDialogButton(BuildContext context) {
     const dayTextStyle =
-        TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
+    TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
 
     final config = CalendarDatePicker2WithActionButtonsConfig(
       dayTextStyle: dayTextStyle,
@@ -483,44 +525,44 @@ class _SearchCard extends ConsumerWidget {
                 ),
                 Expanded(
                     child: InkWell(
-                  onTap: () async {
-                    final values = await showCalendarDatePicker2Dialog(
-                      context: context,
-                      config: config,
-                      dialogSize: const Size(325, 400),
-                      borderRadius: BorderRadius.circular(15),
-                      value: _dialogCalendarPickerValue,
-                      dialogBackgroundColor: Colors.white,
-                    );
-                    if (values != null) {
-                      // ignore: avoid_print
-                      print(_getValueText(
-                        config.calendarType,
-                        values,
-                      ));
-                      setState(() {
-                        _dialogCalendarPickerValue = values;
-                      });
-                      setState(() {
-                        startDate =
-                            formatDateToDay(_dialogCalendarPickerValue[0]!);
-                        endDate =
-                            formatDateToDay(_dialogCalendarPickerValue[1]!);
-                      });
+                      onTap: () async {
+                        final values = await showCalendarDatePicker2Dialog(
+                          context: context,
+                          config: config,
+                          dialogSize: const Size(325, 400),
+                          borderRadius: BorderRadius.circular(15),
+                          value: _dialogCalendarPickerValue,
+                          dialogBackgroundColor: Colors.white,
+                        );
+                        if (values != null) {
+                          // ignore: avoid_print
+                          print(_getValueText(
+                            config.calendarType,
+                            values,
+                          ));
+                          setState(() {
+                            _dialogCalendarPickerValue = values;
+                          });
+                          setState(() {
+                            startDate =
+                                formatDateToDay(_dialogCalendarPickerValue[0]!);
+                            endDate =
+                                formatDateToDay(_dialogCalendarPickerValue[1]!);
+                          });
 
-                      setState(() {
-                        startDate;
-                        endDate;
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: Text(
-                      '${startDate} - ${endDate}',
-                    ),
-                  ),
-                ))
+                          setState(() {
+                            startDate;
+                            endDate;
+                          });
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(left: 16.0),
+                        child: Text(
+                          '${startDate} - ${endDate}',
+                        ),
+                      ),
+                    ))
               ],
             ),
           ],
