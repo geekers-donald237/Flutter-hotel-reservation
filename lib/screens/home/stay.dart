@@ -11,12 +11,9 @@ import '../../providers/all_hotels_provider.dart';
 import '../../utils/localfiles.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/custom_button.dart';
-import '../../widgets/custom_icon_button.dart';
 import '../../widgets/custom_number_input.dart';
 import '../../widgets/custom_rating.dart';
 import '../../widgets/hotel_card.dart';
-import '../../widgets/nearby_places.dart';
-import '../../widgets/nearby_places.dart';
 import '../../widgets/recommended_places.dart';
 import '../activity_screen.dart';
 
@@ -69,7 +66,7 @@ class _StayScreenState extends State<StayScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const RecommendedPlaces(hotel: null,),
+          const RecommendedPlaces(),
           SizedBox(
             height: height * 0.03,
           ),
@@ -113,9 +110,7 @@ class _StayScreenState extends State<StayScreen> {
           //   ],
           // ),
           // const SizedBox(height: 10),
-          // _NearbyHotelSection(),
-
-          // const NearbyPlaces(),
+          _NearbyHotelSection(),
         ],
       ),
     );

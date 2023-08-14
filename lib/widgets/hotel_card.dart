@@ -33,21 +33,24 @@ class HotelCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              flex: 1,
+              flex: 2,
               child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  bottomLeft: Radius.circular(20.0),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(12),
                 ),
                 child: Image.asset(
                   hotel.thumbnailPath,
+                  width: double.maxFinite,
                   fit: BoxFit.cover,
+                  height: 150, // Ajuster la hauteur de l'image
                 ),
               ),
             ),
+            const SizedBox(height: 5),
             Flexible(
               flex: 2,
               child: Padding(
@@ -58,7 +61,7 @@ class HotelCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText.large(
-                      hotel.title,
+                      'hotel.title',
                       fontSize: 18,
                       textAlign: TextAlign.left,
                       maxLine: 2,
@@ -72,17 +75,17 @@ class HotelCard extends StatelessWidget {
                           height: 15,
                         ),
                         const SizedBox(width: 8),
-                        AppText.small(hotel.location),
+                        AppText.small('hotel.location'),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: CustomRating(ratingScore: hotel.ratingScore),
+                      child: CustomRating(ratingScore: 5),
                     ),
                     RichText(
                       text: TextSpan(
                         children: [
-                          AppTextSpan.large('\$${hotel.price}'),
+                          AppTextSpan.large('\$15000'),
                           AppTextSpan.medium(' /night'),
                         ],
                       ),

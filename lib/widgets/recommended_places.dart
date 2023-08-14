@@ -1,8 +1,13 @@
 import 'package:find_hotel/utils/localfiles.dart';
+import 'package:find_hotel/utils/localfiles.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:find_hotel/models/recommended_places_model.dart';
 
+import '../gen/assets.gen.dart';
+import '../gen/theme.dart';
+import 'app_text.dart';
+import 'custom_rating.dart';
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
 import 'app_text.dart';
@@ -14,7 +19,7 @@ class RecommendedPlaces extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 235,
+      height: 300,
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
@@ -31,76 +36,140 @@ class RecommendedPlaces extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(12),
                 onTap: () {},
-                child: Container(
-                  margin: EdgeInsets.only(top: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20.0),
-                            topRight: Radius.circular(20.0),
-                          ),
-                          child: Image.asset(Localfiles.OnboardImg1,
-                              width: double.maxFinite,
-                              fit: BoxFit.cover,
-                              height: 100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
+                        child: Image.asset(
+                          recommendedPlaces[index].image,
+                          width: double.maxFinite,
+                          fit: BoxFit.cover,
+                          height: 150, // Ajuster la hauteur de l'image
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Flexible(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppText.large(
-                                'hotel.title',
-                                fontSize: 18,
-                                textAlign: TextAlign.left,
-                                maxLine: 2,
-                                textOverflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
+                    ),
+                    const SizedBox(height: 5),
+                    Flexible(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText.large(
+                              'hotel.title',
+                              fontSize: 18,
+                              textAlign: TextAlign.left,
+                              maxLine: 2,
+                              textOverflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Assets.icon.location.svg(
+                                  color: kgrey,
+                                  height: 15,
+                                ),
+                                const SizedBox(width: 8),
+                                AppText.small('hotel.location'),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: CustomRating(ratingScore: 5),
+                            ),
+                            RichText(
+                              text: TextSpan(
                                 children: [
-                                  Assets.icon.location.svg(
-                                    color: kgrey,
-                                    height: 15,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  AppText.small('hotel.location'),
+                                  AppTextSpan.large('\$15000'),
+                                  AppTextSpan.medium(' /night'),
                                 ],
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 12),
-                                child: CustomRating(ratingScore: 5),
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    AppTextSpan.large('\$15000'),
-                                    AppTextSpan.medium(' /night'),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                
+                // child: Container(
+                //   margin: EdgeInsets.only(top: 10),
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(20.0),
+                //   ),
+                //   child: Column(
+                //     // crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       Flexible(
+                //         flex: 1,
+                //         child: ClipRRect(
+                //           borderRadius: const BorderRadius.only(
+                //             topLeft: Radius.circular(20.0),
+                //             topRight: Radius.circular(20.0),
+                //           ),
+                //           child: Image.asset(Localfiles.OnboardImg1,
+                //               width: double.maxFinite,
+                //               fit: BoxFit.cover,
+                //               height: 100),
+                //         ),
+                //       ),
+                //       const SizedBox(height: 10),
+                //       Flexible(
+                //         flex: 2,
+                //         child: Padding(
+                //           padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                //           child: Column(
+                //             mainAxisSize: MainAxisSize.min,
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               AppText.large(
+                //                 'hotel.title',
+                //                 fontSize: 18,
+                //                 textAlign: TextAlign.left,
+                //                 maxLine: 2,
+                //                 textOverflow: TextOverflow.ellipsis,
+                //               ),
+                //               const SizedBox(height: 4),
+                //               Row(
+                //                 children: [
+                //                   Assets.icon.location.svg(
+                //                     color: kgrey,
+                //                     height: 15,
+                //                   ),
+                //                   const SizedBox(width: 8),
+                //                   AppText.small('hotel.location'),
+                //                 ],
+                //               ),
+                //               Padding(
+                //                 padding:
+                //                     const EdgeInsets.symmetric(vertical: 12),
+                //                 child: CustomRating(ratingScore: 5),
+                //               ),
+                //               RichText(
+                //                 text: TextSpan(
+                //                   children: [
+                //                     AppTextSpan.large('\$15000'),
+                //                     AppTextSpan.medium(' /night'),
+                //                   ],
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ),
             ),
           );

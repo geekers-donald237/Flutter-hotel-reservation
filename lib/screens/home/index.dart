@@ -165,7 +165,7 @@ class _IndexScreenState extends State<IndexScreen>
     return showDialog<void>(
       context: context,
       barrierDismissible:
-      false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
+          false, // L'utilisateur ne peut pas annuler en cliquant à l'extérieur
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
