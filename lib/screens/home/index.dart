@@ -203,7 +203,7 @@ class _IndexScreenState extends State<IndexScreen>
       ),
       drawer: CustomDrawer(),
       body: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Column(
             children: [
               Material(

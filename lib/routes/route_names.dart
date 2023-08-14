@@ -8,7 +8,6 @@ import 'package:find_hotel/screens/auth/login.dart';
 import '../screens/auth/otp_register.dart';
 import '../screens/auth/signup.dart';
 import '../screens/edit_profile.dart';
-import '../screens/location.dart';
 
 import '../utils/bottom_bar.dart';
 
@@ -74,13 +73,7 @@ class NavigationServices {
     ));
   }
 
-  // Future<dynamic> gotohomeScreen() async {
-  //   return await _pushMaterialPageRoute(HomeScreen());
-  // }
 
-  Future<dynamic> gotoSearchScreen() async {
-    return await _pushMaterialPageRoute(SearchLocalisationScreen());
-  }
 
    Future<dynamic> gototestScreen() async {
     return await _pushMaterialPageRoute(Test());
