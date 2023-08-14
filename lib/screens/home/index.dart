@@ -196,74 +196,40 @@ class _IndexScreenState extends State<IndexScreen>
             ),
           ],
         );
-      },
-    );
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: ()async{
-        _showExitConfirmationDialog(context);
-        return false;
-      },
-      child: DefaultTabController(
-            length: 4,
-            child: Scaffold(
-              drawer: CustomDrawer(),
-              appBar: AppBar(
-                shape: Border(bottom: BorderSide(color: kblack, width: 2)),
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            ksecondryColor,
-                            ksecondryColor,
-                          ],
-                          begin: FractionalOffset(0.0, 0.0),
-                          end: FractionalOffset(1.0, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp)),
-                ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Rental",
-                      style: TextStyle(color: kwhite),
-                    ),
-                    Text(
-                      "Find The Best Deal for Your holidays",
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ],
-                ),
-                actions: const [
-                  CustomIconButton(
-                    icon: Icon(
-                      Ionicons.search_outline,
-                      color: kwhite,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.0, right: 12),
-                    child: CustomIconButton(
-                      icon: Badge(
-                          backgroundColor: accent,
-                          child: Icon(
-                            Ionicons.notifications_outline,
-                            color: kwhite,
-                          )),
-                    ),
-                  ),
-                ],
-                bottom: TabBar(
-                    controller: _tabController, // Connect the TabBar to the TabController
-                    indicatorColor: Colors.white,
-                    indicatorWeight: 6,
-                    isScrollable: true,
-                    physics: ClampingScrollPhysics(),
+        actions: const [
+          CustomIconButton(
+            icon: Icon(
+              Ionicons.search_outline,
+              color: kwhite,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 8.0, right: 12),
+            child: CustomIconButton(
+              icon: Badge(
+                  backgroundColor: accent,
+                  child: Icon(
+                    Ionicons.notifications_outline,
+                    color: kwhite,
+                  )),
+            ),
+          ),
+        ],
+      ),
+      drawer: CustomDrawer(),
+      body: DefaultTabController(
+          length: 4,
+          child: Column(
+            children: [
+              Material(
+                child: Container(
+                  color: kblue,
+                  height: 60,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: TabBar(
+                      isScrollable: true,
+                      physics: ClampingScrollPhysics(),
                       unselectedLabelColor: kwhite,
                       indicatorSize: TabBarIndicatorSize.label,
                       indicator: BoxDecoration(

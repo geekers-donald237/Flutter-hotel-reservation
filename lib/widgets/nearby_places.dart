@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:find_hotel/models/nearby_places_model.dart';
 import 'package:find_hotel/widgets/distance.dart';
 
-import '../screens/tourist_details_page.dart';
 
 class NearbyPlaces extends StatelessWidget {
   const NearbyPlaces({Key? key}) : super(key: key);
@@ -24,13 +23,7 @@ class NearbyPlaces extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(12),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TouristDetailsPage(
-                          image: nearbyPlaces[index].image,
-                        ),
-                      ));
+                 
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

@@ -11,6 +11,7 @@ import '../../widgets/custom_button.dart';
 import '../../widgets/custom_icon_button.dart';
 import '../../widgets/custom_number_input.dart';
 import '../../widgets/hotel_card.dart';
+import '../../widgets/nearby_places.dart';
 import '../../widgets/recommended_places.dart';
 import '../activity_screen.dart';
 
@@ -38,6 +39,7 @@ class _StayScreenState extends State<StayScreen> {
     final size = MediaQuery.of(context).size;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
         body: ListView(
       physics: const BouncingScrollPhysics(),
@@ -79,19 +81,19 @@ class _StayScreenState extends State<StayScreen> {
           ],
         ),
 
-        ActivitiesScreen(),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     Text(
-        //       "Nearby From You",
-        //       style: Theme.of(context).textTheme.titleLarge,
-        //     ),
-        //     TextButton(onPressed: () {}, child: const Text("View All"))
-        //   ],
-        // ),
-        // const SizedBox(height: 10),
-        // const NearbyPlaces(),
+        // ActivitiesScreen(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Nearby From You",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            TextButton(onPressed: () {}, child: const Text("View All"))
+          ],
+        ),
+        const SizedBox(height: 10),
+        const NearbyPlaces(),
       ],
     ));
   }
