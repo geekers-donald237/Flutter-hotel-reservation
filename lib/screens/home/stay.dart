@@ -110,7 +110,7 @@ class _StayScreenState extends State<StayScreen> {
           //   ],
           // ),
           // const SizedBox(height: 10),
-          _NearbyHotelSection(),
+          // _NearbyHotelSection(),
         ],
       ),
     );

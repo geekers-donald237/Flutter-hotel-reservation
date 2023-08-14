@@ -1,13 +1,6 @@
-import 'package:find_hotel/utils/localfiles.dart';
-import 'package:find_hotel/utils/localfiles.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:find_hotel/models/recommended_places_model.dart';
 
-import '../gen/assets.gen.dart';
-import '../gen/theme.dart';
-import 'app_text.dart';
-import 'custom_rating.dart';
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
 import 'app_text.dart';
