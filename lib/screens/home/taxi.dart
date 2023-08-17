@@ -16,108 +16,78 @@
 // }
 
 import 'package:find_hotel/gen/theme.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Test extends StatefulWidget {
-  const Test({super.key});
+import '../../providers/current_location.dart';
 
-  @override
-  State<Test> createState() => _TestState();
-}
+class Test extends ConsumerWidget {
+  Test({super.key});
 
-class _TestState extends State<Test> {
-  String CurrentAddress = "";
-  Position? _currentPosition;
-  String name = "";
-  String street = "";
-  String country = '';
-  String countryCode = '';
+  String location = 'Null, Press Button';
 
-  Future<bool> _handleLocationPermission() async {
+  // storeDestinationInfo(String Destination) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('destination', Destination);
+  // }
+
+  Future<Position> _getGeoLocationPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
+    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.location_service_disable)));
-      return false;
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
     }
+
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocalizations.of(context)!.localization_denied)));
-        return false;
+        return Future.error('Location permissions are denied');
       }
     }
+
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context)!.denied_permently)));
-      return false;
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
-    return true;
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-      // _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
-
-  // Future<void> _getAddressFromLatLng(Position position) async {
-  //   position = await Geolocator.getCurrentPosition(
-  //           desiredAccuracy: LocationAccuracy.best)
-  //       .timeout(Duration(seconds: 5));
-
-  //   try {
-  //     List<Placemark> placemarks = await placemarkFromCoordinates(
-  //       position.latitude,
-  //       position.longitude,
-  //     );
-
-  //     if (placemarks.isNotEmpty) {
-  //       Placemark firstPlacemark = placemarks[0];
-  //       name = firstPlacemark.name ?? "";
-  //       street = firstPlacemark.street ?? "";
-  //       country = firstPlacemark.country ?? "";
-  //       countryCode = firstPlacemark.isoCountryCode ?? "";
-
-  //       // Vous pouvez maintenant utiliser les variables name, street et country selon vos besoins.
-
-  //       print("Name: $name");
-  //       print("Street: $street");
-  //       print("Country: $country");
-  //     }
-  //   } catch (err) {
-  //     print("Error: $err");
-  //   }
-  // }
-
-  storeDestinationInfo(String Destination) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('destination', Destination);
+  Future<void> GetAddressFromLatLong(Position position, WidgetRef ref) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    ref
+        .read(PositionProvider.notifier)
+        .update((state) => LatLng(position.longitude, position.latitude));
+    print(placemarks);
+    // Placemark place = placemarks[0];
+    // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String destination = ref.watch(LocationCurrentProvider);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
@@ -141,53 +111,65 @@ class _TestState extends State<Test> {
       ),
       body: Container(
         color: kwhite,
-        child: Column(
-          children: [
-            SizedBox(height: 5),
-            SearchOption(
-              title: "Proche de Votre Emplacement",
-              icon: Ionicons.locate_outline,
-              textColor: kblue,
-              ontap: () async {
-                _getCurrentPosition();
-                await storeDestinationInfo('Utiliser Ma Position');
-                Navigator.of(context).pop();
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SearchOption(
-              title: "Hebergement pour ce soir",
-              subtitle: "Adresse du lieu",
-              icon: Ionicons.locate_outline,
-              textColor: kblue,
-              ontap: () {},
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Option a proximite pour ce soir",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SearchOption(
+                title: "Proche de Votre Emplacement",
+                icon: Ionicons.locate_outline,
+                textColor: kblue,
+                ontap: () async {
+                  EasyLoading.show(
+                      status: AppLocalizations.of(context)!.loading);
+                  destination = 'Autour de moi';
+                  ref
+                      .read(LocationCurrentProvider.notifier)
+                      .update((state) => destination);
+
+                  EasyLoading.dismiss();
+
+                  Position position = await _getGeoLocationPosition();
+                  location =
+                      'Lat: ${position.latitude} , Long: ${position.longitude}';
+                  GetAddressFromLatLong(position, ref);
+                  Navigator.of(context).pop();
+                },
               ),
-            ),
-            const SizedBox(height: 10),
-            SearchOption(
-              title: "EDEA FLAT",
-              subtitle: "10 Juillet - 11 aout , 2 Adultes ",
-              icon: Icons.history,
-              textColor: kblack,
-              ontap: () {},
-            ),
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              SearchOption(
+                title: "Hebergement pour ce soir",
+                subtitle: "Adresse du lieu",
+                icon: Ionicons.locate_outline,
+                textColor: kblue,
+                ontap: () {},
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Option a proximite pour ce soir",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              SearchOption(
+                title: "EDEA FLAT",
+                subtitle: "10 Juillet - 11 aout , 2 Adultes ",
+                icon: Icons.history,
+                textColor: kblack,
+                ontap: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );

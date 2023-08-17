@@ -1,12 +1,13 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../gen/theme.dart';
 import '../../models/hotel_model.dart';
 import '../../providers/all_hotels_provider.dart';
+import '../../providers/string_date_provider.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_number_input.dart';
 import '../../widgets/hotel_card.dart';
@@ -39,12 +40,10 @@ class _StayScreenState extends State<StayScreen> {
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(14),
+      body: Column(
         children: [
           SizedBox(
-            height: height * 0.05,
+            height: height * 0.01,
           ),
           _SearchCard(),
           const SizedBox(
@@ -63,7 +62,7 @@ class _StayScreenState extends State<StayScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const RecommendedPlaces(),
+          RecommendedPlaces(),
           SizedBox(
             height: height * 0.03,
           ),
@@ -107,7 +106,6 @@ class _StayScreenState extends State<StayScreen> {
           //   ],
           // ),
           // const SizedBox(height: 10),
-          // _NearbyHotelSection(),
         ],
       ),
     );
@@ -323,20 +321,18 @@ class _NearbyHotelSection extends ConsumerWidget {
 }
 
 class _SearchCard extends ConsumerWidget {
+  bool isSetPosition = false, isSetDate = false;
   TextEditingController dateControllerTo = TextEditingController();
-  int accomodation = 0;
-  int adults = 0;
-  int children = 0;
+  late int accomodation;
+  late int adults;
+  late int children;
   TextEditingController destinationController = TextEditingController();
   String destination = '';
   List<DateTime?> _dialogCalendarPickerValue = [
     DateTime(2023, 2, 10),
-    DateTime(2023, 5, 13),
+    DateTime(2023, 2, 13),
   ];
-
-  String startDate = 'yyyy - mm';
-
-  String endDate = 'dd';
+  String dateTravel = '';
 
   void _openPassengerModal(BuildContext context, WidgetRef ref) async {
     showModalBottomSheet(
@@ -346,106 +342,121 @@ class _SearchCard extends ConsumerWidget {
           builder: (BuildContext context, StateSetter setState) {
             return Container(
               padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(AppLocalizations.of(context)!.hbgt_number),
-                      ),
-                      CustomNumberInput(
-                        value: accomodation,
-                        onDecrease: () {
-                          setState(() {
-                            accomodation--;
-                          });
-                        },
-                        onIncrease: () {
-                          setState(() {
-                            accomodation++;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child:
-                            Text(AppLocalizations.of(context)!.adults_number),
-                      ),
-                      CustomNumberInput(
-                        value: adults,
-                        onDecrease: () {
-                          setState(() {
-                            adults--;
-                          });
-                        },
-                        onIncrease: () {
-                          setState(() {
-                            adults++;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(AppLocalizations.of(context)!.child_number),
-                      ),
-                      CustomNumberInput(
-                        value: children,
-                        onDecrease: () {
-                          setState(() {
-                            children--;
-                          });
-                        },
-                        onIncrease: () {
-                          setState(() {
-                            children++;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      ref
-                          .read(allAccomodationProvider.notifier)
-                          .update((state) => accomodation);
-                      ref
-                          .read(allAdultsProvider.notifier)
-                          .update((state) => adults);
-                      ref
-                          .read(allChildrenProvider.notifier)
-                          .update((state) => children);
-                      Navigator.pop(context);
-                    },
-                    child: Text(AppLocalizations.of(context)!.valid_btn),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.modal_info_number,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child:
+                              Text(AppLocalizations.of(context)!.hbgt_number),
+                        ),
+                        CustomNumberInput(
+                          value: accomodation,
+                          onDecrease: () {
+                            setState(() {
+                              if (accomodation <= 1) {
+                              } else {
+                                accomodation--;
+                              }
+                            });
+                          },
+                          onIncrease: () {
+                            setState(() {
+                              accomodation++;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child:
+                              Text(AppLocalizations.of(context)!.adults_number),
+                        ),
+                        CustomNumberInput(
+                          value: adults,
+                          onDecrease: () {
+                            setState(() {
+                              if (adults <= 1) {
+                              } else {
+                                adults--;
+                              }
+                            });
+                          },
+                          onIncrease: () {
+                            setState(() {
+                              adults++;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child:
+                              Text(AppLocalizations.of(context)!.child_number),
+                        ),
+                        CustomNumberInput(
+                          value: children,
+                          onDecrease: () {
+                            setState(() {
+                              if (children == 0) {
+                              } else {
+                                children--;
+                              }
+                            });
+                          },
+                          onIncrease: () {
+                            setState(() {
+                              children++;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        ref
+                            .read(allAccomodationProvider.notifier)
+                            .update((state) => accomodation);
+                        ref
+                            .read(allAdultsProvider.notifier)
+                            .update((state) => adults);
+                        ref
+                            .read(allChildrenProvider.notifier)
+                            .update((state) => children);
+
+                        Navigator.pop(context);
+                      },
+                      child: Text(AppLocalizations.of(context)!.valid_btn),
+                    ),
+                  ],
+                ),
               ),
             );
           },
         );
       },
     );
-  }
-
-  Future<String> getDestinationInfo(WidgetRef ref) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    destination = prefs.getString('destination')!;
-    return destination;
-  }
-
-  void callinfo(WidgetRef ref) async {
-    destination = await getDestinationInfo(ref);
-    ref.read(LocationCurrentProvider.notifier).update((state) => destination);
   }
 
   String _getValueText(
@@ -479,7 +490,7 @@ class _SearchCard extends ConsumerWidget {
     return valueText;
   }
 
-  _buildCalendarDialogButton(BuildContext context) {
+  _buildCalendarDialogButton(BuildContext context, WidgetRef ref) {
     const dayTextStyle =
         TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
 
@@ -536,23 +547,33 @@ class _SearchCard extends ConsumerWidget {
                         _dialogCalendarPickerValue = values;
                       });
                       setState(() {
-                        startDate =
-                            formatDateToDay(_dialogCalendarPickerValue[0]!);
-                        endDate =
-                            formatDateToDay(_dialogCalendarPickerValue[1]!);
+                        dateTravel =
+                            formatDateToDay(_dialogCalendarPickerValue[0]!) +
+                                "-" +
+                                formatDateToDay(_dialogCalendarPickerValue[1]!);
+
+                        isSetDate = true;
                       });
 
                       setState(() {
-                        startDate;
-                        endDate;
+                        dateTravel;
                       });
+
+                      ref
+                          .read(StringDateProvider.notifier)
+                          .update((state) => dateTravel);
                     }
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 16.0),
-                    child: Text(
-                      '${startDate} - ${endDate}',
-                    ),
+                    child: dateTravel != ''
+                        ? Text(
+                            dateTravel,
+                          )
+                        : Text(
+                            AppLocalizations.of(context)!.duree_sejour,
+                            textAlign: TextAlign.start,
+                          ),
                   ),
                 ))
               ],
@@ -593,10 +614,10 @@ class _SearchCard extends ConsumerWidget {
     adults = ref.watch(allAdultsProvider);
     children = ref.watch(allChildrenProvider);
     destination = ref.watch(LocationCurrentProvider);
-    callinfo(ref);
+    LatLng position = ref.watch(PositionProvider);
+    dateTravel = ref.watch(StringDateProvider);
 
     return Container(
-      padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.yellow,
@@ -609,70 +630,67 @@ class _SearchCard extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Première Row
-          Container(
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Icon(Ionicons.search),
-                ),
-                // const SizedBox(width: 10),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      // _openDestinationDialog(context, ref);
-                      NavigationServices(context).gototestScreen();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(destination),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16.0),
+                child: Icon(Ionicons.search),
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    NavigationServices(context).gototestScreen();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      destination,
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Divider(
             thickness: 4, // Épaisseur du Divider
             color: yellow,
           ),
           // Deuxième Row
-          _buildCalendarDialogButton(context),
+          _buildCalendarDialogButton(context, ref),
           Divider(
             thickness: 4,
             color: yellow,
           ),
           // Troisième Row
-          Container(
-            child: Row(
-              children: [
-                Container(
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16.0),
+                child: Icon(
+                  Ionicons.person_outline,
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  _openPassengerModal(context, ref);
+                },
+                child: Container(
                   padding: EdgeInsets.all(16.0),
-                  child: Icon(
-                    Icons.person_outlined,
-                    size: 30,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "$accomodation Hébgts.",
+                      ),
+                      Text(" $adults Adultes."),
+                      Text(" $children Enfants"),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 5),
-                InkWell(
-                  onTap: () {
-                    _openPassengerModal(context, ref);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("$accomodation Hébgts."),
-                        Text(" $adults Adultes."),
-                        Text(" $children Enfants"),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           Divider(
             thickness: 4,
@@ -680,7 +698,16 @@ class _SearchCard extends ConsumerWidget {
           ),
           CustomButton(
             buttonText: AppLocalizations.of(context)!.search_btn,
-            onPressed: () {},
+            onPressed: () {
+              EasyLoading.show(status: AppLocalizations.of(context)!.loading);
+              if (destination == 'Votre Destination' || dateTravel == '') {
+                EasyLoading.showError(
+                    AppLocalizations.of(context)!.all_fields_destination);
+              } else {
+                EasyLoading.dismiss();
+                NavigationServices(context).gotosearchResult();
+              }
+            },
           ),
         ],
       ),

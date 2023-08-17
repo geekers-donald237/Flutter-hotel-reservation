@@ -17,7 +17,7 @@ class HotelRepository {
     );
   }
 
-  Future<HotelModel> getHotel(String coffeeId) async {
+  Future<HotelModel> getHotel(String coffeeId) async { 
     return Future.delayed(
       const Duration(milliseconds: 500),
       () {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
@@ -13,7 +14,7 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_icon_container.dart';
 import '../widgets/custom_rating.dart';
 
-class HotelDetailScreen extends StatelessWidget {
+class HotelDetailScreen extends StatefulWidget {
   const HotelDetailScreen({
     Key? key,
     required this.hotel,
@@ -22,15 +23,21 @@ class HotelDetailScreen extends StatelessWidget {
   final HotelModel hotel;
 
   @override
+  State<HotelDetailScreen> createState() => _HotelDetailScreenState();
+}
+
+class _HotelDetailScreenState extends State<HotelDetailScreen> {
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    Color color = Colors.black;
     return Scaffold(
       body: Stack(
         children: [
           Align(
             alignment: Alignment.topCenter,
             child: Image.asset(
-              hotel.thumbnailPath,
+              widget.hotel.thumbnailPath,
               fit: BoxFit.cover,
             ),
           ),
@@ -50,19 +57,19 @@ class HotelDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        _HotelTitleSection(hotel: hotel),
+                        _HotelTitleSection(hotel: widget.hotel),
                         const SizedBox(height: 16),
                         const _FacilitiesSection(),
                       ],
                     ),
                   ),
-                  _GallerySection(imagePaths: hotel.imagePaths),
+                  _GallerySection(imagePaths: widget.hotel.imagePaths),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: _LocationSection(
-                      address: hotel.address,
-                      coordinate: hotel.coordinate,
-                      description: hotel.description,
+                      address: widget.hotel.address,
+                      coordinate: widget.hotel.coordinate,
+                      description: widget.hotel.description,
                     ),
                   ),
                 ],
@@ -83,9 +90,28 @@ class HotelDetailScreen extends StatelessWidget {
                       icon: Assets.icon.chevronDown.svg(height: 25),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
-                    CustomIconButton(
-                      icon: Assets.icon.wishlist.svg(height: 25),
-                    ),
+                    // CustomIconButton(
+                    //   icon: Assets.icon.wishlist.svg(height: 25),
+                    // ),
+                    InkWell(
+                      onTap: () {
+                        if (color == Colors.transparent) {
+                          color = Colors.pink;
+                        } else {
+                          color = Colors.transparent;
+                        }
+
+                        setState(() {
+                          color;
+                        });
+                      },
+                      child: Container(
+                        child: (Icon(
+                          Ionicons.heart_outline,
+                          size: 35,
+                        )),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -93,7 +119,7 @@ class HotelDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: _ReserveBar(price: hotel.price),
+      bottomNavigationBar: _ReserveBar(price: widget.hotel.price),
     );
   }
 }
