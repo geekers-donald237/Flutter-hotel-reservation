@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
 import '../models/hotel_model.dart';
+import '../providers/current_location.dart';
+import '../utils/helper.dart';
 import '../widgets/app_text.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_icon_container.dart';
@@ -27,97 +30,143 @@ class HotelDetailScreen extends StatefulWidget {
 }
 
 class _HotelDetailScreenState extends State<HotelDetailScreen> {
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    bool isSelected = false;
+
     Color color = Colors.black;
     return Scaffold(
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Image.asset(
-              widget.hotel.thumbnailPath,
-              fit: BoxFit.cover,
+      appBar: AppBar(
+        backgroundColor: kblue,
+        foregroundColor: kblack,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+            child: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.black,
+              size: 30,
             ),
           ),
-          SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(top: size.height * 0.4),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        _HotelTitleSection(hotel: widget.hotel),
-                        const SizedBox(height: 16),
-                        const _FacilitiesSection(),
-                      ],
-                    ),
-                  ),
-                  _GallerySection(imagePaths: widget.hotel.imagePaths),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: _LocationSection(
-                      address: widget.hotel.address,
-                      coordinate: widget.hotel.coordinate,
-                      description: widget.hotel.description,
-                    ),
-                  ),
-                ],
-              ),
+          Padding(
+              padding: EdgeInsets.only(left: 8.0, right: 12),
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Ionicons.share_social_outline, size: 30),
+              )),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          // margin: EdgeInsets.only(top: size.height * 0.1),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: SafeArea(
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                height: 50,
-                color: Colors.transparent,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
                   children: [
-                    CustomIconButton(
-                      icon: Assets.icon.chevronDown.svg(height: 25),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    // CustomIconButton(
-                    //   icon: Assets.icon.wishlist.svg(height: 25),
-                    // ),
-                    InkWell(
-                      onTap: () {
-                        if (color == Colors.transparent) {
-                          color = Colors.pink;
-                        } else {
-                          color = Colors.transparent;
-                        }
-
-                        setState(() {
-                          color;
-                        });
-                      },
-                      child: Container(
-                        child: (Icon(
-                          Ionicons.heart_outline,
-                          size: 35,
-                        )),
+                    _HotelTitleSection(hotel: widget.hotel),
+                    const SizedBox(height: 16),
+                    const _FacilitiesSection(),
+                    const SizedBox(height: 16),
+                    Card(
+                      elevation: 0.5, // Ajout d'une élévation au Card
+                      margin: EdgeInsets.all(2), // Marge autour du Card
+                      child: Padding(
+                        padding: EdgeInsets.all(
+                            16), // Espacement à l'intérieur du Card
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Arrival Date:',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'August 25, 2023',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Departure Date:',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'August 30, 2023',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Nombre d\'hébergement et de personnes',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '22',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            ),
+              _GallerySection(imagePaths: widget.hotel.imagePaths),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: _LocationSection(
+                  address: widget.hotel.address,
+                  coordinate: widget.hotel.coordinate,
+                  description: widget.hotel.description,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       bottomNavigationBar: _ReserveBar(price: widget.hotel.price),
     );
@@ -137,11 +186,30 @@ class _HotelTitleSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText.large(
-          hotel.title,
-          textAlign: TextAlign.left,
-          maxLine: 2,
-          textOverflow: TextOverflow.ellipsis,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppText.large(
+              hotel.title,
+              textAlign: TextAlign.left,
+              maxLine: 2,
+              textOverflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(width: 10),
+            Container(
+              width: 40,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.blue, // Couleur du carré
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: AppText.small(
+                hotel.ratingScore.toString(), // Note de l'hôtel
+                color: Colors.white, // Couleur du texte à l'intérieur du carré
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 5),
         Row(
@@ -214,6 +282,11 @@ class _FacilitiesSection extends StatelessWidget {
             )
           ],
         ),
+        const SizedBox(height: 10),
+        GestureDetector(
+          onTap: () =>{},
+            child: AppText.medium('Show more',
+                textDecoration: TextDecoration.underline))
       ],
     );
   }
@@ -284,7 +357,7 @@ class _GallerySection extends StatelessWidget {
   }
 }
 
-class _LocationSection extends StatelessWidget {
+class _LocationSection extends ConsumerWidget {
   const _LocationSection({
     Key? key,
     required this.address,
@@ -297,13 +370,24 @@ class _LocationSection extends StatelessWidget {
   final String description;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    double longitude = ref.watch(LongitudeProvider);
+    double latitude = ref.watch(LattitudeProvider);
+
+    final double distance = getDistanceFromLatLonInKm(
+      latitude,
+      longitude,
+      coordinate.latitude,
+      coordinate.longitude,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppText.medium('Location', fontWeight: FontWeight.bold),
         const SizedBox(height: 10),
-        AppText.medium(address, fontWeight: FontWeight.normal),
+        AppText.medium('situe a une distance de $distance km de vous ',
+            fontWeight: FontWeight.normal),
         const SizedBox(height: 10),
         FutureBuilder<BitmapDescriptor?>(
           future: _convertToMarkerBitmap(),

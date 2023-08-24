@@ -77,9 +77,14 @@ class Test extends ConsumerWidget {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     ref
-        .read(PositionProvider.notifier)
-        .update((state) => LatLng(position.longitude, position.latitude));
-    print(placemarks);
+        .read(LongitudeProvider.notifier)
+        .update((state) => position.longitude);
+
+        ref
+        .read(LattitudeProvider.notifier)
+        .update((state) => position.longitude);
+    // print("dddididididi $placemarks");
+    print('latitude et longitude ${position.longitude}, ${position.latitude}');
     // Placemark place = placemarks[0];
     // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
   }
@@ -126,13 +131,12 @@ class Test extends ConsumerWidget {
                       .read(LocationCurrentProvider.notifier)
                       .update((state) => destination);
 
-                  EasyLoading.dismiss();
-
                   Position position = await _getGeoLocationPosition();
                   location =
                       'Lat: ${position.latitude} , Long: ${position.longitude}';
                   GetAddressFromLatLong(position, ref);
                   Navigator.of(context).pop();
+                  EasyLoading.dismiss();
                 },
               ),
               SizedBox(

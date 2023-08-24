@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as Math;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../gen/theme.dart';
 import '../models/hotel_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../providers/all_accomodation.dart';
 import '../providers/all_adults_provider.dart';
 import '../providers/all_enfants_provider.dart';
-import '../providers/all_hotels_provider.dart';
 import '../providers/current_location.dart';
 import '../providers/string_date_provider.dart';
+import '../utils/helper.dart';
 import '../widgets/hotel_card.dart';
 
 class SearchResultScreen extends ConsumerWidget {
   const SearchResultScreen({super.key});
 
   Widget build(BuildContext context, WidgetRef ref) {
+    
+
     int accomodation = ref.watch(allAccomodationProvider);
     int adults = ref.watch(allAdultsProvider);
     int children = ref.watch(allChildrenProvider);
@@ -44,7 +49,7 @@ class SearchResultScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: kblue,
         foregroundColor: kblack,
         elevation: 0.8,
         title: Expanded(
@@ -52,14 +57,31 @@ class SearchResultScreen extends ConsumerWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             decoration: BoxDecoration(
-              border: Border.all(color: yellow.withOpacity(0.3), width: 4),
-              borderRadius: BorderRadius.circular(2),
-            ),
+                border: Border.all(color: yellow, width: 4),
+                borderRadius: BorderRadius.circular(2),
+                color: kwhite),
             width: double.infinity,
             child: Text.rich(
               TextSpan(
                 text: trimmedText,
               ),
+            ),
+          ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(30.0), // Hauteur de la ligne en bas
+          child: Container(
+            color: kwhite,
+            padding: EdgeInsets.symmetric(
+                horizontal: 20, vertical: 10), // Ajout de l'espace horizontal
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceBetween, // Aligner les éléments aux extrémités
+              children: [
+                _buildItem('Trier ', Icons.sort),
+                _buildItem('Filtrer ', Icons.filter_list),
+                _buildItem('Carte', Icons.map),
+              ],
             ),
           ),
         ),
@@ -90,23 +112,14 @@ class SearchResultScreen extends ConsumerWidget {
     );
   }
 
-  double deg2rad(double deg) {
-    return deg * (3.141592653589793 / 180);
-  }
-
-  double getDistanceFromLatLonInKm(
-      double lat1, double lon1, double lat2, double lon2) {
-    final int R = 6371; // Rayon de la Terre en km
-    final double dLat = deg2rad(lat2 - lat1);
-    final double dLon = deg2rad(lon2 - lon1);
-    final double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)) +
-        (Math.cos(deg2rad(lat1)) *
-            Math.cos(deg2rad(lat2)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2));
-    final double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    final double d = R * c; // Distance en km
-    return d;
+  Widget _buildItem(String text, IconData icon) {
+    return Row(
+      children: [
+        Icon(icon),
+        SizedBox(width: 8), // Espace entre l'icône et le texte
+        Text(text),
+      ],
+    );
   }
 
   List<HotelModel> findNearbyHotels(List<HotelModel> hotelList,

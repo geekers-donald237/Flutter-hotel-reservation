@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:math' as Math;
 
 import '../gen/theme.dart';
 import '../widgets/custom_dialog.dart';
@@ -52,6 +51,27 @@ Future<bool> showCommonPopup(
   });
 }
 
+
+double deg2rad(double deg) {
+    return deg * (3.141592653589793 / 180);
+  }
+
+  double getDistanceFromLatLonInKm(
+      double lat1, double lon1, double lat2, double lon2) {
+    final int R = 6371; // Rayon de la Terre en km
+    final double dLat = deg2rad(lat2 - lat1);
+    final double dLon = deg2rad(lon2 - lon1);
+    final double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)) +
+        (Math.cos(deg2rad(lat1)) *
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2));
+    final double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    final double d = R * c; // Distance en km
+    return d;
+  }
+
+
 void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)
@@ -87,3 +107,5 @@ class CustomAnimation extends EasyLoadingAnimation {
     );
   }
 }
+
+

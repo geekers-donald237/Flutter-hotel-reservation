@@ -40,7 +40,9 @@ class _StayScreenState extends State<StayScreen> {
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Column(
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(14),
         children: [
           SizedBox(
             height: height * 0.01,
@@ -62,7 +64,7 @@ class _StayScreenState extends State<StayScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          RecommendedPlaces(),
+          // const RecommendedPlaces(),
           SizedBox(
             height: height * 0.03,
           ),
@@ -608,13 +610,13 @@ class _SearchCard extends ConsumerWidget {
     return '$dayOfWeek $day $month';
   }
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     accomodation = ref.watch(allAccomodationProvider);
     adults = ref.watch(allAdultsProvider);
     children = ref.watch(allChildrenProvider);
     destination = ref.watch(LocationCurrentProvider);
-    LatLng position = ref.watch(PositionProvider);
     dateTravel = ref.watch(StringDateProvider);
 
     return Container(
