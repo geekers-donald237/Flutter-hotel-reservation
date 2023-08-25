@@ -14,13 +14,12 @@ import '../providers/current_location.dart';
 import '../providers/string_date_provider.dart';
 import '../utils/helper.dart';
 import '../widgets/hotel_card.dart';
+import '../widgets/show_bottom_sheet.dart';
 
 class SearchResultScreen extends ConsumerWidget {
   const SearchResultScreen({super.key});
 
   Widget build(BuildContext context, WidgetRef ref) {
-    
-
     int accomodation = ref.watch(allAccomodationProvider);
     int adults = ref.watch(allAdultsProvider);
     int children = ref.watch(allChildrenProvider);
@@ -78,7 +77,14 @@ class SearchResultScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment
                   .spaceBetween, // Aligner les éléments aux extrémités
               children: [
-                _buildItem('Trier ', Icons.sort),
+                GestureDetector(
+                  onTap: () {showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return SortOptionsBottomSheet();
+              },
+            );},
+                  child: _buildItem('Trier ', Icons.sort)),
                 _buildItem('Filtrer ', Icons.filter_list),
                 _buildItem('Carte', Icons.map),
               ],
@@ -113,12 +119,14 @@ class SearchResultScreen extends ConsumerWidget {
   }
 
   Widget _buildItem(String text, IconData icon) {
-    return Row(
-      children: [
-        Icon(icon),
-        SizedBox(width: 8), // Espace entre l'icône et le texte
-        Text(text),
-      ],
+    return GestureDetector(
+      child: Row(
+        children: [
+          Icon(icon),
+          SizedBox(width: 8), // Espace entre l'icône et le texte
+          Text(text),
+        ],
+      ),
     );
   }
 
