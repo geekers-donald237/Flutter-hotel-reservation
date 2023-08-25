@@ -1,14 +1,10 @@
 import 'package:find_hotel/gen/theme.dart';
-import 'package:find_hotel/utils/localfiles.dart';
 import 'package:find_hotel/widgets/custom_apbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-import '../widgets/formWidget/custom_phone_field.dart';
+import '../../widgets/formWidget/custom_phone_field.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);

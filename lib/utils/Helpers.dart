@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/google_signing_api.dart';
 
 double getScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
@@ -85,7 +87,7 @@ void message(BuildContext context, String text1, String text, Color col,
             bottom: 0,
             child: ClipRRect(
               borderRadius:
-              const BorderRadius.only(bottomLeft: Radius.circular(20)),
+                  const BorderRadius.only(bottomLeft: Radius.circular(20)),
               child: SvgPicture.asset(
                 bubble,
                 height: 48,
@@ -121,10 +123,6 @@ void message(BuildContext context, String text1, String text, Color col,
     ),
   );
 }
-
-
-
-
 
 Future<bool> logout() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
@@ -172,9 +170,6 @@ String? validatePassword(String? value, BuildContext context) {
     return null;
   }
 }
-
-
-
 
 showAlertDialog(
     BuildContext context, String title, String content, bool addOkButton) {
@@ -239,7 +234,7 @@ String? validateName(String? value, BuildContext context) {
 }
 
 Widget? Function(BuildContext, String) placeholderWidgetFn() =>
-        (_, s) => placeholderWidget();
+    (_, s) => placeholderWidget();
 Widget placeholderWidget() =>
     Image.asset('assets/images/grey.jpg', fit: BoxFit.cover);
 
@@ -267,9 +262,13 @@ onMessageDialog(
       onPressed: () {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => onPressed),
-                (route) => false);
+            (route) => false);
       },
     ),
   );
   showCupertinoModalPopup(context: context, builder: (context) => action);
+}
+
+Future signIn() async {
+  await GoogleSignInApi.login();
 }

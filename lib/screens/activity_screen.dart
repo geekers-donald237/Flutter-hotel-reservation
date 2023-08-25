@@ -61,29 +61,28 @@ class _ActivitiesMasonryGrid extends StatelessWidget {
     );
   }
 
-  Container _buildActivityCard(
+  Widget _buildActivityCard(
     BuildContext context,
     Activity activity,
     int index,
   ) {
-    return Container(
+    return SizedBox(
+      width: 220,
       child: Card(
-        elevation: 5.0,
-        margin: EdgeInsets.all(8.0),
+        elevation: 0.5,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
               tag: '${activity.id}_${activity.title}',
               child: Container(
                 height: masonryCardHeights[index % 2],
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                  border: Border(
-                    bottom: BorderSide(color: kgrey),
-                  ),
                   image: DecorationImage(
                     image: AssetImage(activity
                         .imagePath), // Utilise AssetImage au lieu de Image.asset
@@ -92,24 +91,20 @@ class _ActivitiesMasonryGrid extends StatelessWidget {
                 ),
               ),
             ),
-            Column(
-              children: [
-                Container(
-                  child: Text("Cards Title 1",
-                      // style: titleTextStyle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
+            Container(
+              child: Text("Cards Title 1",
+                  // style: titleTextStyle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis),
+              margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
                   margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                      margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                      child: Text(
-                        'items[index].subtitle',
-                      )),
-                ),
-              ],
+                  child: Text(
+                    'items[index].subtitle',
+                  )),
             ),
           ],
         ),

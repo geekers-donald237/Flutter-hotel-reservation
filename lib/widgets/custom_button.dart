@@ -25,14 +25,10 @@ class CustomButton extends StatelessWidget {
         backgroundColor: MaterialStateProperty.all(kblue),
         minimumSize: MaterialStateProperty.all(const Size(200, 50)),
         elevation: MaterialStateProperty.all(0),
-        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-            vertical: 2,
-            horizontal:
-                25)), // Ajustez les valeurs de padding comme vous le souhaitez
       ),
       child: AppText.medium(
         buttonText,
-        fontSize: 16,
+        fontSize: 20,
       ),
     );
   }

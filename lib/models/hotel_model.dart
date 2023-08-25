@@ -50,7 +50,7 @@ class HotelModel {
     HotelModel(
       id: '2',
       thumbnailPath: Localfiles.thumbnail2,
-      title: 'Greenhost Boutique Hotel',
+      title: 'Greenhost Boutique ',
       location: 'Bantul Regency, Yogyakarta',
       address: 'Jl. Parangtritis km 8.5, Yogyakarta 55186',
       description:

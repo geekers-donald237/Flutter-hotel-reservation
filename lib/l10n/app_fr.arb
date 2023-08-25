@@ -109,6 +109,11 @@
      "index_anul" : "Annules",
      "other_destination" : "Quelle sera votre prochaine  Destination",
      "voyage_passe" : "Redecouvrez Vos Voyages passes",
-     "change_program" : "Changement de programme"
+     "change_program" : "Changement de programme",
+     "duree_sejour" : "Duree de votre sejour",
+     "all_fields_destination" : "Entrer toutes les informations",
+     "modal_info_number" : "Entrer le nombre de personnes et d'hebergement",
+          "autour_message" : "autour de moi"
+
 
 }

@@ -31,7 +31,7 @@ class Otp2 extends StatefulWidget {
 class _Otp2State extends State<Otp2> {
   String email = '';
   String verifCode = '';
-
+ 
   _Otp2State(
     String email,
     String verifCode,
