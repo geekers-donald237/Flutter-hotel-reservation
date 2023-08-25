@@ -1,3 +1,4 @@
+import 'package:find_hotel/screens/home/rent_car/rent_card.dart';
 import 'package:find_hotel/screens/home/stay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,9 +39,9 @@ class _IndexScreenState extends State<IndexScreen>
     super.initState();
     mytabs = [
       const StayScreen(),
-      Text('aussi'),
-      Text('aussi'),
-      Text('aussi'),
+      const RentCarScreen(),
+      Text('2'),
+      Text('3'),
     ];
 
     _tabController = TabController(length: mytabs.length, vsync: this);

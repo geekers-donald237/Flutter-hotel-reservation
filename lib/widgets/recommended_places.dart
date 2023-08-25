@@ -7,7 +7,7 @@ import 'app_text.dart';
 import 'custom_rating.dart';
 
 class RecommendedPlaces extends StatelessWidget {
-  const RecommendedPlaces({Key? key, required hotel}) : super(key: key);
+  const RecommendedPlaces({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
