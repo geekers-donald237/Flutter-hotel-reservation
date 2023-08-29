@@ -1,13 +1,17 @@
-import 'package:find_hotel/screens/home/stay.dart';
+import 'package:find_hotel/screens/hotel/home/stay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../../gen/theme.dart';
-import '../../routes/route_names.dart';
-import '../../widgets/custom_icon_button.dart';
+
 import 'package:find_hotel/urls/all_url.dart';
+
+import '../../../gen/theme.dart';
+import '../../../routes/route_names.dart';
+import '../../../widgets/custom_icon_button.dart';
+import '../../car/showroom.dart';
+
 
 class IndexScreen extends StatefulWidget {
   const IndexScreen({
@@ -38,6 +42,7 @@ class _IndexScreenState extends State<IndexScreen>
     super.initState();
     mytabs = [
       const StayScreen(),
+      Showroom(),
       Text('aussi'),
       Text('aussi'),
       Text('aussi'),
@@ -309,6 +314,21 @@ class _IndexScreenState extends State<IndexScreen>
                       children: [
                         SizedBox(width: 15),
                         Icon(
+                          Icons.wash_outlined,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'pressing',
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        Icon(
                           Ionicons.airplane_sharp,
                         ),
                         SizedBox(width: 10),
@@ -356,6 +376,7 @@ class _IndexScreenState extends State<IndexScreen>
                   mytabs[1],
                   mytabs[2],
                   mytabs[3],
+                  mytabs[4],
                 ],
               ),
             ),

@@ -67,53 +67,65 @@ class SearchResultScreen extends ConsumerWidget {
             ),
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(30.0), // Hauteur de la ligne en bas
-          child: Container(
-            color: kwhite,
-            padding: EdgeInsets.symmetric(
-                horizontal: 20, vertical: 10), // Ajout de l'espace horizontal
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceBetween, // Aligner les éléments aux extrémités
-              children: [
-                GestureDetector(
-                  onTap: () {showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return SortOptionsBottomSheet();
-              },
-            );},
-                  child: _buildItem('Trier ', Icons.sort)),
-                _buildItem('Filtrer ', Icons.filter_list),
-                _buildItem('Carte', Icons.map),
-              ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 20, vertical: 10), // Ajout de l'espace horizontal
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // Aligner les éléments aux extrémités
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SortOptionsBottomSheet();
+                          },
+                        );
+                      },
+                      child: _buildItem('Trier ', Icons.sort)),
+                  _buildItem('Filtrer ', Icons.filter_list),
+                  _buildItem('Carte', Icons.map),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Affiche le message "Chargement..." si la liste nearbyHotels est vide
-            if (nearbyHotels.isEmpty)
-              CircularProgressIndicator()
-            else if (nearbyHotels.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: nearbyHotels.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    HotelModel hotel = nearbyHotels[index];
-                    return HotelCard(hotel: hotel);
-                  },
+
+          // Affiche le message "Chargement..." si la liste nearbyHotels est vide
+          if (nearbyHotels.isEmpty)
+            CircularProgressIndicator()
+          else if (nearbyHotels.isNotEmpty)
+            Expanded(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: nearbyHotels.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            HotelModel hotel = nearbyHotels[index];
+                            return HotelCard(hotel: hotel);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            if (nearbyHotels.isEmpty) Text("Aucun hôtel trouvé"),
-          ],
-        ),
+            ),
+          if (nearbyHotels.isEmpty) Text("Aucun hôtel trouvé"),
+        ],
       ),
     );
   }

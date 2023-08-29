@@ -20,15 +20,19 @@ class CustomRating extends StatelessWidget {
     return Row(
       children: [
         for (int i = 1; i <= 5; i++)
-          Container(
-            margin: const EdgeInsets.all(1),
-            height: size,
-            width: size,
-            decoration: BoxDecoration(
-              color: i <= ratingScore ? yellow : kwhite,
-              shape: BoxShape.circle,
-              border: Border.all(color: yellow, width: 2),
-            ),
+          // Container(
+          //   margin: const EdgeInsets.all(1),
+          //   height: size,
+          //   width: size,
+          //   decoration: BoxDecoration(
+          //     color: i <= ratingScore ? yellow : kwhite,
+          //     shape: BoxShape.circle,
+          //     border: Border.all(color: yellow, width: 2),
+          //   ),
+          // ),
+          Icon(
+            Icons.star,
+            color: i <= ratingScore ? yellow : kgrey,
           ),
         const SizedBox(width: 12),
         AppText.medium(

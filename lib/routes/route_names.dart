@@ -1,7 +1,6 @@
 import 'package:find_hotel/onboard/onboard.dart';
 import 'package:find_hotel/screens/auth/otp.dart';
 import 'package:find_hotel/screens/auth/reset_password.dart';
-import 'package:find_hotel/screens/home/taxi.dart';
 import 'package:find_hotel/screens/search_result.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/screens/auth/login.dart';
@@ -12,6 +11,7 @@ import '../screens/auth/otp_register.dart';
 import '../screens/auth/signup.dart';
 import '../screens/auth/edit_profile.dart';
 
+import '../screens/hotel/home/taxi.dart';
 import '../utils/bottom_bar.dart';
 
 class NavigationServices {

@@ -2,18 +2,16 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../gen/theme.dart';
-import '../../models/hotel_model.dart';
-import '../../providers/all_hotels_provider.dart';
-import '../../providers/string_date_provider.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_number_input.dart';
-import '../../widgets/hotel_card.dart';
-
-import '../../widgets/recommended_places.dart';
-import '../activity_screen.dart';
+import '../../../gen/theme.dart';
+import '../../../widgets/recommended_places.dart';
+import '../../activity_screen.dart';
+import '../../../models/hotel_model.dart';
+import '../../../providers/all_hotels_provider.dart';
+import '../../../providers/string_date_provider.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/custom_number_input.dart';
+import '../../../widgets/hotel_card.dart';
 
 import 'package:find_hotel/providers/all_accomodation.dart';
 import 'package:find_hotel/providers/all_adults_provider.dart';
@@ -64,7 +62,7 @@ class _StayScreenState extends State<StayScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          // const RecommendedPlaces(),
+          const RecommendedPlaces(),
           SizedBox(
             height: height * 0.03,
           ),
@@ -81,33 +79,6 @@ class _StayScreenState extends State<StayScreen> {
           ),
 
           ActivitiesScreen(),
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text(
-          //       "Nearby From You",
-          //       style: Theme.of(context).textTheme.titleLarge,
-          //     ),
-          //     TextButton(onPressed: () {}, child: const Text("View All"))
-          //   ],
-          // ),
-          // const SizedBox(height: 10),
-          // _NearbyHotelSection(),
-
-          // ActivitiesScreen(),
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text(
-          //       "Nearby From You",
-          //       style: Theme.of(context).textTheme.titleLarge,
-          //     ),
-          //     TextButton(onPressed: () {}, child: const Text("View All"))
-          //   ],
-          // ),
-          // const SizedBox(height: 10),
         ],
       ),
     );
@@ -609,7 +580,6 @@ class _SearchCard extends ConsumerWidget {
 
     return '$dayOfWeek $day $month';
   }
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

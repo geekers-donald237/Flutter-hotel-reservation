@@ -102,3 +102,108 @@
 // 	);
 // }
 // }
+
+
+// import 'package:find_hotel/utils/localfiles.dart';
+// import 'package:find_hotel/widgets/app_text.dart';
+// import 'package:find_hotel/widgets/custom_rating.dart';
+// import 'package:flutter/material.dart';
+
+// import 'gen/assets.gen.dart';
+// import 'gen/theme.dart';
+
+
+
+// class HomePage extends StatefulWidget {
+//   @override
+//   State<HomePage> createState() => _HomePageState();
+// }
+
+// class _HomePageState extends State<HomePage> {
+//   int _index = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(),
+//       body: Center(
+//         child: SizedBox(
+//           height: 400, // card height
+//           child: PageView.builder(
+//             itemCount: 10,
+//             controller: PageController(viewportFraction: 0.7),
+//             onPageChanged: (int index) => setState(() => _index = index),
+//             itemBuilder: (_, i) {
+//               return Transform.scale(
+//                 scale: i == _index ? 1 : 0.9,
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Flexible(
+//                       flex: 2,
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.vertical(
+//                           top: Radius.circular(12),
+//                         ),
+//                         child: Image.asset(
+//                           Localfiles.OnboardImg2,
+//                           width: double.maxFinite,
+//                           fit: BoxFit.cover,
+//                           height: 150, // Ajuster la hauteur de l'image
+//                         ),
+//                       ),
+//                     ),
+//                     const SizedBox(height: 5),
+//                     Flexible(
+//                       flex: 2,
+//                       child: Padding(
+//                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
+//                         child: Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             AppText.large(
+//                               'hotel.title',
+//                               fontSize: 18,
+//                               textAlign: TextAlign.left,
+//                               maxLine: 2,
+//                               textOverflow: TextOverflow.ellipsis,
+//                             ),
+//                             const SizedBox(height: 4),
+//                             Row(
+//                               children: [
+//                                 Assets.icon.location.svg(
+//                                   color: kgrey,
+//                                   height: 15,
+//                                 ),
+//                                 const SizedBox(width: 8),
+//                                 AppText.small('hotel.location'),
+//                               ],
+//                             ),
+//                             Padding(
+//                               padding: const EdgeInsets.symmetric(vertical: 12),
+//                               child: CustomRating(ratingScore: 5),
+//                             ),
+//                             RichText(
+//                               text: TextSpan(
+//                                 children: [
+//                                   AppTextSpan.large('\$5555'),
+//                                   AppTextSpan.medium(' /night'),
+//                                 ],
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               );
+//             },
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

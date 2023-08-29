@@ -48,6 +48,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Find Hotel',
       theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+
         scaffoldBackgroundColor: kwhite,
         // fontFamily: FontFamily.workSans,
         // primarySwatch: kprimaryCol,
