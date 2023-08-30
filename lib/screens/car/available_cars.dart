@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../gen/theme.dart';
+import '../../models/card_model.dart';
 import '../../widgets/car_widget.dart';
 import 'book_car.dart';
-import 'data.dart';
 
 class AvailableCars extends StatefulWidget {
   @override
@@ -11,16 +11,7 @@ class AvailableCars extends StatefulWidget {
 }
 
 class _AvailableCarsState extends State<AvailableCars> {
-  List<Filter> filters = getFilterList();
-  Filter? selectedFilter;
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      selectedFilter = filters[0];
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +26,7 @@ class _AvailableCarsState extends State<AvailableCars> {
           icon: Icon(Icons.arrow_back_ios),
         ),
         title: Text(
-          "Available Cars (" + getCarList().length.toString() + ")",
+          "Available Cars (" + Car.allCar.length.toString() + ")",
           style: TextStyle(
             color: Colors.black,
             fontSize: 16,
@@ -67,7 +58,7 @@ class _AvailableCarsState extends State<AvailableCars> {
         padding: EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
-            children: getCarList().map((item) {
+            children: Car.allCar.map((item) {
               return GestureDetector(
                   onTap: () {
                     Navigator.push(

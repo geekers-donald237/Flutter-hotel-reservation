@@ -160,14 +160,17 @@ class _OtpState extends State<Otp> {
                   ),
                 ),
                 SizedBox(height: 18),
-                Text(
-                  AppLocalizations.of(context)!.code_pas_recu,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+                GestureDetector(
+                  onTap: resendCode(email),
+                  child: Text(
+                    AppLocalizations.of(context)!.code_pas_recu,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 18),
                 Text(
@@ -186,6 +189,47 @@ class _OtpState extends State<Otp> {
       ),
     );
   }
+
+
+  resendCode(String email) async {
+    EasyLoading.show(status: "Loading...");
+    var url = Uri.parse(Urls.user);
+    // try {
+
+    try {
+      final response = await http.post(url, headers: {
+        "Accept": "application/json"
+      }, body: {
+        "email": encrypt(email),
+        "action": encrypt("rentali_want_to_resend_code")
+      });
+      // print(json.decode(response.body));
+      var data = jsonDecode(response.body);
+      if (kDebugMode) {
+        print('dssd');
+        print(data);
+      }
+
+    } on SocketException {
+      if (kDebugMode) {
+        print('bbbbbbbbb');
+      }
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.verified_internet,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Try cathc for login to the App ################');
+      }
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      EasyLoading.showError(
+        AppLocalizations.of(context)!.try_again,
+      );
+    }
+  }
+
 
   void checkcode(String email, String verificationCode) async {
     EasyLoading.show(status: AppLocalizations.of(context)!.loading);

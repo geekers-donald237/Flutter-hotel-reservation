@@ -99,8 +99,7 @@
      "votre_emplacement":"Votre emplacement",
      "choose_loca":" Entrer la Destination",
      "app_version":"Version : ",
-
-     
+      "car_rent_day" : "Duree de location",     
      "fav_save" : "Enregistrez vos favoris" ,
      "fav_create": "Creez des listes de vos etablissements preferes pour les partager,les comparer et les reserver facilement",
      "fav_create_liste" : "Creer votre liste",

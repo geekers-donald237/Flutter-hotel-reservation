@@ -2,12 +2,11 @@ import 'dart:math';
 
 import 'package:find_hotel/widgets/car_widget.dart';
 import 'package:flutter/material.dart';
-
-import 'available_cars.dart';
+import 'package:find_hotel/screens/car/available_cars.dart';
+import '../../models/card_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'book_car.dart';
-import 'data.dart';
 
 class Showroom extends StatefulWidget {
   @override
@@ -15,31 +14,25 @@ class Showroom extends StatefulWidget {
 }
 
 class _ShowroomState extends State<Showroom> {
-
-
-  List<Car> cars = getCarList();
-
-  List<Car> getRandomCars() {
+  List<Car> getRandomcar() {
     final random = Random();
 
-    if (cars.length <= 5) {
-      // Si le tableau cars a moins de 5 éléments, retourne le tableau original
-      return cars;
+    if (Car.allCar.length <= 5) {
+      // Si le tableau car a moins de 5 éléments, retourne le tableau original
+      return Car.allCar;
     }
 
-    List<Car> randomCars = [];
-    while (randomCars.length < 5) {
-      int randomIndex = random.nextInt(cars.length);
+    List<Car> randomcar = [];
+    while (randomcar.length < 5) {
+      int randomIndex = random.nextInt(Car.allCar.length);
 
-      if (!randomCars.contains(cars[randomIndex])) {
-        randomCars.add(cars[randomIndex]);
+      if (!randomcar.contains(Car.allCar[randomIndex])) {
+        randomcar.add(Car.allCar[randomIndex]);
       }
     }
 
-    return randomCars;
+    return randomcar;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +115,11 @@ class _ShowroomState extends State<Showroom> {
                           ),
                           TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AvailableCars()),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => Availablecar()),
+                                // );
                               },
                               child: Text(
                                   AppLocalizations.of(context)!.view_all_hotel))
@@ -136,7 +129,7 @@ class _ShowroomState extends State<Showroom> {
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: Column(
-                        children: getRandomCars().map((item) {
+                        children: getRandomcar().map((item) {
                           return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -161,18 +154,19 @@ class _ShowroomState extends State<Showroom> {
 
   List<Widget> buildDeals() {
     List<Widget> list = [];
-    // for (var i = 0; i < cars.length; i++) {
-       for (var i = 0; i < 5; i++) { // je vais ajoute une implementation pour afficher les meilleurs deal a chaque fois.
+    // for (var i = 0; i < car.length; i++) {
+    for (var i = 0; i < 5; i++) {
+      // je vais ajoute une implementation pour afficher les meilleurs deal a chaque fois.
       list.add(GestureDetector(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookCar(car: cars[i])),
+              MaterialPageRoute(
+                  builder: (context) => BookCar(car: Car.allCar[i])),
             );
           },
-          child: buildCar(cars[i], i)));
+          child: buildCar(Car.allCar[i], i)));
     }
     return list;
   }
-
 }

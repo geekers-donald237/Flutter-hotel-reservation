@@ -207,3 +207,42 @@
 //     );
 //   }
 // }
+
+
+import 'package:flutter/material.dart';
+
+class CarFeatureWidget extends StatelessWidget {
+  final String title;
+  final String value;
+
+  CarFeatureWidget({required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2, // Niveau d'élévation de la carte
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Spacer(),
+            Icon(
+              value == 'On' ? Icons.check : Icons.close,
+              color: value == 'On' ? Colors.green : Colors.red,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

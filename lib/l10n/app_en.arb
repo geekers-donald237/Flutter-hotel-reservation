@@ -79,6 +79,7 @@
      "hebergement_name": "Accomodation",
      "search_btn" : "search",
      "email_in_use":"Email already in use",
+     "car_rent_day" : "Duration of rent",
 
      "onboard1_screens_title": "Find The Best Deal",
      "onboard2_screens_title": "Get Easy Access Anytime and Anywhere",

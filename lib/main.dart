@@ -62,8 +62,8 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate
       ],
       supportedLocales: L10n.all,
-      //  home: isviewed != 0 ? OnBoard() : SplashScreen(),
-      home: BottomBar(id: 0),
+       home: isviewed != 0 ? OnBoard() : SplashScreen(),
+      // home: BottomBar(id: 0),
       builder: EasyLoading.init(),
     );
   }

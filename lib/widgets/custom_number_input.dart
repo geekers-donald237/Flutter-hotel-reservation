@@ -22,26 +22,32 @@ class CustomNumberInput extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          IconButton(
-            onPressed: onDecrease,
-            icon: Icon(Icons.remove),
-          ),
-          SizedBox(
-            width: 50,
-            child: TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                // Optional: Uncomment the following lines to update the value as the user types
-                // int newValue = int.tryParse(value) ?? 0;
-                // onValueChanged(newValue);
-              },
+          Expanded(
+            child: IconButton(
+              onPressed: onDecrease,
+              icon: Icon(Icons.remove),
             ),
           ),
-          IconButton(
-            onPressed: onIncrease,
-            icon: Icon(Icons.add),
+          Expanded(
+            child: SizedBox(
+              width: 50,
+              child: TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  // Optional: Uncomment the following lines to update the value as the user types
+                  // int newValue = int.tryParse(value) ?? 0;
+                  // onValueChanged(newValue);
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: IconButton(
+              onPressed: onIncrease,
+              icon: Icon(Icons.add),
+            ),
           ),
         ],
       ),

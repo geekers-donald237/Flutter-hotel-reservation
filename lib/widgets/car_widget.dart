@@ -1,7 +1,7 @@
 import 'package:find_hotel/gen/theme.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/car/data.dart';
+import '../models/card_model.dart';
 import 'app_text.dart';
 import 'custom_rating.dart';
 
@@ -43,7 +43,7 @@ Widget BuildHorizontalCard(Car car, int index) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText.large(
-                    car.model,
+                    car.vehiclesTitle,
                     fontSize: 18,
                     textAlign: TextAlign.left,
                     maxLine: 2,
@@ -51,13 +51,13 @@ Widget BuildHorizontalCard(Car car, int index) {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: CustomRating(ratingScore: car.ratingCar),
+                    child: CustomRating(ratingScore: 3),
                   ),
                   RichText(
                     text: TextSpan(
                       children: [
-                        AppTextSpan.large('\$${car.price}'),
-                        AppTextSpan.medium(' /night'),
+                        AppTextSpan.large('\$${car.pricePerDay}'),
+                        AppTextSpan.medium(' /day'),
                       ],
                     ),
                   ),
@@ -73,7 +73,6 @@ Widget BuildHorizontalCard(Car car, int index) {
     ),
   );
 }
-
 
 Widget buildCar(Car car, int index) {
   return Container(
@@ -99,17 +98,17 @@ Widget buildCar(Car car, int index) {
                 Radius.circular(15),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Text(
-                car.condition,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            // child: Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            //   child: Text(
+            //     car.condition,
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 12,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
           ),
         ),
         SizedBox(
@@ -119,7 +118,7 @@ Widget buildCar(Car car, int index) {
           height: 120,
           child: Center(
             child: Hero(
-              tag: car.model,
+              tag: car.vehiclesTitle,
               child: Image.asset(
                 car.image[0],
                 fit: BoxFit.fitWidth,
@@ -131,19 +130,19 @@ Widget buildCar(Car car, int index) {
           height: 20,
         ),
         Text(
-          car.model,
-          style: TextStyle(fontSize: 18),
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        Text(
-          car.brand,
+          '${car.vehiclesTitle} ',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
             height: 1,
           ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Text(
+          'serie :  ${car.modelYear}',
+          style: TextStyle(fontSize: 18),
         ),
         // SizedBox(
         //   height: 8,
