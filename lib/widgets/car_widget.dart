@@ -1,11 +1,12 @@
 import 'package:find_hotel/gen/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/card_model.dart';
 import 'app_text.dart';
 import 'custom_rating.dart';
 
-Widget BuildHorizontalCard(Car car, int index) {
+Widget BuildHorizontalCard(Car car, int index, BuildContext context) {
   return Container(
     margin: const EdgeInsets.only(top: 10),
     decoration: BoxDecoration(
@@ -57,7 +58,8 @@ Widget BuildHorizontalCard(Car car, int index) {
                     text: TextSpan(
                       children: [
                         AppTextSpan.large('\$${car.pricePerDay}'),
-                        AppTextSpan.medium(' /day'),
+                        AppTextSpan.medium(
+                            ' /${AppLocalizations.of(context)!.day}'),
                       ],
                     ),
                   ),

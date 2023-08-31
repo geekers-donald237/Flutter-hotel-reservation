@@ -25,10 +25,10 @@ class _SplashScreenState extends State<SplashScreen> {
     //EasyLoading.show(status: "Loading...");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String check = prefs.getString('email').toString();
-    if(check.isEmpty){
+    if (check.isEmpty) {
       timer?.cancel();
       NavigationServices(context).gotoLoginScreen();
-    }else{
+    } else {
       try {
         email = decrypt(prefs.getString('email').toString());
         var url = Uri.parse(Urls.user);
@@ -62,12 +62,12 @@ class _SplashScreenState extends State<SplashScreen> {
             if (data['message'] == 'User request to delete account') {
               NavigationServices(context).gotoLoginScreen();
             }
-            if(data['message'] == 'user is not active'){
+            if (data['message'] == 'user is not active') {
               NavigationServices(context).gotoLoginScreen();
             }
-            if(data['message'] == 'User not exist'){
+            if (data['message'] == 'User not exist') {
               NavigationServices(context).gotoLoginScreen();
-            }else{
+            } else {
               NavigationServices(context).gotoLoginScreen();
             }
           }
@@ -77,6 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
           print('bbbbbbbbb');
         }
         EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
           AppLocalizations.of(context)!.verified_internet,
         );
       } catch (e) {
@@ -86,14 +87,13 @@ class _SplashScreenState extends State<SplashScreen> {
         if (kDebugMode) {
           print(e.toString());
         }
-        // EasyLoading.showError(
+        // EasyLoading.showError(duration: Duration(milliseconds: 1500),
         //   AppLocalizations.of(context)!.try_again,
         // );
         timer?.cancel();
         NavigationServices(context).gotoLoginScreen();
       }
     }
-
   }
 
   Timer? timer;

@@ -4,20 +4,17 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../gen/theme.dart';
+import '../../../routes/route_names.dart';
 import '../../../widgets/recommended_places.dart';
-import '../../activity_screen.dart';
+import 'activity_screen.dart';
 import '../../../models/hotel_model.dart';
 import '../../../providers/all_hotels_provider.dart';
-import '../../../providers/string_date_provider.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_number_input.dart';
 import '../../../widgets/hotel_card.dart';
 
-import 'package:find_hotel/providers/all_accomodation.dart';
-import 'package:find_hotel/providers/all_adults_provider.dart';
-import 'package:find_hotel/providers/all_enfants_provider.dart';
-import 'package:find_hotel/providers/current_location.dart';
-import 'package:find_hotel/routes/route_names.dart';
+import '../../../../providers/utils_provider.dart';
+
 import 'package:find_hotel/urls/all_url.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -31,56 +28,72 @@ class StayScreen extends StatefulWidget {
 }
 
 class _StayScreenState extends State<StayScreen> {
+  bool isLoading = true; // Variable pour suivre l'état de chargement
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false; // La charge est terminée
+      });
+    });
+    EasyLoading.dismiss();
+  }
+
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(14),
-        children: [
-          SizedBox(
-            height: height * 0.01,
-          ),
-          _SearchCard(),
-          const SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.recommendation,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              TextButton(
-                  onPressed: () {},
-                  child: Text(AppLocalizations.of(context)!.view_all_hotel))
-            ],
-          ),
-          const SizedBox(height: 10),
-          const RecommendedPlaces(),
-          SizedBox(
-            height: height * 0.03,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.more_option_hotel,
-                textAlign: TextAlign.start,
-                semanticsLabel: AppLocalizations.of(context)!.more_option_hotel,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ],
-          ),
-
-          ActivitiesScreen(),
-        ],
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(14),
+              children: [
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                _SearchCard(),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.recommendation,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    TextButton(
+                        onPressed: () {},
+                        child:
+                            Text(AppLocalizations.of(context)!.view_all_hotel))
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const RecommendedPlaces(),
+                SizedBox(
+                  height: height * 0.03,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.more_option_hotel,
+                      textAlign: TextAlign.start,
+                      semanticsLabel:
+                          AppLocalizations.of(context)!.more_option_hotel,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
+                ),
+                ActivitiesScreen(),
+              ],
+            ),
     );
   }
 
@@ -299,11 +312,12 @@ class _SearchCard extends ConsumerWidget {
   late int accomodation;
   late int adults;
   late int children;
+
   TextEditingController destinationController = TextEditingController();
-  String destination = '';
+
   List<DateTime?> _dialogCalendarPickerValue = [
-    DateTime(2023, 2, 10),
-    DateTime(2023, 2, 13),
+    DateTime.now(),
+    DateTime(2023, 12, 13),
   ];
   String dateTravel = '';
 
@@ -330,7 +344,9 @@ class _SearchCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    Row(),
+                    // SizedBox(height: 20),
+
                     Row(
                       children: [
                         Expanded(
@@ -381,6 +397,7 @@ class _SearchCard extends ConsumerWidget {
                       ],
                     ),
                     SizedBox(height: 20),
+
                     Row(
                       children: [
                         Expanded(
@@ -586,8 +603,10 @@ class _SearchCard extends ConsumerWidget {
     accomodation = ref.watch(allAccomodationProvider);
     adults = ref.watch(allAdultsProvider);
     children = ref.watch(allChildrenProvider);
-    destination = ref.watch(LocationCurrentProvider);
     dateTravel = ref.watch(StringDateProvider);
+    String destination = AppLocalizations.of(context)!.choose_loca;
+
+    destination = ref.watch(LocationCurrentProvider);
 
     return Container(
       decoration: BoxDecoration(
@@ -672,8 +691,10 @@ class _SearchCard extends ConsumerWidget {
             buttonText: AppLocalizations.of(context)!.search_btn,
             onPressed: () {
               EasyLoading.show(status: AppLocalizations.of(context)!.loading);
-              if (destination == 'Votre Destination' || dateTravel == '') {
+              if (destination == AppLocalizations.of(context)!.choose_loca ||
+                  dateTravel == '') {
                 EasyLoading.showError(
+                    duration: Duration(milliseconds: 1500),
                     AppLocalizations.of(context)!.all_fields_destination);
               } else {
                 EasyLoading.dismiss();

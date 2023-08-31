@@ -223,7 +223,7 @@ class _BookCarState extends State<BookCar> {
                               width: 5,
                             ),
                             Expanded(
-                              child: CustomNumberInput(
+                              child: CustomNumberInput2(
                                 value: dayDuration,
                                 onDecrease: () {
                                   setState(() {
@@ -303,26 +303,38 @@ class _BookCarState extends State<BookCar> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         CarFeatureWidget(
-                            'Air Conditioner', widget.car.airConditioner),
+                            AppLocalizations.of(context)!.air_condition,
+                            widget.car.airConditioner),
                         CarFeatureWidget(
-                            'Power Door Lock', widget.car.powerDoorLock),
-                        CarFeatureWidget('Anti-lock Braking System',
+                            AppLocalizations.of(context)!.power_door,
+                            widget.car.powerDoorLock),
+                        CarFeatureWidget(
+                            AppLocalizations.of(context)!.anti_lock,
                             widget.car.antiLockBrakingSystem),
                         CarFeatureWidget(
-                            'brake assist', widget.car.brakeAssist),
+                            AppLocalizations.of(context)!.brake_assist,
+                            widget.car.brakeAssist),
                         CarFeatureWidget(
-                            'drive airbag', widget.car.driveAirBag),
+                            AppLocalizations.of(context)!.drive_air_bag,
+                            widget.car.driveAirBag),
                         CarFeatureWidget(
-                            'passenger airbag', widget.car.passengerAirBag),
+                            AppLocalizations.of(context)!.passenger_air_bag,
+                            widget.car.passengerAirBag),
                         CarFeatureWidget(
-                            'power windows', widget.car.powerWindows),
-                        CarFeatureWidget('cd players', widget.car.cdPlayers),
+                            AppLocalizations.of(context)!.power_windows,
+                            widget.car.powerWindows),
                         CarFeatureWidget(
-                            'Central Locking', widget.car.centralLocking),
+                            AppLocalizations.of(context)!.cd_player,
+                            widget.car.cdPlayers),
                         CarFeatureWidget(
-                            'crash sensor', widget.car.crashSensor),
+                            AppLocalizations.of(context)!.central_locking,
+                            widget.car.centralLocking),
                         CarFeatureWidget(
-                            'leather seat', widget.car.leatherSeat),
+                            AppLocalizations.of(context)!.crash_sensor,
+                            widget.car.crashSensor),
+                        CarFeatureWidget(
+                            AppLocalizations.of(context)!.leather_s,
+                            widget.car.leatherSeat),
                       ],
                     ),
                   )

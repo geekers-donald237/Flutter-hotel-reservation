@@ -190,7 +190,6 @@ class _OtpState extends State<Otp> {
     );
   }
 
-
   resendCode(String email) async {
     EasyLoading.show(status: "Loading...");
     var url = Uri.parse(Urls.user);
@@ -209,12 +208,12 @@ class _OtpState extends State<Otp> {
         print('dssd');
         print(data);
       }
-
     } on SocketException {
       if (kDebugMode) {
         print('bbbbbbbbb');
       }
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.verified_internet,
       );
     } catch (e) {
@@ -225,11 +224,11 @@ class _OtpState extends State<Otp> {
         print(e.toString());
       }
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.try_again,
       );
     }
   }
-
 
   void checkcode(String email, String verificationCode) async {
     EasyLoading.show(status: AppLocalizations.of(context)!.loading);
@@ -256,25 +255,37 @@ class _OtpState extends State<Otp> {
               AppLocalizations.of(context)!.success_success);
           NavigationServices(context).gotoResetPassword(email);
         } else {
-          EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
+          EasyLoading.showInfo(
+              duration: Duration(milliseconds: 1500),
+              AppLocalizations.of(context)!.try_again);
         }
       } else {
         if (data['status'] == 'error') {
           if (data['message'] == 'Incorrect code') {
-            EasyLoading.showInfo(AppLocalizations.of(context)!.invalid_code);
+            EasyLoading.showInfo(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.invalid_code);
           }
           if (data['message'] == "User request to delete account") {
-            EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
+            EasyLoading.showInfo(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.try_again);
           }
           if (data['message'] == 'This email not exist') {
-            EasyLoading.showInfo(AppLocalizations.of(context)!.incorrect_email);
+            EasyLoading.showInfo(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.incorrect_email);
           } else {
-            EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
+            EasyLoading.showInfo(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.try_again);
           }
         }
       }
     } on SocketException {
-      EasyLoading.showInfo(AppLocalizations.of(context)!.verified_internet);
+      EasyLoading.showInfo(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.verified_internet);
       if (kDebugMode) {
         print('internet error');
       }
@@ -285,7 +296,9 @@ class _OtpState extends State<Otp> {
       if (kDebugMode) {
         print(e.toString());
       }
-      EasyLoading.showInfo(AppLocalizations.of(context)!.try_again);
+      EasyLoading.showInfo(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.try_again);
     }
   }
 
@@ -308,6 +321,7 @@ class _OtpState extends State<Otp> {
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
         EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
           AppLocalizations.of(context)!.invalid_code,
         );
         return false;

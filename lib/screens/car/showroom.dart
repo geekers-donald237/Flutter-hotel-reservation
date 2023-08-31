@@ -14,6 +14,7 @@ class Showroom extends StatefulWidget {
 }
 
 class _ShowroomState extends State<Showroom> {
+  bool isLoading = true;
   List<Car> getRandomcar() {
     final random = Random();
 
@@ -35,120 +36,134 @@ class _ShowroomState extends State<Showroom> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false; // La charge est terminée
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Ex: Toyota',
-                  hintStyle: TextStyle(fontSize: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[100],
-                  contentPadding: EdgeInsets.only(
-                    left: 30,
-                  ),
-                  suffixIcon: Padding(
-                    padding: EdgeInsets.only(right: 24.0, left: 16.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        print('je fais une recherche');
-                      },
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.black,
-                        size: 24,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Ex: Toyota',
+                        hintStyle: TextStyle(fontSize: 16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                        contentPadding: EdgeInsets.only(
+                          left: 30,
+                        ),
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.only(right: 24.0, left: 16.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              print('je fais une recherche');
+                            },
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Top  Today Deals",
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 280,
-                      child: ListView(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        children: buildDeals(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.recommendation,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => Availablecar()),
-                                // );
-                              },
-                              child: Text(
-                                  AppLocalizations.of(context)!.view_all_hotel))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Container(
                       child: Column(
-                        children: getRandomcar().map((item) {
-                          return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BookCar(car: item)),
-                                );
-                              },
-                              child: BuildHorizontalCard(item, 0));
-                        }).toList(),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.top_deal,
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 280,
+                            child: ListView(
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: buildDeals(),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.recommendation,
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AvailableCars()),
+                                      );
+                                    },
+                                    child: Text(AppLocalizations.of(context)!
+                                        .view_all_hotel))
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Column(
+                              children: getRandomcar().map((item) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BookCar(car: item)),
+                                      );
+                                    },
+                                    child:
+                                        BuildHorizontalCard(item, 0, context));
+                              }).toList(),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 

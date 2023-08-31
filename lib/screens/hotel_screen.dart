@@ -11,11 +11,10 @@ import 'package:ionicons/ionicons.dart';
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
 import '../models/hotel_model.dart';
-import '../providers/current_location.dart';
+import '../../../../providers/utils_provider.dart';
 import '../utils/helper.dart';
 import '../widgets/app_text.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/custom_icon_container.dart';
 import '../widgets/custom_rating.dart';
 
 class HotelDetailScreen extends StatefulWidget {

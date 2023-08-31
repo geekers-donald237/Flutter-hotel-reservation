@@ -11,9 +11,18 @@ class AvailableCars extends StatefulWidget {
 }
 
 class _AvailableCarsState extends State<AvailableCars> {
- 
-
   @override
+  bool isLoading = true;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        isLoading = false; // La charge est terminée
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -54,24 +63,26 @@ class _AvailableCarsState extends State<AvailableCars> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: Car.allCar.map((item) {
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BookCar(car: item)),
-                    );
-                  },
-                  child: BuildHorizontalCard(item, 0));
-            }).toList(),
-          ),
-        ),
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Container(
+              padding: EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: Car.allCar.map((item) {
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BookCar(car: item)),
+                          );
+                        },
+                        child: BuildHorizontalCard(item, 0, context));
+                  }).toList(),
+                ),
+              ),
+            ),
     );
   }
 }

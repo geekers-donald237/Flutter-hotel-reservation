@@ -1,15 +1,11 @@
-import 'package:find_hotel/routes/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/gen/theme.dart';
-import 'package:find_hotel/utils/localfiles.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../screens/auth/login.dart';
 import '../utils/Helpers.dart';
-import 'onboard_model.dart';
 
 class OnBoard extends StatefulWidget {
   @override
@@ -63,8 +59,8 @@ class _OnBoardState extends State<OnBoard> {
     ];
     final List<String> _subtitlesList = [
       AppLocalizations.of(context)!.the_best_deal_for_your_holidays,
-      'AppLocalizations.of(context)!.a_diverse_list_of_food_dining_restaurant',
-      'AppLocalizations.of(context)!.get_your_favorite_food_fastest',
+      AppLocalizations.of(context)!.pas_be_deplace,
+      AppLocalizations.of(context)!.util_app,
     ];
     return Scaffold(
       backgroundColor: isDarkMode(context) ? const Color(0XFF151618) : null,

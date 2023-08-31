@@ -16,34 +16,9 @@ class $AssetsIconGen {
 
   $AssetsIconAmenitiesGen get amenities => const $AssetsIconAmenitiesGen();
 
-  /// File path: assets/icon/booking.svg
-  SvgGenImage get booking => const SvgGenImage('assets/icon/booking.svg');
-
-  /// File path: assets/icon/calendar.svg
-  SvgGenImage get calendar => const SvgGenImage('assets/icon/calendar.svg');
-
-  /// File path: assets/icon/chevron-down.svg
-  SvgGenImage get chevronDown =>
-      const SvgGenImage('assets/icon/chevron-down.svg');
-
-  /// File path: assets/icon/home.svg
-  SvgGenImage get home => const SvgGenImage('assets/icon/home.svg');
-
-  /// File path: assets/icon/like.svg
-  SvgGenImage get like => const SvgGenImage('assets/icon/like.svg');
-
+  
   /// File path: assets/icon/location.svg
   SvgGenImage get location => const SvgGenImage('assets/icon/location.svg');
-
-  /// File path: assets/icon/map.svg
-  SvgGenImage get map => const SvgGenImage('assets/icon/map.svg');
-
-  /// File path: assets/icon/notification.svg
-  SvgGenImage get notification =>
-      const SvgGenImage('assets/icon/notification.svg');
-
-  /// File path: assets/icon/pin.svg
-  SvgGenImage get pin => const SvgGenImage('assets/icon/pin.svg');
 
   /// File path: assets/icon/pin_png.png
   AssetGenImage get pinPng => const AssetGenImage('assets/icon/pin_png.png');
@@ -51,23 +26,12 @@ class $AssetsIconGen {
   /// File path: assets/icon/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icon/profile.svg');
 
-  /// File path: assets/icon/wishlist.svg
-  SvgGenImage get wishlist => const SvgGenImage('assets/icon/wishlist.svg');
-
   /// List of all assets
   List<dynamic> get values => [
-        booking,
-        calendar,
-        chevronDown,
-        home,
-        like,
+      
         location,
-        map,
-        notification,
-        pin,
         pinPng,
         profile,
-        wishlist
       ];
 }
 

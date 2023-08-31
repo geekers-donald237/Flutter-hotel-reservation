@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SortOptionsBottomSheet extends StatefulWidget {
   @override
@@ -9,18 +9,16 @@ class SortOptionsBottomSheet extends StatefulWidget {
 class _SortOptionsBottomSheetState extends State<SortOptionsBottomSheet> {
   String? selectedOption;
 
-  List<String> sortOptions = [
-    'Logements entiers en premier',
-    'Distance du lieu d\'intérêt',
-    'Popularité',
-    'Catégorie (ordre croissant)',
-    'Catégorie (ordre décroissant)',
-    'Plus demandées',
-    'Tarif (du moins cher au plus cher)',
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    List<String> sortOptions = [
+      AppLocalizations.of(context)!.bottom_option_logement_first,
+      AppLocalizations.of(context)!.bottom_option_distancet,
+      AppLocalizations.of(context)!.bottom_option_popularitet,
+      AppLocalizations.of(context)!.bottom_option_categorie_croissant,
+      AppLocalizations.of(context)!.bottom_option_categorie_decroissant,
+      AppLocalizations.of(context)!.bottom_option_plus_demande,
+      AppLocalizations.of(context)!.bottom_option_tarif,
+    ];
     double screenHeight = MediaQuery.of(context).size.height;
     double bottomSheetHeight = screenHeight * 4 / 5;
 
@@ -48,13 +46,13 @@ class _SortOptionsBottomSheetState extends State<SortOptionsBottomSheet> {
                       setState(() {
                         selectedOption = value;
                       });
+                      Navigator.of(context).pop();
                     },
                   ),
                   onTap: () {
                     setState(() {
                       selectedOption = option;
                     });
-                    // Ajoutez ici le code à exécuter lorsque l'élément est sélectionné
                   },
                 );
               }).toList(),

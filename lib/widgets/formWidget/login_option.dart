@@ -23,7 +23,7 @@ class LoginOption extends StatelessWidget {
             width: 20,
             image: AssetImage(Localfiles.google),
           ),
-          textButton: 'Google', onpress: signIn,
+          textButton: 'Google', onpress: () {},
         ),
       ],
     );

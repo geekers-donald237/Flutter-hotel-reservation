@@ -1,9 +1,10 @@
 import 'package:find_hotel/screens/hotel/home/stay.dart';
+import 'package:find_hotel/utils/Helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
-
 
 import 'package:find_hotel/urls/all_url.dart';
 
@@ -11,7 +12,6 @@ import '../../../gen/theme.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/custom_icon_button.dart';
 import '../../car/showroom.dart';
-
 
 class IndexScreen extends StatefulWidget {
   const IndexScreen({
@@ -51,6 +51,8 @@ class _IndexScreenState extends State<IndexScreen>
     _tabController = TabController(length: mytabs.length, vsync: this);
     _tabController.index =
         status; // Set the initial index after initializing the TabController
+
+    EasyLoading.dismiss();
   }
 
   @override
@@ -157,7 +159,9 @@ class _IndexScreenState extends State<IndexScreen>
                 DrawerItem(
                     name: AppLocalizations.of(context)!.drawer_logout,
                     icon: Icons.logout,
-                    onPressed: () {}),
+                    onPressed: () {
+                      logout(context);
+                    }),
               ],
             ),
           ),

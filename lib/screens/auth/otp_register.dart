@@ -31,7 +31,7 @@ class Otp2 extends StatefulWidget {
 class _Otp2State extends State<Otp2> {
   String email = '';
   String verifCode = '';
- 
+
   _Otp2State(
     String email,
     String verifCode,
@@ -193,6 +193,7 @@ class _Otp2State extends State<Otp2> {
     // Vérification si le code est vide
     if (code.isEmpty) {
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.error_all_fields,
       );
       return false;
@@ -201,6 +202,7 @@ class _Otp2State extends State<Otp2> {
     // Vérification si le code contient exactement 4 caractères
     if (code.length != 4) {
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.error_all_fields,
       );
       return false;
@@ -210,6 +212,7 @@ class _Otp2State extends State<Otp2> {
     for (int i = 0; i < code.length; i++) {
       if (!RegExp(r'^[0-9]$').hasMatch(code[i])) {
         EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
           AppLocalizations.of(context)!.invalid_code,
         );
         return false;
@@ -238,12 +241,12 @@ class _Otp2State extends State<Otp2> {
         print('dssd');
         print(data);
       }
-
     } on SocketException {
       if (kDebugMode) {
         print('bbbbbbbbb');
       }
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.verified_internet,
       );
     } catch (e) {
@@ -254,11 +257,11 @@ class _Otp2State extends State<Otp2> {
         print(e.toString());
       }
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.try_again,
       );
     }
   }
-
 
   void checkcode(String email, String verificationCode) async {
     EasyLoading.show(status: AppLocalizations.of(context)!.loading);
@@ -287,22 +290,32 @@ class _Otp2State extends State<Otp2> {
       } else {
         if (data['status'] == 'error') {
           if (data['message'] == 'Incorrect code') {
-            EasyLoading.showError(AppLocalizations.of(context)!.invalid_code);
+            EasyLoading.showError(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.invalid_code);
           }
           if (data['message'] == 'This email not exist') {
-            EasyLoading.showError(AppLocalizations.of(context)!.verifier_email);
+            EasyLoading.showError(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.verifier_email);
           } else {
-            EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+            EasyLoading.showError(
+                duration: Duration(milliseconds: 1500),
+                AppLocalizations.of(context)!.try_again);
           }
         } else {
-          EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+          EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
+              AppLocalizations.of(context)!.try_again);
         }
       }
     } on SocketException {
       if (kDebugMode) {
         print('internet error');
       }
-      EasyLoading.showError(AppLocalizations.of(context)!.verified_internet);
+      EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.verified_internet);
     } catch (e) {
       if (kDebugMode) {
         print('try catch dans otp register');
@@ -310,7 +323,9 @@ class _Otp2State extends State<Otp2> {
       if (kDebugMode) {
         print(e.toString());
       }
-      EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+      EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.try_again);
     }
   }
 
