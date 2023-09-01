@@ -1,12 +1,8 @@
-import 'package:find_hotel/utils/localfiles.dart';
 import 'package:flutter/material.dart';
 
-import '../gen/assets.gen.dart';
-import '../gen/theme.dart';
 import '../models/hotel_model.dart';
 import '../screens/hotel_screen.dart';
 import 'app_text.dart';
-import 'custom_rating.dart';
 
 class HotelCard extends StatefulWidget {
   const HotelCard({

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:find_hotel/screens/image_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,11 +11,10 @@ import 'package:ionicons/ionicons.dart';
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
 import '../models/hotel_model.dart';
-import '../providers/current_location.dart';
+import '../../../../providers/utils_provider.dart';
 import '../utils/helper.dart';
 import '../widgets/app_text.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/custom_icon_container.dart';
 import '../widgets/custom_rating.dart';
 
 class HotelDetailScreen extends StatefulWidget {
@@ -284,7 +284,7 @@ class _FacilitiesSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         GestureDetector(
-          onTap: () =>{},
+            onTap: () => {},
             child: AppText.medium('Show more',
                 textDecoration: TextDecoration.underline))
       ],
@@ -319,41 +319,122 @@ class _GallerySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: AppText.medium('Gallery', fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          height: 150,
-          child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(left: 10),
-            itemCount: imagePaths.length,
-            itemBuilder: (context, index) {
-              final imagePath = imagePaths[index];
-              return AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  margin: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      image: AssetImage(imagePath),
-                      fit: BoxFit.cover,
+    if (imagePaths.length <= 3) {
+      // If there are 3 or fewer images, display them without the "more" block
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: AppText.medium('Gallery', fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          SizedBox(
+            height: 150,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 10),
+              itemCount: imagePaths.length,
+              itemBuilder: (context, index) {
+                final imagePath = imagePaths[index];
+                return AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      // If there are more than 3 images, use the existing logic
+      List<String> firstThreeImages = imagePaths.take(3).toList();
+      int remainingImageCount = imagePaths.length - 3;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: AppText.medium('Gallery', fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          SizedBox(
+            height: 150,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 10),
+              itemCount: firstThreeImages.length + 1,
+              itemBuilder: (context, index) {
+                if (index < firstThreeImages.length) {
+                  final imagePath = firstThreeImages[index];
+                  return AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      margin: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: AssetImage(imagePath),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  // Display the "more" block with the background image
+                  return GestureDetector(
+                    onTap: () {
+                     Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ImageScreen(imagePaths: imagePaths,)));
+                    },
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image:
+                                AssetImage(imagePaths[3]), // Background image
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black
+                                  .withOpacity(0.5), // Dark overlay color
+                              BlendMode.darken,
+                            ),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '$remainingImageCount\nmore',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      );
+    }
   }
 }
 

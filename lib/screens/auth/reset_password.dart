@@ -26,8 +26,11 @@ class _ResetPasswordState extends State<ResetPassword> {
   String email = '';
 
   _ResetPasswordState(
-      String email,) {
+    String email,
+  ) {
     super.initState();
+    EasyLoading.dismiss();
+
     this.email = email;
   }
 
@@ -78,7 +81,6 @@ class _ResetPasswordState extends State<ResetPassword> {
               PrimaryButton(
                 buttonText: AppLocalizations.of(context)!.reset_psw,
                 ontap: () {
-
                   if (validateLoginForm(
                       pswController.text, cpswController.text)) {
                     resetPassword(pswController.text, widget.email);
@@ -95,10 +97,6 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
   }
 
-  void clearController() {
-    cpswController.clear();
-    pswController.clear();
-  }
 
 // Utilisation de la fonction de validation dans un exemple de formulaire de connexion (login)
 
@@ -142,20 +140,26 @@ class _ResetPasswordState extends State<ResetPassword> {
   bool validateLoginForm(String password, String cpassword) {
     // Vérification si aucun champ n'est vide
     if (cpassword.isEmpty || password.isEmpty) {
-      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.error_all_fields,
+      );
       return false;
     }
 
     if (cpassword != password) {
-      EasyLoading.showError(AppLocalizations.of(context)!.password_doest_match,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.password_doest_match,
+      );
 
       return false;
     } else {
       if (password.length < 6) {
-        EasyLoading.showError(AppLocalizations.of(context)!.password_short,
-            duration: Duration(seconds: 3));
+        EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.password_short,
+        );
       }
     }
 
@@ -164,8 +168,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   void resetPassword(String password, String email) async {
-    EasyLoading.show(
-        status: AppLocalizations.of(context)!.loading);
+    EasyLoading.show(status: AppLocalizations.of(context)!.loading);
     var url = Uri.parse(Urls.user);
     try {
       final response = await http.post(url, headers: {
@@ -182,12 +185,17 @@ class _ResetPasswordState extends State<ResetPassword> {
       }
       if (response.statusCode == 400) {
         if (data['message'] == 'This email not exist') {
-          EasyLoading.showError(AppLocalizations.of(context)!.email_not_exits);
-
+          EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
+              AppLocalizations.of(context)!.email_not_exits);
         } else if (data['message'] == 'User request to delete account') {
-          EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+          EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
+              AppLocalizations.of(context)!.try_again);
         } else {
-          EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+          EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
+              AppLocalizations.of(context)!.try_again);
         }
       } else {
         EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
@@ -199,7 +207,9 @@ class _ResetPasswordState extends State<ResetPassword> {
     } catch (e) {
       print('tttttttttttt');
       print(e.toString());
-      EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+      EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.try_again);
     }
   }
 }

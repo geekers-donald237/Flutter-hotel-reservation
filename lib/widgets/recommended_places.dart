@@ -12,18 +12,30 @@ class RecommendedPlaces extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      itemCount: HotelModel.sampleHotels.length,
-      itemBuilder: (BuildContext context, int index) {
-        HotelModel hotel = HotelModel.sampleHotels[index];
-        return OptionCard(
-          hotel: hotel,
-        );
-      },
+    return Container(
+      height: 280,
+      child: ListView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        children: buildHotelDeal(),
+      ),
     );
   }
+}
+
+List<Widget> buildHotelDeal() {
+  List<Widget> list = [];
+  for (var i = 0; i < HotelModel.sampleHotels.length; i++) {
+    list.add(
+      GestureDetector(
+        onTap: () {},
+        child: OptionCard(
+          hotel: HotelModel.sampleHotels[i],
+        ),
+      ),
+    );
+  }
+  return list;
 }
 
 class OptionCard extends StatelessWidget {
@@ -45,68 +57,152 @@ class OptionCard extends StatelessWidget {
           ),
         );
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 2,
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(12),
-              ),
-              child: Image.asset(
-                hotel.thumbnailPath,
-                width: double.maxFinite,
-                fit: BoxFit.cover,
-                height: 150, // Ajuster la hauteur de l'image
-              ),
-            ),
+      // child: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [
+      //     Flexible(
+      //       flex: 2,
+      //       child: ClipRRect(
+      //         borderRadius: BorderRadius.vertical(
+      //           top: Radius.circular(12),
+      //         ),
+      //         child: Image.asset(
+      //           hotel.thumbnailPath,
+      //           width: double.maxFinite,
+      //           fit: BoxFit.cover,
+      //           height: 150, // Ajuster la hauteur de l'image
+      //         ),
+      //       ),
+      //     ),
+      //     const SizedBox(height: 5),
+      //     Flexible(
+      //       flex: 2,
+      //       child: Padding(
+      //         padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      //         child: Column(
+      //           mainAxisSize: MainAxisSize.min,
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             AppText.large(
+      //               hotel.title,
+      //               fontSize: 18,
+      //               textAlign: TextAlign.left,
+      //               maxLine: 2,
+      //               textOverflow: TextOverflow.ellipsis,
+      //             ),
+      //             const SizedBox(height: 4),
+      //             Row(
+      //               children: [
+      //                 Assets.icon.location.svg(
+      //                   color: kgrey,
+      //                   height: 15,
+      //                 ),
+      //                 const SizedBox(width: 8),
+      //                 AppText.small(hotel.location),
+      //               ],
+      //             ),
+      //             Padding(
+      //               padding: const EdgeInsets.symmetric(vertical: 12),
+      //               child: CustomRating(ratingScore: 5),
+      //             ),
+      //             RichText(
+      //               text: TextSpan(
+      //                 children: [
+      //                   AppTextSpan.large('\$${hotel.price}'),
+      //                   AppTextSpan.medium(' /night'),
+      //                 ],
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black45,
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
           ),
-          const SizedBox(height: 5),
-          Flexible(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText.large(
+        ),
+        padding: EdgeInsets.all(6),
+        margin: EdgeInsets.only(
+          right: 16,
+        ),
+        width: 220, // Augmenter la largeur du conteneur
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Text(
                     hotel.title,
-                    fontSize: 18,
-                    textAlign: TextAlign.left,
-                    maxLine: 2,
-                    textOverflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Assets.icon.location.svg(
-                        color: kgrey,
-                        height: 15,
-                      ),
-                      const SizedBox(width: 8),
-                      AppText.small(hotel.location),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: CustomRating(ratingScore: 5),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        AppTextSpan.large('\$${hotel.price}'),
-                        AppTextSpan.medium(' /night'),
-                      ],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              height: 150,
+              child: Center(
+                child: Hero(
+                  tag: hotel.location,
+                  child: Image.asset(
+                    hotel.thumbnailPath,
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
+                    height: 150, // Ajuster la hauteur de l'image
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            AppText.small(hotel.location),
+            SizedBox(
+              height: 5,
+            ),
+            RichText(
+              text: TextSpan(
+                children: [
+                  AppTextSpan.medium('\$${hotel.price}'),
+                  AppTextSpan.medium(' /night'),
                 ],
               ),
             ),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                for (int i = 1; i <= 5; i++)
+                  Icon(
+                    Icons.star,
+                    color: i <= hotel.ratingScore ? yellow : Colors.white,
+                  ),
+                const SizedBox(width: 12),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

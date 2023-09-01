@@ -11,14 +11,12 @@ import 'package:find_hotel/screens/auth/signup.dart';
 
 import 'package:find_hotel/widgets/primary_button.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:info_popup/info_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
 import '../../routes/route_names.dart';
 import '../../urls/all_url.dart';
-import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/login_option.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,6 +32,12 @@ class _LogInScreenState extends State<LogInScreen> {
   String emailc = '', verif_code = '';
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EasyLoading.dismiss();
+  }
+
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
@@ -193,17 +197,16 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 
-  void clearController() {
-    emailController.clear();
-    pswController.clear();
-  }
+  
 
 // Fonction de validation du formulaire de connexion (login)
   bool validateLoginForm(String email, String password) {
     // Vérification si aucun champ n'est vide
     if (email.isEmpty || password.isEmpty) {
-      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.error_all_fields,
+      );
 
       return false;
     }
@@ -211,8 +214,10 @@ class _LogInScreenState extends State<LogInScreen> {
     // Vérification si l'email est au bon format
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
-      EasyLoading.showError(AppLocalizations.of(context)!.invalid_email,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.invalid_email,
+      );
       return false;
     }
 
@@ -300,6 +305,7 @@ class _LogInScreenState extends State<LogInScreen> {
             }
             var user_get = data['data'];
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.verifier_email,
             );
             NavigationServices(context)
@@ -309,18 +315,22 @@ class _LogInScreenState extends State<LogInScreen> {
               print(data['message'] + "status message another");
             }
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.incorrect_psw,
             );
           } else if (data['message'] == 'This email not exist') {
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.incorrect_email,
             );
           } else if (data['message'] == 'mail not send') {
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.verified_internet,
             );
           } else if (data['message'] == 'User request to delete account') {
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.incorrect_psw,
             );
           } else {
@@ -346,6 +356,7 @@ class _LogInScreenState extends State<LogInScreen> {
         }
       } else {
         EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
           AppLocalizations.of(context)!.try_again,
         );
       }
@@ -354,6 +365,7 @@ class _LogInScreenState extends State<LogInScreen> {
         print('bbbbbbbbb');
       }
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.verified_internet,
       );
     } catch (e) {
@@ -364,6 +376,7 @@ class _LogInScreenState extends State<LogInScreen> {
         print(e.toString());
       }
       EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
         AppLocalizations.of(context)!.try_again,
       );
     }

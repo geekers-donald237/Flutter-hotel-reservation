@@ -13,7 +13,6 @@ import '../../urls/all_url.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 import '../../widgets/custom_apbar.dart';
 import '../../widgets/formWidget/reset_form.dart';
 
@@ -28,6 +27,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   String email = '', verif_code = '';
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EasyLoading.dismiss();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BuildAppbar(AppLocalizations.of(context)!.forget_psw),
@@ -41,7 +46,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 height: 250,
               ),
               Text(
-                AppLocalizations.of(context)!.verifier_email,
+                AppLocalizations.of(context)!.forget_psw,
                 style: titleText,
               ),
               SizedBox(
@@ -61,9 +66,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 height: 40,
               ),
               PrimaryButton(
-                buttonText:AppLocalizations.of(context)!.reset_psw,
+                buttonText: AppLocalizations.of(context)!.reset_psw,
                 ontap: () {
-                  EasyLoading.show(status: AppLocalizations.of(context)!.loading);
+                  EasyLoading.show(
+                      status: AppLocalizations.of(context)!.loading);
                   if (validateEmail(emailcontroller.text.trim())) {
                     saveCode(emailcontroller.text.trim());
                   } else {
@@ -93,58 +99,71 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       if (kDebugMode) {
         print(data);
       }
-
       if (response.statusCode == 200) {
-         if (data['status'] == 'success') {
+        if (data['status'] == 'success') {
           var user_data = data['data'];
           if (data['message'] == 'Rental for change password') {
             EasyLoading.showSuccess('Success');
-            NavigationServices(context).gotoOptScreen(email, user_data['code_verif'].toString());
+            NavigationServices(context)
+                .gotoOptScreen(email, user_data['code_verif'].toString());
           } else {
             EasyLoading.showSuccess('Success');
-            NavigationServices(context).gotoOptScreen(email, user_data['code_verif'].toString());
+            NavigationServices(context)
+                .gotoOptScreen(email, user_data['code_verif'].toString());
           }
         }
       } else {
         if (data['status'] == 'error') {
           if (data['message'] == 'User request to delete account') {
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.try_again,
             );
           }
           if (data['message'] == 'This email not exist') {
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.email_not_exits,
             );
           }
           if (data['message'] == 'Mail not send') {
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.try_again,
             );
           }
         }
       }
     } on SocketException {
-      EasyLoading.showError(AppLocalizations.of(context)!.verified_internet);
+      EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.verified_internet);
     } catch (e) {
       print('tttttttttttt');
       print(e.toString());
-      EasyLoading.showError(AppLocalizations.of(context)!.try_again);
+      EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.try_again);
     }
+  
   }
 
   bool validateEmail(String value) {
     if (value.isEmpty) {
-      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.error_all_fields,
+      );
       return false; // Message d'erreur si l'email est vide
     }
 
     // Vérification si l'email est au bon format en utilisant une expression régulière
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(value)) {
-      EasyLoading.showError(AppLocalizations.of(context)!.invalid_email,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.invalid_email,
+      );
       return false; // Message d'erreur si l'email est incorrect
     }
 

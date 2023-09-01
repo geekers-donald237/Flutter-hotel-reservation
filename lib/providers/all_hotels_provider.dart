@@ -10,3 +10,5 @@ Future<List<HotelModel>> allHotels(AllHotelsRef ref) async {
   final HotelRepository hotelRepository = ref.watch(hotelRepositoryProvider);
   return hotelRepository.getHotels();
 }
+
+

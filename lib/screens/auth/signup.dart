@@ -29,6 +29,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isObscure = true;
+  bool isObscure = true;
+
   GlobalKey<FormState> _formKey = GlobalKey();
 
   FocusNode focusNode = FocusNode();
@@ -168,10 +170,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     buildInputForm(AppLocalizations.of(context)!.input_pass,
                         true, pswController),
-                    buildInputForm(
-                        AppLocalizations.of(context)!.input_confirm_pass,
-                        true,
-                        cpswController),
+                    Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: TextFormField(
+                          controller: cpswController,
+                          obscureText: isObscure,
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!
+                                .input_confirm_pass,
+                            hintStyle: TextStyle(color: kTextFieldColor),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: kPrimaryColor)),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isObscure = !isObscure;
+                                  });
+                                },
+                                icon: isObscure
+                                    ? Icon(
+                                        Icons.visibility_off,
+                                        color: kTextFieldColor,
+                                      )
+                                    : Icon(
+                                        Icons.visibility,
+                                        color: kPrimaryColor,
+                                      )),
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -221,7 +247,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // if (kDebugMode) {
                       //   print("success");
                       // }
-                      clearController();
                     }
                   },
                 ),
@@ -281,11 +306,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (data['status'] == 'error') {
           if (data['message'] == 'email already exist') {
             print(data['message'] + "status message email");
-            EasyLoading.showError(AppLocalizations.of(context)!.email_in_use,
-                duration: Duration(seconds: 3));
+            EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
+              AppLocalizations.of(context)!.email_in_use,
+            );
           } else if (data['message'] == 'phone number already exist') {
             print(data['message'] + "status message another");
             EasyLoading.showError(
+              duration: Duration(milliseconds: 1500),
               AppLocalizations.of(context)!.phone_number_exist,
             );
           } else {
@@ -298,13 +326,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
               .gotoOpt2Screen(email, user_data['code_verif'].toString());
         }
       } else {
-        EasyLoading.showError(AppLocalizations.of(context)!.an_error_occur);
+        EasyLoading.showError(
+            duration: Duration(milliseconds: 1500),
+            AppLocalizations.of(context)!.an_error_occur);
         if (kDebugMode) {
           print(data['message'] + "Anotherrrrrr errrroor");
         }
       }
     } on SocketException {
-      EasyLoading.showError(AppLocalizations.of(context)!.verified_internet);
+      EasyLoading.showError(
+          duration: Duration(milliseconds: 1500),
+          AppLocalizations.of(context)!.verified_internet);
       if (kDebugMode) {
         print('internet error');
       }
@@ -313,14 +345,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print(e.toString());
       EasyLoading.dismiss();
     }
-  }
-
-  void clearController() {
-    usernameController.clear();
-    emailController.clear();
-    pswController.clear();
-    cpswController.clear();
-    phoneController.clear();
   }
 
   bool validateForm(String name, String email, String phoneNumber,
@@ -332,21 +356,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password.isEmpty ||
         confirmPassword.isEmpty ||
         !validateCheckBoxes()) {
-      EasyLoading.showError(AppLocalizations.of(context)!.error_all_fields,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.error_all_fields,
+      );
 
       return false;
     }
 
     // Vérification si le mot de passe et la confirmation du mot de passe sont identiques
     if (password != confirmPassword) {
-      EasyLoading.showError(AppLocalizations.of(context)!.password_doest_match,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.password_doest_match,
+      );
 
       return false;
     } else if ((password == confirmPassword) && password.length < 6) {
-      EasyLoading.showError(AppLocalizations.of(context)!.password_short,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.password_short,
+      );
 
       return false;
     }
@@ -355,8 +385,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
       // showSnackBar(context, 'Invalid Email Address');
-      EasyLoading.showError(AppLocalizations.of(context)!.invalid_email,
-          duration: Duration(seconds: 3));
+      EasyLoading.showError(
+        duration: Duration(milliseconds: 1500),
+        AppLocalizations.of(context)!.invalid_email,
+      );
 
       return false;
     }

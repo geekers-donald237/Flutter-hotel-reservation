@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/google_signing_api.dart';
+import '../routes/route_names.dart';
 
 double getScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
@@ -124,14 +124,19 @@ void message(BuildContext context, String text1, String text, Color col,
   );
 }
 
-Future<bool> logout() async {
+Future<void> logout(BuildContext context) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   await pref.remove('id_type');
   await pref.remove('email');
   await pref.remove('address');
   await pref.remove('phone');
   await pref.remove('username');
-  return await pref.remove('token');
+  await pref.remove('isLogged');
+
+  // return await pref.remove('token');
+  NavigationServices(context).gotoLoginScreen();
+
+  
 }
 
 bool isDarkMode(BuildContext context) {
@@ -269,6 +274,3 @@ onMessageDialog(
   showCupertinoModalPopup(context: context, builder: (context) => action);
 }
 
-Future signIn() async {
-  await GoogleSignInApi.login();
-}

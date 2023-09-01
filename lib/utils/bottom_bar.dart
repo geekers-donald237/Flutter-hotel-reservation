@@ -1,18 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:badges/badges.dart' as badges;
 import 'package:find_hotel/gen/theme.dart';
-import 'package:find_hotel/screens/reservations/index.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:ionicons/ionicons.dart';
 
-import '../screens/favoris/favoris.dart';
-import '../screens/home/index.dart';
+import '../screens/hotel/favoris/favoris.dart';
+import '../screens/hotel/home/index.dart';
+import '../screens/hotel/reservations/index.dart';
+
 
 class BottomBar extends StatefulWidget {
   static const String routeName = '/actual-home';

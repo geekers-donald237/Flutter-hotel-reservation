@@ -21,7 +21,7 @@ class OnboardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding:  EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: Container(
         child: Center(
           child: Column(

@@ -1,5 +1,6 @@
 import 'package:find_hotel/gen/theme.dart';
 import 'package:find_hotel/widgets/custom_apbar.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
@@ -22,7 +23,14 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController pswController = TextEditingController();
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EasyLoading.dismiss();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BuildAppbar(AppLocalizations.of(context)!.edit_btn + " profil"),
