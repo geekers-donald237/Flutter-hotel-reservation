@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-import '../../activity_screen.dart';
+import '../../hotel/home/activity_screen.dart';
 
 class RentCarScreen extends StatefulWidget {
   const RentCarScreen({super.key});

@@ -1,6 +1,5 @@
 
 import 'package:find_hotel/screens/home/rent_car/rent_card.dart';
-import 'package:find_hotel/screens/home/stay.dart';
 import 'package:find_hotel/screens/hotel/home/stay.dart';
 import 'package:find_hotel/utils/Helpers.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +44,8 @@ class _IndexScreenState extends State<IndexScreen>
     super.initState();
     mytabs = [
       const StayScreen(),
-      const RentCarScreen(),
       Showroom(),
+      const RentCarScreen(),
       Text('aussi'),
       Text('aussi'),
     ];
