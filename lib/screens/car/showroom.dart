@@ -131,7 +131,8 @@ class _ShowroomState extends State<Showroom> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => AvailableCars()),
+                                            builder: (context) =>
+                                                AvailableCars()),
                                       );
                                     },
                                     child: Text(AppLocalizations.of(context)!

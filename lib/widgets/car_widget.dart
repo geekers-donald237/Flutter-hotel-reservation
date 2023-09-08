@@ -76,6 +76,7 @@ Widget BuildHorizontalCard(Car car, int index, BuildContext context) {
   );
 }
 
+
 Widget buildCar(Car car, int index) {
   return Container(
     decoration: BoxDecoration(
@@ -164,3 +165,4 @@ Widget buildCar(Car car, int index) {
     ),
   );
 }
+
