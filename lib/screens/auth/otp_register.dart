@@ -61,7 +61,7 @@ class _Otp2State extends State<Otp2> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
             child: Column(
               children: [
                 Container(
@@ -75,7 +75,7 @@ class _Otp2State extends State<Otp2> {
                     Localfiles.illustration3,
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Text(
                   AppLocalizations.of(context)!.valid_btn,
                   style: const TextStyle(
@@ -147,10 +147,10 @@ class _Otp2State extends State<Otp2> {
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(14.0),
+                            padding: const EdgeInsets.all(14.0),
                             child: Text(
                               AppLocalizations.of(context)!.valid_btn,
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ),
                         ),
@@ -158,12 +158,14 @@ class _Otp2State extends State<Otp2> {
                     ],
                   ),
                 ),
-                SizedBox(height: 18),
+                const SizedBox(height: 18),
                 GestureDetector(
-                  onTap: resendCode(email),
+                  onTap: (){
+                    resendCode(email);
+                  },
                   child: Text(
                     AppLocalizations.of(context)!.code_pas_recu,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
@@ -171,10 +173,10 @@ class _Otp2State extends State<Otp2> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 18),
+                const SizedBox(height: 18),
                 Text(
                   AppLocalizations.of(context)!.resend_code,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -251,7 +253,7 @@ class _Otp2State extends State<Otp2> {
       );
     } catch (e) {
       if (kDebugMode) {
-        print('Try cathc for login to the App ################');
+        print('Try cathc for resend otp code to the App ################');
       }
       if (kDebugMode) {
         print(e.toString());
@@ -282,32 +284,25 @@ class _Otp2State extends State<Otp2> {
         print(data);
       }
       if (response.statusCode == 200) {
-        if (data['message'] == "Code is correct") {
-          EasyLoading.showSuccess(
-              AppLocalizations.of(context)!.success_success);
+        if (data['status'] == "success") {
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
           NavigationServices(context).gotoLoginScreen();
+        }else{
+          if (data['status'] == 'error') {
+            if (data['message'] == 'Incorrect code') {
+              EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.invalid_code);
+            }
+            if (data['message'] == 'This email not exist') {
+              EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.verifier_email);
+            } else {
+              EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.try_again);
+            }
+          } else {
+            EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.try_again);
+          }
         }
       } else {
-        if (data['status'] == 'error') {
-          if (data['message'] == 'Incorrect code') {
-            EasyLoading.showError(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.invalid_code);
-          }
-          if (data['message'] == 'This email not exist') {
-            EasyLoading.showError(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.verifier_email);
-          } else {
-            EasyLoading.showError(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.try_again);
-          }
-        } else {
-          EasyLoading.showError(
-              duration: Duration(milliseconds: 1500),
-              AppLocalizations.of(context)!.try_again);
-        }
+        EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.try_again);
       }
     } on SocketException {
       if (kDebugMode) {

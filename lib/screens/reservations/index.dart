@@ -6,6 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../../widgets/custom_icon_button.dart';
+import 'Cancel_reservation.dart';
+import 'Car_reservation.dart';
+import 'Hotel_reservation.dart';
 
 
 class ReservationIndex extends StatefulWidget {
@@ -22,26 +25,26 @@ class _ReservationIndexState extends State<ReservationIndex> {
       appBar: AppBar(
         backgroundColor: kblue,
         elevation: 1,
-        title: Text('Voyage'),
-        actions: const [
-          CustomIconButton(
-            icon: Icon(
-              Icons.question_mark_rounded,
-              color: kwhite,
-            ),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 8.0, right: 12),
-            child: Icon(
-              Ionicons.add,
-              color: kwhite,
-              size: 35,
-            ),
-          ),
-        ],
+        title: Text(AppLocalizations.of(context)!.my_reservation),
+        // actions: const [
+        //   CustomIconButton(
+        //     icon: Icon(
+        //       Icons.question_mark_rounded,
+        //       color: kwhite,
+        //     ),
+        //   ),
+        //   SizedBox(
+        //     width: 5,
+        //   ),
+        //   Padding(
+        //     padding: EdgeInsets.only(left: 8.0, right: 12),
+        //     child: Icon(
+        //       Ionicons.add,
+        //       color: kwhite,
+        //       size: 35,
+        //     ),
+        //   ),
+        // ],
       ),
       body: DefaultTabController(
           length: 3,
@@ -52,13 +55,13 @@ class _ReservationIndexState extends State<ReservationIndex> {
                   color: Colors.white,
                   height: 60,
                   child: TabBar(
-                    physics: ClampingScrollPhysics(),
-                    padding: EdgeInsets.all(10),
+                    physics: const ClampingScrollPhysics(),
+                    padding: const EdgeInsets.all(10),
                     unselectedLabelColor: kgrey,
                     indicatorSize: TabBarIndicatorSize.label,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
-                      color: Color.fromARGB(255, 237, 241, 243),
+                      color: const Color.fromARGB(255, 237, 241, 243),
                       border: Border.all(color: kblue, width: 1),
                     ),
                     tabs: [
@@ -72,8 +75,8 @@ class _ReservationIndexState extends State<ReservationIndex> {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              AppLocalizations.of(context)!.index_actif,
-                              style: TextStyle(color: kblack),
+                              AppLocalizations.of(context)!.hotel_reservation,
+                              style: const TextStyle(color: kblack),
                             ),
                           ),
                         ),
@@ -88,8 +91,8 @@ class _ReservationIndexState extends State<ReservationIndex> {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              AppLocalizations.of(context)!.index_passes,
-                              style: TextStyle(color: kblack),
+                              AppLocalizations.of(context)!.car_reservation,
+                              style: const TextStyle(color: kblack),
                             ),
                           ),
                         ),
@@ -105,7 +108,7 @@ class _ReservationIndexState extends State<ReservationIndex> {
                             alignment: Alignment.center,
                             child: Text(
                               AppLocalizations.of(context)!.index_anul,
-                              style: TextStyle(color: kblack),
+                              style: const TextStyle(color: kblack),
                             ),
                           ),
                         ),
@@ -114,20 +117,12 @@ class _ReservationIndexState extends State<ReservationIndex> {
                   ),
                 ),
               ),
-              Expanded(
-                  child: TabBarView(children: [
-                ReservationWidget(
-                  imagePath: Localfiles.OnboardImg1,
-                  text: AppLocalizations.of(context)!.other_destination,
-                ),
-                ReservationWidget(
-                  imagePath: Localfiles.OnboardImg2,
-                  text: AppLocalizations.of(context)!.voyage_passe,
-                ),
-                ReservationWidget(
-                  imagePath: Localfiles.OnboardImg3,
-                  text: AppLocalizations.of(context)!.change_program,
-                ),
+              const Expanded(
+                  child: TabBarView(
+                      children: [
+                        HotelReservation(),
+                        CarReservation(),
+                        CancelReservation(),
               ]))
             ],
           )),

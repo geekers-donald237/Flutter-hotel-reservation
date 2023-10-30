@@ -34,7 +34,7 @@ class _StayScreenState extends State<StayScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         isLoading = false; // La charge est terminée
       });
@@ -49,7 +49,7 @@ class _StayScreenState extends State<StayScreen> {
 
     return Scaffold(
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(14),
@@ -123,118 +123,8 @@ class _StayScreenState extends State<StayScreen> {
       ],
     );
   }
-
-  Drawer CustomDrawer() {
-    return Drawer(
-      child: Material(
-        color: Colors.white,
-        textStyle: TextStyle(color: kblack),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                headerWidget(),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Divider(
-                  thickness: 1,
-                  height: 10,
-                  color: Colors.grey,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_person,
-                    icon: Ionicons.person,
-                    onPressed: () {
-                      NavigationServices(context).gotoEditProfile();
-                    }),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_account,
-                    icon: Icons.account_box_rounded,
-                    onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_bug_report,
-                    icon: Ionicons.bug_outline,
-                    onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Divider(
-                  thickness: 1,
-                  height: 10,
-                  color: Colors.grey,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_propos,
-                    icon: Icons.info_outline,
-                    onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_logout,
-                    icon: Icons.logout,
-                    onPressed: () {}),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
-class DrawerItem extends StatelessWidget {
-  const DrawerItem(
-      {Key? key,
-      required this.name,
-      required this.icon,
-      required this.onPressed})
-      : super(key: key);
-
-  final String name;
-  final IconData icon;
-  final Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: SizedBox(
-        height: 40,
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 20,
-              color: kblack,
-            ),
-            const SizedBox(
-              width: 40,
-            ),
-            Text(
-              name,
-              style: const TextStyle(fontSize: 20, color: kgrey),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _NearbyHotelSection extends ConsumerWidget {
   const _NearbyHotelSection({Key? key}) : super(key: key);
@@ -244,48 +134,6 @@ class _NearbyHotelSection extends ConsumerWidget {
     final hotels = ref.watch(allHotelsProvider);
     return Column(
       children: [
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: const [
-        //     Text(
-        //       'Nearby hotels',
-        //       style: TextStyle(
-        //         fontWeight: FontWeight.bold,
-        //         fontSize: 14,
-        //       ),
-        //     ),
-        //     Text(
-        //       'See all',
-        //       style: TextStyle(
-        //         fontWeight: FontWeight.bold,
-        //         fontSize: 14,
-        //         color: kblue,
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        // const SizedBox(height: 4),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: const [
-        //     Text(
-        //       'Nearby hotels',
-        //       style: TextStyle(
-        //         fontWeight: FontWeight.bold,
-        //         fontSize: 14,
-        //       ),
-        //     ),
-        //     Text(
-        //       'See all',
-        //       style: TextStyle(
-        //         fontWeight: FontWeight.bold,
-        //         fontSize: 14,
-        //         color: kblue,
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        // const SizedBox(height: 4),
         hotels.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, stack) => Text('Error: $err'),
@@ -328,7 +176,7 @@ class _SearchCard extends ConsumerWidget {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -338,15 +186,13 @@ class _SearchCard extends ConsumerWidget {
                         Expanded(
                           child: Text(
                             AppLocalizations.of(context)!.modal_info_number,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
                       ],
                     ),
                     Row(),
-                    // SizedBox(height: 20),
-
                     Row(
                       children: [
                         Expanded(
@@ -509,64 +355,64 @@ class _SearchCard extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Icon(Icons.calendar_month),
-                ),
-                Expanded(
-                    child: InkWell(
-                  onTap: () async {
-                    final values = await showCalendarDatePicker2Dialog(
-                      context: context,
-                      config: config,
-                      dialogSize: const Size(325, 400),
-                      borderRadius: BorderRadius.circular(15),
-                      value: _dialogCalendarPickerValue,
-                      dialogBackgroundColor: Colors.white,
-                    );
-                    if (values != null) {
-                      // ignore: avoid_print
-                      print(_getValueText(
-                        config.calendarType,
-                        values,
-                      ));
-                      setState(() {
-                        _dialogCalendarPickerValue = values;
-                      });
-                      setState(() {
-                        dateTravel =
-                            formatDateToDay(_dialogCalendarPickerValue[0]!) +
-                                "-" +
-                                formatDateToDay(_dialogCalendarPickerValue[1]!);
+            InkWell(
+              onTap: () async {
+                final values = await showCalendarDatePicker2Dialog(
+                  context: context,
+                  config: config,
+                  dialogSize: const Size(325, 400),
+                  borderRadius: BorderRadius.circular(15),
+                  value: _dialogCalendarPickerValue,
+                  dialogBackgroundColor: Colors.white,
+                );
+                if (values != null) {
+                  // ignore: avoid_print
+                  print(_getValueText(
+                    config.calendarType,
+                    values,
+                  ));
+                  setState(() {
+                    _dialogCalendarPickerValue = values;
+                  });
+                  setState(() {
+                    dateTravel =
+                        formatDateToDay(_dialogCalendarPickerValue[0]!) +
+                            "-" +
+                            formatDateToDay(_dialogCalendarPickerValue[1]!);
 
-                        isSetDate = true;
-                      });
+                    isSetDate = true;
+                  });
 
-                      setState(() {
-                        dateTravel;
-                      });
+                  setState(() {
+                    dateTravel;
+                  });
 
-                      ref
-                          .read(StringDateProvider.notifier)
-                          .update((state) => dateTravel);
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: dateTravel != ''
-                        ? Text(
-                            dateTravel,
-                          )
-                        : Text(
-                            AppLocalizations.of(context)!.duree_sejour,
-                            textAlign: TextAlign.start,
-                          ),
+                  ref
+                      .read(StringDateProvider.notifier)
+                      .update((state) => dateTravel);
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Icon(Icons.calendar_month),
                   ),
-                ))
-              ],
+                  Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 16.0),
+                        child: dateTravel != ''
+                            ? Text(
+                                dateTravel,
+                              )
+                            : Text(
+                                AppLocalizations.of(context)!.duree_sejour,
+                                textAlign: TextAlign.start,
+                              ),
+                      ))
+                ],
+              ),
             ),
           ],
         ),
@@ -604,9 +450,13 @@ class _SearchCard extends ConsumerWidget {
     adults = ref.watch(allAdultsProvider);
     children = ref.watch(allChildrenProvider);
     dateTravel = ref.watch(StringDateProvider);
-    String destination = AppLocalizations.of(context)!.choose_loca;
+    String destination = '';
 
-    destination = ref.watch(LocationCurrentProvider);
+    if(ref.watch(LocationCurrentProvider) == ''){
+      destination = AppLocalizations.of(context)!.choose_loca;
+    }else{
+      destination = ref.watch(LocationCurrentProvider);
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -624,8 +474,8 @@ class _SearchCard extends ConsumerWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(16.0),
-                child: Icon(Ionicons.search),
+                padding: const EdgeInsets.all(16.0),
+                child: const Icon(Ionicons.search),
               ),
               Expanded(
                 child: InkWell(
@@ -633,7 +483,7 @@ class _SearchCard extends ConsumerWidget {
                     NavigationServices(context).gototestScreen();
                   },
                   child: Container(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       destination,
                       textAlign: TextAlign.start,
@@ -643,47 +493,48 @@ class _SearchCard extends ConsumerWidget {
               ),
             ],
           ),
-          Divider(
+          const Divider(
             thickness: 4, // Épaisseur du Divider
             color: yellow,
           ),
           // Deuxième Row
+
           _buildCalendarDialogButton(context, ref),
-          Divider(
+          const Divider(
             thickness: 4,
             color: yellow,
           ),
           // Troisième Row
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(16.0),
-                child: Icon(
-                  Ionicons.person_outline,
+          InkWell(
+            onTap: () {
+              _openPassengerModal(context, ref);
+            },
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: const Icon(
+                    Ionicons.person_outline,
+                  ),
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  _openPassengerModal(context, ref);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "$accomodation Hébgts.",
+                        "$accomodation 🏠.",
                       ),
-                      Text(" $adults Adultes."),
-                      Text(" $children Enfants"),
+                      Text(" $adults ${AppLocalizations.of(context)!.adults_}."),
+                      Text(" $children ${AppLocalizations.of(context)!.children_}"),
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Divider(
+          const Divider(
             thickness: 4,
             color: yellow,
           ),
@@ -694,7 +545,7 @@ class _SearchCard extends ConsumerWidget {
               if (destination == AppLocalizations.of(context)!.choose_loca ||
                   dateTravel == '') {
                 EasyLoading.showError(
-                    duration: Duration(milliseconds: 1500),
+                    duration: const Duration(milliseconds: 1500),
                     AppLocalizations.of(context)!.all_fields_destination);
               } else {
                 EasyLoading.dismiss();

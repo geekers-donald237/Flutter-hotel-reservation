@@ -2,16 +2,20 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:find_hotel/screens/auth/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/encrypt.dart';
 import '../routes/route_names.dart';
 import '../urls/all_url.dart';
+import '../utils/bottom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -24,8 +28,11 @@ class _SplashScreenState extends State<SplashScreen> {
   _loadUserInfo() async {
     //EasyLoading.show(status: "Loading...");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String check = prefs.getString('email').toString();
-    if (check.isEmpty) {
+    String check = prefs.getString('email') ?? 'kitaboo_canot_be_null';
+    if (kDebugMode) {
+     // print(check);
+    }
+    if(check == 'kitaboo_canot_be_null') {
       timer?.cancel();
       NavigationServices(context).gotoLoginScreen();
     } else {
@@ -38,44 +45,64 @@ class _SplashScreenState extends State<SplashScreen> {
           "email": encrypt(email!),
           "action": encrypt("rentali_want_to_check_email_user_splashscreen")
         });
-        // print(json.decode(response.body));
+        if (kDebugMode) {
+          // print(response.body);
+        }
         var data = jsonDecode(response.body);
         if (kDebugMode) {
-          print('dsd');
-          print(data);
+          // print('dsd');
+          // print(data);
         }
 
         if (response.statusCode == 200) {
           timer?.cancel();
-          var user_detail = data['data'];
-          String email = user_detail['email'];
-          String user_name = user_detail['user_name'];
-          String tel = user_detail['phone_number'];
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          await pref.setString('username', encrypt(user_name));
-          await pref.setString('email', encrypt(email));
-          await pref.setString('phone', encrypt(tel));
-          NavigationServices(context).gotoBottomScreen(0);
-        } else {
-          timer?.cancel();
           if (data['status'] == 'error') {
             if (data['message'] == 'User request to delete account') {
-              NavigationServices(context).gotoLoginScreen();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                      (route) => false);
             }
             if (data['message'] == 'user is not active') {
-              NavigationServices(context).gotoLoginScreen();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                      (route) => false);
             }
             if (data['message'] == 'User not exist') {
-              NavigationServices(context).gotoLoginScreen();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                      (route) => false);
             } else {
-              NavigationServices(context).gotoLoginScreen();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                      (route) => false);
             }
+          }else{
+            var user_detail = data['data'];
+            String email = user_detail['email'];
+            String user_name = user_detail['user_name'];
+            String tel = user_detail['phone_number'];
+            String id = user_detail['id'].toString();
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            await pref.setString('username', encrypt(user_name));
+            await pref.setString('email', encrypt(email));
+            await pref.setString('phone', encrypt(tel));
+            await pref.setString('id', encrypt(id));
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const BottomBar(id: 0, )),
+                    (route) => false);
           }
+        } else {
+          timer?.cancel();
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LogInScreen()),
+                  (route) => false);
+
         }
       } on SocketException {
         if (kDebugMode) {
           print('bbbbbbbbb');
         }
+        timer?.cancel();
         EasyLoading.showError(
           duration: Duration(milliseconds: 1500),
           AppLocalizations.of(context)!.verified_internet,
@@ -91,7 +118,9 @@ class _SplashScreenState extends State<SplashScreen> {
         //   AppLocalizations.of(context)!.try_again,
         // );
         timer?.cancel();
-        NavigationServices(context).gotoLoginScreen();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LogInScreen()),
+                (route) => false);
       }
     }
   }
@@ -116,8 +145,8 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               height: double.infinity,
               width: double.infinity,
-              child: Image.asset(
-                'assets/image/illustration-2.png',
+              child: Lottie.asset(
+                'assets/lottie/splascreen.json',
                 fit: BoxFit.fill,
               ),
             ),

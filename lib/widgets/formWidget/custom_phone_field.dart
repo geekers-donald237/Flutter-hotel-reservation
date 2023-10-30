@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -31,9 +32,9 @@ class CustomPhoneField extends StatelessWidget {
             focusNode: focusNode,
             decoration: InputDecoration(
               labelText: 'Phone Number',
-              // border: OutlineInputBorder(
-              //   borderSide: BorderSide(),
-              // ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(),
+              ),
             ),
             languageCode: "en",
             initialValue:
@@ -43,7 +44,9 @@ class CustomPhoneField extends StatelessWidget {
                   .completeNumber); // Utilisation du callback pour notifier l'autre widget du changement du numéro de téléphone
             },
             onCountryChanged: (country) {
-              print('Country changed to: ' + country.name);
+              if (kDebugMode) {
+                print('Country changed to: ' + country.name);
+              }
             },
           ),
         ],

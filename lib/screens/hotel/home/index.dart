@@ -1,5 +1,5 @@
 
-import 'package:find_hotel/screens/home/rent_car/rent_card.dart';
+import 'package:find_hotel/screens/home/rent_car/rent_car.dart';
 import 'package:find_hotel/screens/hotel/home/stay.dart';
 import 'package:find_hotel/utils/Helpers.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,8 @@ import 'package:find_hotel/urls/all_url.dart';
 
 import '../../../gen/theme.dart';
 import '../../../routes/route_names.dart';
+import '../../../utils/drawer_item.dart';
+import '../../../utils/nav_drawer.dart';
 import '../../../widgets/custom_icon_button.dart';
 import '../../car/showroom.dart';
 
@@ -33,7 +35,23 @@ class _IndexScreenState extends State<IndexScreen>
     this.status = status;
   }
 
+  String idadmin1 = '';
   String idadmin2 = '';
+  String email1 = '';
+  String email2 = '';
+  String userName1 = '';
+  String userName2 = '';
+
+  Future<void> gett() async {
+    idadmin2 = await getUserId();
+    email2 = await getEmail();
+    userName2 = await getUserName();
+    setState(() {
+      idadmin1 = idadmin2;
+      email1 = email2;
+      userName1 = userName2;
+    });
+  }
 
   List<Widget> mytabs = [];
   List<Widget> tabs1 = [];
@@ -41,13 +59,14 @@ class _IndexScreenState extends State<IndexScreen>
 
   @override
   void initState() {
+    gett();
     super.initState();
     mytabs = [
       const StayScreen(),
-      Showroom(),
       const RentCarScreen(),
-      Text('aussi'),
-      Text('aussi'),
+      // const RentCarScreen(),
+      // Text('aussi'),
+      // Text('aussi'),
     ];
 
     _tabController = TabController(length: mytabs.length, vsync: this);
@@ -70,108 +89,6 @@ class _IndexScreenState extends State<IndexScreen>
       status = tabIndex;
     });
   }
-
-  Widget headerWidget() {
-    const name = "John";
-    const surname = "Doe";
-    return Row(
-      children: [
-        const CircleAvatar(
-          radius: 40,
-          backgroundImage: NetworkImage(Urls.userAvatar + name + "+" + surname),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(name, style: TextStyle(fontSize: 14, color: kDarkGreyColor)),
-            SizedBox(
-              height: 10,
-            ),
-            Text('$name$surname@gmail.com',
-                style: TextStyle(fontSize: 14, color: kDarkGreyColor))
-          ],
-        )
-      ],
-    );
-  }
-
-  Drawer CustomDrawer() {
-    return Drawer(
-      child: Material(
-        color: Colors.white,
-        textStyle: TextStyle(color: kblack),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                headerWidget(),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Divider(
-                  thickness: 1,
-                  height: 10,
-                  color: Colors.grey,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_person,
-                    icon: Ionicons.person,
-                    onPressed: () {
-                      NavigationServices(context).gotoEditProfile();
-                    }),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_account,
-                    icon: Icons.account_box_rounded,
-                    onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_bug_report,
-                    icon: Ionicons.bug_outline,
-                    onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Divider(
-                  thickness: 1,
-                  height: 10,
-                  color: Colors.grey,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_propos,
-                    icon: Icons.info_outline,
-                    onPressed: () {}),
-                const SizedBox(
-                  height: 15,
-                ),
-                DrawerItem(
-                    name: AppLocalizations.of(context)!.drawer_logout,
-                    icon: Icons.logout,
-                    onPressed: () {
-                      logout(context);
-                    }),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Future<void> _showExitConfirmationDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -219,13 +136,12 @@ class _IndexScreenState extends State<IndexScreen>
         return false;
       },
       child: DefaultTabController(
-          length: 4,
+          length: 2,
           child: Scaffold(
-            drawer: CustomDrawer(),
+            drawer: NavDrawer(),
             appBar: AppBar(
               elevation: 0,
               toolbarHeight: 80,
-              // shape: Border(bottom: BorderSide(color: kblack, width: 2)),
               flexibleSpace: Container(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
@@ -240,44 +156,38 @@ class _IndexScreenState extends State<IndexScreen>
               ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Rental",
+                children: const [
+                  Text(
+                    "Kitab-oo.com",
                     style: TextStyle(color: kwhite),
                   ),
-                  Text(
-                    "Find The Best Deal for Your holidays",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
+                  // Text(
+                  //   AppLocalizations.of(context)!.find_the_best_deal_in_this_place,
+                  //   style: Theme.of(context).textTheme.labelMedium,
+                  // ),
                 ],
               ),
               actions: const [
-                CustomIconButton(
-                  icon: Icon(
-                    Ionicons.search_outline,
-                    color: kwhite,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0, right: 12),
-                  child: CustomIconButton(
-                    icon: Badge(
-                        backgroundColor: accent,
-                        child: Icon(
-                          Ionicons.notifications_outline,
-                          color: kwhite,
-                        )),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 8.0, right: 12),
+                //   child: CustomIconButton(
+                //     icon: Badge(
+                //         backgroundColor: accent,
+                //         child: Icon(
+                //           Ionicons.notifications_outline,
+                //           color: kwhite,
+                //         )),
+                //   ),
+                // ),
               ],
               bottom: TabBar(
-                padding: EdgeInsets.only(bottom: 6),
+                padding: const EdgeInsets.only(bottom: 6),
                 controller:
                 _tabController, // Connect the TabBar to the TabController
                 indicatorColor: Colors.white,
                 indicatorWeight: 6,
                 isScrollable: true,
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 unselectedLabelColor: kwhite,
                 indicatorSize: TabBarIndicatorSize.label,
                 indicator: BoxDecoration(
@@ -288,78 +198,78 @@ class _IndexScreenState extends State<IndexScreen>
                   Tab(
                     child: Row(
                       children: [
-                        SizedBox(width: 15),
-                        Icon(
+                        const SizedBox(width: 15),
+                        const Icon(
                           Ionicons.home_outline,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(
                           AppLocalizations.of(context)!.your_stay,
                         ),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                       ],
                     ),
                   ),
                   Tab(
                     child: Row(
                       children: [
-                        SizedBox(width: 15),
-                        Icon(
+                        const SizedBox(width: 15),
+                        const Icon(
                           Ionicons.car_sport_sharp,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(
                           AppLocalizations.of(context)!.rent_car,
                         ),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                       ],
                     ),
                   ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        SizedBox(width: 15),
-                        Icon(
-                          Icons.wash_outlined,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'pressing',
-                        ),
-                        SizedBox(width: 15),
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        SizedBox(width: 15),
-                        Icon(
-                          Ionicons.airplane_sharp,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          AppLocalizations.of(context)!.fly_now,
-                        ),
-                        SizedBox(width: 15),
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        SizedBox(width: 15),
-                        Icon(
-                          Ionicons.car_outline,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          AppLocalizations.of(context)!.taxi_now,
-                        ),
-                        SizedBox(width: 15),
-                      ],
-                    ),
-                  ),
+                  // Tab(
+                  //   child: Row(
+                  //     children: const [
+                  //       SizedBox(width: 15),
+                  //       Icon(
+                  //         Icons.wash_outlined,
+                  //       ),
+                  //       SizedBox(width: 10),
+                  //       Text(
+                  //         'pressing',
+                  //       ),
+                  //       SizedBox(width: 15),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Tab(
+                  //   child: Row(
+                  //     children: [
+                  //       const SizedBox(width: 15),
+                  //       const Icon(
+                  //         Ionicons.airplane_sharp,
+                  //       ),
+                  //       const SizedBox(width: 10),
+                  //       Text(
+                  //         AppLocalizations.of(context)!.fly_now,
+                  //       ),
+                  //       const SizedBox(width: 15),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Tab(
+                  //   child: Row(
+                  //     children: [
+                  //       const SizedBox(width: 15),
+                  //       const Icon(
+                  //         Ionicons.car_outline,
+                  //       ),
+                  //       const SizedBox(width: 10),
+                  //       Text(
+                  //         AppLocalizations.of(context)!.taxi_now,
+                  //       ),
+                  //       const SizedBox(width: 15),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -380,9 +290,9 @@ class _IndexScreenState extends State<IndexScreen>
                 children: [
                   mytabs[0],
                   mytabs[1],
-                  mytabs[2],
-                  mytabs[3],
-                  mytabs[4],
+                  // mytabs[2],
+                  // mytabs[3],
+                  // mytabs[4],
                 ],
               ),
             ),

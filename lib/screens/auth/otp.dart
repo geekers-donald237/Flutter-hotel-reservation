@@ -161,7 +161,9 @@ class _OtpState extends State<Otp> {
                 ),
                 SizedBox(height: 18),
                 GestureDetector(
-                  onTap: resendCode(email),
+                  onTap: (){
+                    resendCode(email);
+                  },
                   child: Text(
                     AppLocalizations.of(context)!.code_pas_recu,
                     style: TextStyle(
@@ -241,46 +243,34 @@ class _OtpState extends State<Otp> {
       }, body: {
         "email": encrypt(email),
         "code": encrypt(verificationCode),
-        "action": encrypt("rentali_want_to_check_email_user_code_now")
+        "action":
+        encrypt("rentali_want_to_check_email_user_code_now_for_register")
       });
       // print(json.decode(response.body));
       var data = jsonDecode(response.body);
       if (kDebugMode) {
         print(data);
       }
-
       if (response.statusCode == 200) {
-        if (data['message'] == "Code is correct") {
-          EasyLoading.showSuccess(
-              AppLocalizations.of(context)!.success_success);
-          NavigationServices(context).gotoResetPassword(email);
-        } else {
-          EasyLoading.showInfo(
-              duration: Duration(milliseconds: 1500),
-              AppLocalizations.of(context)!.try_again);
+        if (data['status'] == "success") {
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success_success);
+          NavigationServices(context).gotoLoginScreen();
+        }else{
+          if (data['status'] == 'error') {
+            if (data['message'] == 'Incorrect code') {
+              EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.invalid_code);
+            }
+            if (data['message'] == 'This email not exist') {
+              EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.verifier_email);
+            } else {
+              EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.try_again);
+            }
+          } else {
+            EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.try_again);
+          }
         }
       } else {
-        if (data['status'] == 'error') {
-          if (data['message'] == 'Incorrect code') {
-            EasyLoading.showInfo(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.invalid_code);
-          }
-          if (data['message'] == "User request to delete account") {
-            EasyLoading.showInfo(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.try_again);
-          }
-          if (data['message'] == 'This email not exist') {
-            EasyLoading.showInfo(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.incorrect_email);
-          } else {
-            EasyLoading.showInfo(
-                duration: Duration(milliseconds: 1500),
-                AppLocalizations.of(context)!.try_again);
-          }
-        }
+        EasyLoading.showError(duration: Duration(milliseconds: 1500), AppLocalizations.of(context)!.try_again);
       }
     } on SocketException {
       EasyLoading.showInfo(

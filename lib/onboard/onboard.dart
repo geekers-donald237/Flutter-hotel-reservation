@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:find_hotel/gen/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,9 @@ class _OnBoardState extends State<OnBoard> {
   PageController pageController = PageController();
 
   _storeOnboardInfo() async {
-    print("Shared pref called");
+    if (kDebugMode) {
+      print("Shared pref called");
+    }
     int isViewed = 0;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('onBoard', isViewed);

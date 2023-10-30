@@ -9,7 +9,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/encrypt.dart';
 import '../routes/route_names.dart';
+
+const ksecondryLightColor = Color(0xffEDEFFE);
+const klightContentColor = Color(0xffF1F2F7);
+
+const double kbigFontSize = 25;
+const double knormalFontSize = 18;
+const double ksmallFontSize = 15;
 
 double getScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
@@ -128,7 +136,6 @@ Future<void> logout(BuildContext context) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   await pref.remove('id_type');
   await pref.remove('email');
-  await pref.remove('address');
   await pref.remove('phone');
   await pref.remove('username');
   await pref.remove('isLogged');
@@ -138,6 +145,8 @@ Future<void> logout(BuildContext context) async {
 
   
 }
+
+
 
 bool isDarkMode(BuildContext context) {
   if (Theme.of(context).brightness == Brightness.light) {
@@ -272,5 +281,32 @@ onMessageDialog(
     ),
   );
   showCupertinoModalPopup(context: context, builder: (context) => action);
+}
+
+
+
+Future<String> getUserId() async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  return decrypt(pref.getString('id').toString());
+}
+
+//get email
+Future<String> getEmail() async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  return decrypt(pref.getString('email').toString());
+}
+
+//get username
+Future<String> getUserName() async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+
+  return decrypt(pref.getString('username').toString());
+}
+
+//get phone
+Future<String> getPhone() async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+
+  return decrypt(pref.getString('phone').toString());
 }
 

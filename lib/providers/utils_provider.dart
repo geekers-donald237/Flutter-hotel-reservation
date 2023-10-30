@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final allAccomodationProvider = StateProvider<int>((ref) {
   return 1;
@@ -13,7 +14,7 @@ final allChildrenProvider = StateProvider<int>((ref) {
 });
 
 final LocationCurrentProvider = StateProvider<String>((ref) {
-  return 'Votre destination';
+  return '';
 });
 
 final LongitudeProvider = StateProvider<double>((ref) {

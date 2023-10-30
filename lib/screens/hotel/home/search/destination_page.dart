@@ -1,4 +1,5 @@
 import 'package:find_hotel/gen/theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,15 +23,14 @@ class Test extends ConsumerWidget {
   // }
 
   Future<Position> _getGeoLocationPosition() async {
+
+
     bool serviceEnabled;
     LocationPermission permission;
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       await Geolocator.openLocationSettings();
       return Future.error('Location services are disabled.');
     }
@@ -55,17 +55,25 @@ class Test extends ConsumerWidget {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  Future<void> GetAddressFromLatLong(Position position, WidgetRef ref) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  Future<void> GetAddressFromLatLong(BuildContext context,Position position, WidgetRef ref) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    EasyLoading.dismiss();
     ref.read(LongitudeProvider.notifier).update((state) => position.longitude);
-
     ref.read(LattitudeProvider.notifier).update((state) => position.longitude);
-    // print("dddididididi $placemarks");
-    print('latitude et longitude ${position.longitude}, ${position.latitude}');
+     if (kDebugMode) {
+       print("dddididididi $placemarks");
+     }
+    if (kDebugMode) {
+      print('latitude et longitude ${position.longitude}, ${position.latitude}');
+    }
+    ref.read(LocationCurrentProvider.notifier).update((state) => AppLocalizations.of(context)!.my_position);
+
+    Navigator.of(context).pop();
     // Placemark place = placemarks[0];
     // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
   }
+
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,79 +84,196 @@ class Test extends ConsumerWidget {
         backgroundColor: Colors.white,
         foregroundColor: kblack,
         elevation: 2,
-        title: Expanded(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            decoration: BoxDecoration(
-              border: Border.all(color: yellow.withOpacity(0.3), width: 4),
-              borderRadius: BorderRadius.circular(2),
-            ),
-            child: TextField(
-              decoration: InputDecoration.collapsed(
-                  hintText: AppLocalizations.of(context)!.destination_place),
-              autofocus: true,
-            ),
-          ),
-        ),
+        title: Text('Select one')
       ),
       body: Container(
         color: kwhite,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SearchOption(
-                title: AppLocalizations.of(context)!.autour_message,
-                icon: Ionicons.locate_outline,
-                textColor: kblue,
-                ontap: () async {
-                  EasyLoading.show(
-                      status: AppLocalizations.of(context)!.loading);
-                  destination = AppLocalizations.of(context)!.autour_message;
-                  ref
-                      .read(LocationCurrentProvider.notifier)
-                      .update((state) => destination);
-
-                  Position position = await _getGeoLocationPosition();
-                  location =
-                      'Lat: ${position.latitude} , Long: ${position.longitude}';
-                  GetAddressFromLatLong(position, ref);
-                  Navigator.of(context).pop();
-                  EasyLoading.dismiss();
-                },
+              SizedBox(height: 50,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: yellow.withOpacity(0.3), width: 4),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration.collapsed(
+                        hintText: AppLocalizations.of(context)!.destination_place),
+                    autofocus: true,
+                  ),
+                ),
               ),
-              SizedBox(
+              SizedBox(height: 50,),
+
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SearchOption(
+                  title: AppLocalizations.of(context)!.autour_message,
+                  icon: Ionicons.locate_outline,
+                  textColor: kblue,
+                  ontap: () async {
+                    LocationPermission permission = await Geolocator.checkPermission();
+
+                    if(permission == LocationPermission.denied){
+                      //print(permission);
+                      showDialog(
+                        context: context,
+                        builder: (context) => SingleChildScrollView(
+                          child:  AlertDialog(
+                              title: Center(child: Column(
+                                children: [
+                                  Icon(Icons.location_on),
+                                  Center(child: Text(AppLocalizations.of(context)!.use_your_location,textAlign: TextAlign.center,)),
+                                ],
+                              )),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .message_of_acceptance_fine_coarse_location,
+                                    style: TextStyle(color: Colors.black,fontSize: 14),textAlign: TextAlign.center,
+
+                                  ),
+                                  SizedBox(height: 5,),
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .kitaboo_collect_data_to_shown_you,
+                                    style: const TextStyle(color: Colors.black,fontSize: 14 ),textAlign: TextAlign.center,),
+                                  SizedBox(height: 10,),
+                                  Center(
+                                    child: Image.asset('assets/image/map.png'),
+                                  ),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                MaterialButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(AppLocalizations.of(context)!.denied_),
+                                ),
+                                MaterialButton(
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    EasyLoading.show();
+                                    destination = AppLocalizations.of(context)!.my_position;
+                                    ref
+                                        .read(LocationCurrentProvider.notifier)
+                                        .update((state) => destination);
+
+                                    Position position = await _getGeoLocationPosition();
+                                    location =
+                                    'Lat: ${position.latitude} , Long: ${position.longitude}';
+
+                                    GetAddressFromLatLong(context,position, ref);
+                                  },
+                                  child: Text(AppLocalizations.of(context)!.accept_),
+                                ),
+                              ]),
+                        ),
+                      );
+                    }else if(permission == LocationPermission.deniedForever){
+                      showDialog(
+                        context: context,
+                        builder: (context) => SingleChildScrollView(
+                          child:  AlertDialog(
+                              title: Text(AppLocalizations.of(context)!.attention_),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .message_of_acceptance_fine_coarse_location,
+                                    style: TextStyle(color: Colors.red),
+                                  )
+                                ],
+                              ),
+                              actions: <Widget>[
+                                MaterialButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(AppLocalizations.of(context)!.denied_),
+                                ),
+                                MaterialButton(
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    EasyLoading.show();
+                                    destination = AppLocalizations.of(context)!.my_position;
+                                    ref
+                                        .read(LocationCurrentProvider.notifier)
+                                        .update((state) => destination);
+
+                                    Position position = await _getGeoLocationPosition();
+                                    location =
+                                    'Lat: ${position.latitude} , Long: ${position.longitude}';
+
+                                    GetAddressFromLatLong(context,position, ref);
+                                  },
+                                  child: Text(AppLocalizations.of(context)!.accept_),
+                                ),
+                              ]),
+                        ),
+                      );
+                    }else if(permission == LocationPermission.unableToDetermine){
+                      showDialog(
+                        context: context,
+                        builder: (context) => SingleChildScrollView(
+                          child:  AlertDialog(
+                              title: Text(AppLocalizations.of(context)!.attention_),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .message_of_acceptance_fine_coarse_location,
+                                    style: TextStyle(color: Colors.red),
+                                  )
+                                ],
+                              ),
+                              actions: <Widget>[
+                                MaterialButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(AppLocalizations.of(context)!.denied_),
+                                ),
+                                MaterialButton(
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    EasyLoading.show();
+                                    destination = AppLocalizations.of(context)!.my_position;
+                                    ref
+                                        .read(LocationCurrentProvider.notifier)
+                                        .update((state) => destination);
+
+                                    Position position = await _getGeoLocationPosition();
+                                    location =
+                                    'Lat: ${position.latitude} , Long: ${position.longitude}';
+
+                                    GetAddressFromLatLong(context,position, ref);
+
+                                  },
+                                  child: Text(AppLocalizations.of(context)!.accept_),
+                                ),
+                              ]),
+                        ),
+                      );
+                    }
+                    else{
+                      EasyLoading.show();
+                      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                      location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
+                      //print(position);
+                       GetAddressFromLatLong(context,position, ref);
+
+                    }
+                  },
+                ),
+              ),
+
+              const SizedBox(
                 height: 10,
               ),
-              // SearchOption(
-              //   title: "Hebergement pour ce soir",
-              //   subtitle: "Adresse du lieu",
-              //   icon: Ionicons.locate_outline,
-              //   textColor: kblue,
-              //   ontap: () {},
-              // ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              // Container(
-              //   padding: EdgeInsets.all(10),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       Text(
-              //         "Option a proximite pour ce soir",
-              //         style: Theme.of(context).textTheme.titleLarge,
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // const SizedBox(height: 10),
-              // SearchOption(
-              //   title: "EDEA FLAT",
-              //   subtitle: "10 Juillet - 11 aout , 2 Adultes ",
-              //   icon: Icons.history,
-              //   textColor: kblack,
-              //   ontap: () {},
-              // ),
             ],
           ),
         ),
@@ -179,8 +304,10 @@ class SearchOption extends StatelessWidget {
     return InkWell(
       onTap: ontap,
       child: Card(
-        shadowColor: Colors.grey.withOpacity(0.5),
-        elevation: 0.5,
+        borderOnForeground: true,
+        surfaceTintColor: Colors.blue,
+        shadowColor: Colors.grey.withOpacity(1),
+        elevation: 20,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -199,7 +326,7 @@ class SearchOption extends StatelessWidget {
                   size: 40,
                 ),
               ),
-              SizedBox(width: 30),
+              const SizedBox(width: 30),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -214,7 +341,7 @@ class SearchOption extends StatelessWidget {
                   if (subtitle.isNotEmpty)
                     Text(
                       subtitle,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: kblack,
                       ),

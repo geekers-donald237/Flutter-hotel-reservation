@@ -7,7 +7,8 @@ import 'package:ionicons/ionicons.dart';
 
 import '../screens/hotel/favoris/favoris.dart';
 import '../screens/hotel/home/index.dart';
-import '../screens/hotel/reservations/index.dart';
+import '../screens/reservations/index.dart';
+import '../screens/settings/index.dart';
 
 
 class BottomBar extends StatefulWidget {
@@ -28,14 +29,9 @@ class _BottomBarState extends State<BottomBar> {
     const IndexScreen(
       status: 0,
     ),
-    FavorisScreen(),
+    const FavorisScreen(),
     const ReservationIndex(),
-    Text('first'),
-
-    //  const AccountScreen(),
-    //  const HomeScreen(),
-    //  ProfilePage(),
-    //  const CartScreen(),
+    const SettingsScreen(),
   ];
 
   void updatePage(int page) {
@@ -50,19 +46,19 @@ class _BottomBarState extends State<BottomBar> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Attention !'),
-            content: Text('AppLocalizations.of(context)!.do_you_want_to_exit'),
+            content: Text(AppLocalizations.of(context)!.do_you_want_to_exit),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
-                child: Text('AppLocalizations.of(context)!.cancel'),
+                child: Text(AppLocalizations.of(context)!.cancel_),
               ),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
-                  child: Text('AppLocalizations.of(context)!.exit'))
+                  child: Text(AppLocalizations.of(context)!.exit_))
             ],
           );
         });
@@ -111,94 +107,11 @@ class _BottomBarState extends State<BottomBar> {
                 icon: const Icon(Ionicons.ticket_outline),
                 label: AppLocalizations.of(context)!.reservation_now),
             BottomNavigationBarItem(
-                icon: const Icon(
-                  Icons.info_outline,
-                  color: Colors.green,
-                ),
+                icon: const Icon(Icons.info_outline,),
                 label: AppLocalizations.of(context)!.profil_now),
           ],
         ),
       ),
     );
-    //   Scaffold(
-    //   body: pages[_page],
-    //   extendBody: true,
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     currentIndex: _page,
-    //     selectedItemColor: GlobalVariables.selectedNavBarColor,
-    //     unselectedItemColor: GlobalVariables.unselectedNavBarColor,
-    //     backgroundColor: GlobalVariables.backgroundColor,
-    //     type: BottomNavigationBarType.fixed,
-    //     iconSize: 28,
-    //     onTap: updatePage,
-    //     items: [
-    //       // HOME
-    //       BottomNavigationBarItem(
-    //         icon: Container(
-    //           width: bottomBarWidth,
-    //           decoration: BoxDecoration(
-    //             border: Border(
-    //               top: BorderSide(
-    //                 color: _page == 0
-    //                     ? GlobalVariables.selectedNavBarColor
-    //                     : GlobalVariables.backgroundColor,
-    //                 width: bottomBarBorderWidth,
-    //               ),
-    //             ),
-    //           ),
-    //           child: const Icon(
-    //             Icons.home_outlined,
-    //           ),
-    //         ),
-    //         label: '',
-    //       ),
-    //       // ACCOUNT
-    //       BottomNavigationBarItem(
-    //         icon: Container(
-    //           width: bottomBarWidth,
-    //           decoration: BoxDecoration(
-    //             border: Border(
-    //               top: BorderSide(
-    //                 color: _page == 1
-    //                     ? GlobalVariables.selectedNavBarColor
-    //                     : GlobalVariables.backgroundColor,
-    //                 width: bottomBarBorderWidth,
-    //               ),
-    //             ),
-    //           ),
-    //           child: const Icon(
-    //             Icons.person_outline_outlined,
-    //           ),
-    //         ),
-    //         label: '',
-    //       ),
-    //       // CART
-    //       BottomNavigationBarItem(
-    //         icon: Container(
-    //           width: bottomBarWidth,
-    //           decoration: BoxDecoration(
-    //             border: Border(
-    //               top: BorderSide(
-    //                 color: _page == 2
-    //                     ? GlobalVariables.selectedNavBarColor
-    //                     : GlobalVariables.backgroundColor,
-    //                 width: bottomBarBorderWidth,
-    //               ),
-    //             ),
-    //           ),
-    //           child: Badge(
-    //             elevation: 0,
-    //             badgeContent: Text(userCartLen.toString()),
-    //             badgeColor: Colors.white,
-    //             child: const Icon(
-    //               Icons.shopping_cart_outlined,
-    //             ),
-    //           ),
-    //         ),
-    //         label: '',
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

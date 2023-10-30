@@ -13,6 +13,9 @@ import 'gen/theme.dart';
 import 'l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'onboard/onboard.dart';
+import 'onboard/splashScreen.dart';
+
 // import 'package:localizations/l10n/l10n.dart';
 
 int? isviewed;
@@ -39,9 +42,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Find Hotel',
+      title: 'Kitab-oo.com',
       theme: ThemeData(
-
         scaffoldBackgroundColor: kwhite,
         // fontFamily: FontFamily.workSans,
         // primarySwatch: kprimaryCol,
@@ -54,8 +56,8 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate
       ],
       supportedLocales: L10n.all,
-      //  home: isviewed != 0 ? OnBoard() : SplashScreen(),
-      home: BottomBar(id: 0),
+      home: isviewed != 0 ? OnBoard() : SplashScreen(),
+      //home: BottomBar(id: 0),
       builder: EasyLoading.init(),
     );
   }

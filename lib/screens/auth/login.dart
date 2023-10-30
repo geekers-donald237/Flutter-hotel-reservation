@@ -11,12 +11,14 @@ import 'package:find_hotel/screens/auth/signup.dart';
 
 import 'package:find_hotel/widgets/primary_button.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/encrypt.dart';
 import '../../gen/theme.dart';
 import '../../routes/route_names.dart';
 import '../../urls/all_url.dart';
+import '../../utils/bottom_bar.dart';
 import '../../widgets/formWidget/login_option.dart';
 import 'package:http/http.dart' as http;
 
@@ -129,10 +131,63 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 PrimaryButton(
                   buttonText: AppLocalizations.of(context)!.login_key,
-                  ontap: () {
+                  ontap: () async {
                     if (validateLoginForm(
                         emailController.text.trim(), pswController.text)) {
-                      login(emailController.text.trim(), pswController.text);
+                      LocationPermission permission = await Geolocator.checkPermission();
+
+                      if(permission == LocationPermission.denied){
+                        //print(permission);
+                        showDialog(
+                          context: context,
+                          builder: (context) => SingleChildScrollView(
+                            child:  AlertDialog(
+                                title: Center(child: Column(
+                                  children: [
+                                    Icon(Icons.location_on),
+                                    Center(child: Text(AppLocalizations.of(context)!.use_your_location,textAlign: TextAlign.center,)),
+                                  ],
+                                )),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .message_of_acceptance_fine_coarse_location,
+                                      style: TextStyle(color: Colors.black,fontSize: 14),textAlign: TextAlign.center,
+
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .kitaboo_collect_data_to_shown_you,
+                                      style: const TextStyle(color: Colors.black,fontSize: 14 ),textAlign: TextAlign.center,),
+                                    SizedBox(height: 10,),
+                                    Center(
+                                      child: Image.asset('assets/image/map.png'),
+                                    ),
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  MaterialButton(
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                      login(emailController.text.trim(), pswController.text);
+                                    },
+                                    child: Text(AppLocalizations.of(context)!.denied_),
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      login(emailController.text.trim(), pswController.text);
+                                    },
+                                    child: Text(AppLocalizations.of(context)!.accept_),
+                                  ),
+                                ]),
+                          ),
+                        );
+                      }
+
                       // clearController();
                     }
                   },
@@ -293,7 +348,7 @@ class _LogInScreenState extends State<LogInScreen> {
       // print(json.decode(response.body));
       var data = jsonDecode(response.body);
       if (kDebugMode) {
-        print('dssd');
+        //print('dssd');
         print(data);
       }
 
@@ -301,7 +356,7 @@ class _LogInScreenState extends State<LogInScreen> {
         if (data['status'] == 'error') {
           if (data['message'] == 'Verify your email') {
             if (kDebugMode) {
-              print(data['message'] + "status message email");
+              //print(data['message'] + "status message email");
             }
             var user_get = data['data'];
             EasyLoading.showError(
@@ -312,7 +367,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 .gotoOptScreen(email, user_get['code_verif'].toString());
           } else if (data['message'] == 'Incorrect password') {
             if (kDebugMode) {
-              print(data['message'] + "status message another");
+              //print(data['message'] + "status message another");
             }
             EasyLoading.showError(
               duration: Duration(milliseconds: 1500),
@@ -336,23 +391,27 @@ class _LogInScreenState extends State<LogInScreen> {
           } else {
             EasyLoading.dismiss();
             if (kDebugMode) {
-              print(data['message'] + "show error another error");
+              //print(data['message'] + "show error another error");
             }
           }
         } else {
           EasyLoading.dismiss();
           var user_detail = data['data'];
           String email = user_detail['email'];
+          String id = user_detail['id'].toString();
           String user_name = user_detail['user_name'];
           String tel = user_detail['phone_number'];
           SharedPreferences pref = await SharedPreferences.getInstance();
           await pref.setString('username', encrypt(user_name));
           await pref.setString('email', encrypt(email));
           await pref.setString('phone', encrypt(tel));
+          await pref.setString('id', encrypt(id));
 
           storeLoginInfo();
 
-          NavigationServices(context).gotoBottomScreen(0);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const BottomBar(id: 0, )),
+                  (route) => false);
         }
       } else {
         EasyLoading.showError(

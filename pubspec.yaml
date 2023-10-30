@@ -1,7 +1,7 @@
 name: find_hotel
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0+8
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
@@ -52,6 +52,8 @@ dependencies:
   flutter_rename_app_plus3: ^1.2.1
   flutter_stripe: ^9.3.0
   transparent_image: ^2.0.1
+  lottie:
+  firebase_core: ^2.20.0
   
 
 
@@ -86,18 +88,19 @@ flutter:
     - assets/image/
     - .env
     - assets/logo/
+    - assets/lottie/
 
 flutter_rename_app_plus:
-  application_name: Rental
-  application_id: com.android.rental
-  bundle_id: com.ios.rental
-  ios_bundle_name: rental
+  application_name: Kitaboo
+  application_id: com.aloatech.kitaboo
+  bundle_id: com.aloatech.kitaboo
+  ios_bundle_name: Kitaboo
 
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logo/logo.png"
-  adaptive_icon_foreground: "assets/logo/logo.png"
+  image_path: "assets/logo/play_store_512.png"
+  adaptive_icon_foreground: "assets/logo/play_store_512.png"
 
 
 flutter_native_splash:
@@ -109,10 +112,10 @@ flutter_native_splash:
   branding_dark: assets/logo/dark_logo.png
 
   android_12:
-    image: assets/logo/logo.png
+    image: assets/logo/play_store_512.png
     icon_background_color: "#ffffff"
-    image_dark: assets/logo/dark_logo.png
-    icon_background_color_dark: "#121212"
+    image_dark: assets/logo/play_store_512.png
+    icon_background_color_dark: "#ffffff"
 
   web: false
 

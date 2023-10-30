@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController pswController = TextEditingController();
   final TextEditingController cpswController = TextEditingController();
   String emailc = '', verif_code = '';
-  final Uri _url = Uri.parse('https://flutter.dev');
+  final Uri _url = Uri.parse('https://kitab-oo.com/terms-and-services');
   bool checkedAgreeTerms = false;
   bool check18YearsOld = false;
 
