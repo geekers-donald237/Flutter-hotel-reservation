@@ -1,9 +1,11 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:find_hotel/screens/hotel/home/search/Index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../gen/theme.dart';
+import '../../../models/DestinationModel.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/recommended_places.dart';
 import 'activity_screen.dart';
@@ -21,7 +23,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
 class StayScreen extends StatefulWidget {
-  const StayScreen({super.key});
+  const StayScreen({
+    super.key,
+  });
+
 
   @override
   State<StayScreen> createState() => _StayScreenState();
@@ -268,7 +273,7 @@ class _SearchCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         ref
@@ -444,6 +449,10 @@ class _SearchCard extends ConsumerWidget {
     return '$dayOfWeek $day $month';
   }
 
+  search(String destination,int accomodation,String datetravel,int adult,int children){
+
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     accomodation = ref.watch(allAccomodationProvider);
@@ -498,7 +507,6 @@ class _SearchCard extends ConsumerWidget {
             color: yellow,
           ),
           // Deuxième Row
-
           _buildCalendarDialogButton(context, ref),
           const Divider(
             thickness: 4,
@@ -549,7 +557,17 @@ class _SearchCard extends ConsumerWidget {
                     AppLocalizations.of(context)!.all_fields_destination);
               } else {
                 EasyLoading.dismiss();
-                NavigationServices(context).gotosearchResult();
+                search(destination,accomodation,dateTravel,adults,children);
+                DestinationModel destination_1 = DestinationModel(
+                  destination: destination,
+                  accomodation: accomodation,
+                  dateTravel: dateTravel,
+                  adults: adults,
+                  children: children,
+                );
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => SearchIndex(destination_1: destination_1,)),
+                        (route) => false);
               }
             },
           ),

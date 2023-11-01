@@ -23,8 +23,7 @@ class SearchResultScreen extends ConsumerWidget {
     String dateTravel = ref.watch(StringDateProvider);
     bool isLoading = true;
 
-    final String originalText =
-        '$destination - $accomodation chambres - ${children + adults} personnes';
+    final String originalText = '$destination - $accomodation chambres - ${children + adults} personnes';
 
     String trimmedText = originalText;
     const int maxLength = 20; // Définissez la longueur maximale souhaitée
