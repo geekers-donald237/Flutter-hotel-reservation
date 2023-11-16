@@ -1,5 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:find_hotel/screens/hotel/home/search/Index.dart';
+import 'package:find_hotel/screens/hotel/search/Index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../gen/theme.dart';
 import '../../../models/DestinationModel.dart';
 import '../../../routes/route_names.dart';
-import '../../../widgets/recommended_places.dart';
+// import '../../../widgets/recommended_places.dart';
 import 'activity_screen.dart';
 import '../../../models/hotel_model.dart';
 import '../../../providers/all_hotels_provider.dart';
@@ -33,30 +33,24 @@ class StayScreen extends StatefulWidget {
 }
 
 class _StayScreenState extends State<StayScreen> {
-  bool isLoading = true; // Variable pour suivre l'état de chargement
+ // bool isLoading = true; // Variable pour suivre l'état de chargement
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        isLoading = false; // La charge est terminée
-      });
-    });
     EasyLoading.dismiss();
+    super.initState();
+
   }
 
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    // final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
-              physics: const BouncingScrollPhysics(),
+      body: ListView(
+              //physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(14),
               children: [
                 SizedBox(
@@ -80,7 +74,7 @@ class _StayScreenState extends State<StayScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                const RecommendedPlaces(),
+                // const RecommendedPlaces(),
                 SizedBox(
                   height: height * 0.03,
                 ),
@@ -131,33 +125,7 @@ class _StayScreenState extends State<StayScreen> {
 }
 
 
-class _NearbyHotelSection extends ConsumerWidget {
-  const _NearbyHotelSection({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final hotels = ref.watch(allHotelsProvider);
-    return Column(
-      children: [
-        hotels.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => Text('Error: $err'),
-          data: (hotels) {
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: hotels.length,
-              itemBuilder: (BuildContext context, int index) {
-                HotelModel hotel = hotels[index];
-                return HotelCard(hotel: hotel);
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
 
 class _SearchCard extends ConsumerWidget {
   bool isSetPosition = false, isSetDate = false;

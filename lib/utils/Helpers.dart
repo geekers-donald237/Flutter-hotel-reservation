@@ -18,6 +18,10 @@ const klightContentColor = Color(0xffF1F2F7);
 const double kbigFontSize = 25;
 const double knormalFontSize = 18;
 const double ksmallFontSize = 15;
+const Color primaryColor = Color(0xFF2967FF);
+const Color grayColor = Color(0xFF8D8D8E);
+
+const double defaultPadding = 16.0;
 
 double getScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;

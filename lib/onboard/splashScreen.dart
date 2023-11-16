@@ -128,9 +128,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Timer? timer;
   @override
   void initState() {
+    _loadUserInfo();
     timer = Timer.periodic(
         const Duration(seconds: 10), (Timer t) => _loadUserInfo());
-    _loadUserInfo();
+
     super.initState();
   }
 
@@ -147,7 +148,6 @@ class _SplashScreenState extends State<SplashScreen> {
               width: double.infinity,
               child: Lottie.asset(
                 'assets/lottie/splascreen.json',
-                fit: BoxFit.fill,
               ),
             ),
             const Align(

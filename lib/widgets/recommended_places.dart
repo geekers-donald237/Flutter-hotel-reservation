@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../gen/assets.gen.dart';
 import '../gen/theme.dart';
+import '../models/HotelModel.dart';
 import '../models/hotel_model.dart';
-import '../screens/hotel_screen.dart';
+import '../screens/hotel/search/hotel/hotelDetailScreen.dart';
 import 'app_text.dart';
 import 'custom_rating.dart';
 
@@ -26,14 +27,14 @@ class RecommendedPlaces extends StatelessWidget {
 List<Widget> buildHotelDeal() {
   List<Widget> list = [];
   for (var i = 0; i < HotelModel.sampleHotels.length; i++) {
-    list.add(
-      GestureDetector(
-        onTap: () {},
-        child: OptionCard(
-          hotel: HotelModel.sampleHotels[i],
-        ),
-      ),
-    );
+    // list.add(
+    //   GestureDetector(
+    //     onTap: () {},
+    //     child: OptionCard(
+    //       hotel: HotelModel.sampleHotels[i],
+    //     ),
+    //   ),
+    // );
   }
   return list;
 }
@@ -44,18 +45,18 @@ class OptionCard extends StatelessWidget {
     required this.hotel,
   }) : super(key: key);
 
-  final HotelModel hotel;
+  final HotelModels hotel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HotelDetailScreen(hotel: hotel),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => HotelDetailScreen(hotel: hotel),
+        //   ),
+        // );
       },
       // child: Column(
       //   crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +149,7 @@ class OptionCard extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Text(
-                    hotel.title,
+                    hotel.name!,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -165,9 +166,9 @@ class OptionCard extends StatelessWidget {
               height: 150,
               child: Center(
                 child: Hero(
-                  tag: hotel.location,
+                  tag: hotel.contactEmail!,
                   child: Image.asset(
-                    hotel.thumbnailPath,
+                    hotel.imagePath!,
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                     height: 150, // Ajuster la hauteur de l'image
@@ -178,14 +179,14 @@ class OptionCard extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            AppText.small(hotel.location),
+            AppText.small(hotel.address!),
             SizedBox(
               height: 5,
             ),
             RichText(
               text: TextSpan(
                 children: [
-                  AppTextSpan.medium('\$${hotel.price}'),
+                  AppTextSpan.medium('\$${hotel.minPrice}'),
                   AppTextSpan.medium(' /night'),
                 ],
               ),
@@ -193,11 +194,11 @@ class OptionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                for (int i = 1; i <= 5; i++)
-                  Icon(
-                    Icons.star,
-                    color: i <= hotel.ratingScore ? yellow : Colors.white,
-                  ),
+                // for (int i = 1; i <= 5; i++)
+                //   Icon(
+                //     Icons.star,
+                //     color: i <= hotel.nbStars ? yellow : Colors.white,
+                //   ),
                 const SizedBox(width: 12),
               ],
             ),

@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../models/DestinationModel.dart';
+import '../models/HotelModel.dart';
 import '../models/hotel_model.dart';
-import '../screens/hotel_screen.dart';
+import '../screens/hotel/search/hotel/IndexHotelDetails.dart';
+import '../screens/hotel/search/hotel/hotelDetailScreen.dart';
+import '../urls/all_url.dart';
 import 'app_text.dart';
 
 class HotelCard extends StatefulWidget {
   const HotelCard({
     Key? key,
     required this.hotel,
+    required this.destination_1
   }) : super(key: key);
 
-  final HotelModel hotel;
+  final HotelModels hotel;
+  final DestinationModel destination_1;
 
   @override
   _HotelCardState createState() => _HotelCardState();
@@ -28,7 +35,7 @@ class _HotelCardState extends State<HotelCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HotelDetailScreen(hotel: widget.hotel),
+            builder: (context) => IndexHotelDetails(hotel: widget.hotel, destination_1: widget.destination_1,),
           ),
         );
       },
@@ -57,8 +64,9 @@ class _HotelCardState extends State<HotelCard> {
                           ),
                         ],
                       ),
-                      child: Image.asset(
-                        widget.hotel.thumbnailPath,
+                      child:
+                      Image.network(
+                          '${Urls.racine}imagesAccomodation/${widget.hotel.imagePath}',
                         fit: BoxFit.cover,
                         scale: 1.05,
                       ),
@@ -79,7 +87,7 @@ class _HotelCardState extends State<HotelCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText.large(
-                            widget.hotel.title,
+                            widget.hotel.name!,
                             fontSize: 18,
                             textAlign: TextAlign.left,
                             maxLine: 2,
@@ -127,7 +135,7 @@ class _HotelCardState extends State<HotelCard> {
                       SizedBox(height: 4),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: AppText.large("\$${widget.hotel.price} "),
+                        child: AppText.large("\$${widget.hotel.minPrice} "),
                       ),
                       SizedBox(height: 4),
                       Align(

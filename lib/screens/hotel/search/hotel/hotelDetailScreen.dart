@@ -1,29 +1,42 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:find_hotel/screens/image_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../gen/assets.gen.dart';
-import '../gen/theme.dart';
-import '../models/hotel_model.dart';
-import '../../../../providers/utils_provider.dart';
-import '../utils/helper.dart';
-import '../widgets/app_text.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/custom_rating.dart';
+import '../../../../api/encrypt.dart';
+import '../../../../gen/assets.gen.dart';
+import '../../../../gen/theme.dart';
+import '../../../../models/DestinationModel.dart';
+import '../../../../models/HotelModel.dart';
+import '../../../../../../../providers/utils_provider.dart';
+import '../../../../urls/all_url.dart';
+import '../../../../utils/helper.dart';
+import '../../../../widgets/app_text.dart';
+import '../../../../widgets/custom_button.dart';
+import '../../../../widgets/custom_rating.dart';
 
 class HotelDetailScreen extends StatefulWidget {
   const HotelDetailScreen({
     Key? key,
     required this.hotel,
+    required this.destination_1
   }) : super(key: key);
 
-  final HotelModel hotel;
+  final HotelModels hotel;
+  final DestinationModel destination_1;
 
   @override
   State<HotelDetailScreen> createState() => _HotelDetailScreenState();
@@ -31,144 +44,205 @@ class HotelDetailScreen extends StatefulWidget {
 
 class _HotelDetailScreenState extends State<HotelDetailScreen> {
   bool isFavorite = false;
+  bool isLoading = true;
+  List<HotelModels> _hotels = [];
+  List<String> hotel_list_imagePaths = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getDetailHotel();
+    super.initState();
+  }
+
+  getDetailHotel() async {
+      try {
+        var url = Uri.parse(Urls.hotel);
+        final response = await http.post(url, body: {
+          "id": encrypt(widget.hotel.id.toString()),
+          "action": encrypt('get_hotel_details'),
+        });
+        // if (kDebugMode) {
+        //   print(response.body);
+        // }
+
+        if (response.statusCode == 200) {
+          var data = jsonDecode(response.body);
+          setState(() {
+            isLoading = false;
+          });
+          // if (kDebugMode) {
+          //   print(data['hotel_images']);
+          // }
+          _hotels.clear();
+          hotel_list_imagePaths.clear();
+
+          for(String i in data['hotel_images']){
+            setState(() {
+              hotel_list_imagePaths.add(i);
+            });
+          }
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+        }
+      } on SocketException {
+        setState(() {
+          isLoading = false;
+        });
+        EasyLoading.showInfo(AppLocalizations.of(context)!.verified_internet,
+            duration: const Duration(seconds: 4));
+      } catch (e) {
+        setState(() {
+          isLoading = false;
+        });
+        if (kDebugMode) {
+          print(e.toString());
+        }
+        EasyLoading.showInfo(AppLocalizations.of(context)!.an_error_occur,
+            duration: const Duration(seconds: 4));
+      }
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    bool isSelected = false;
+    return RefreshIndicator(
+      onRefresh: () async{
+        return getDetailHotel();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            // margin: EdgeInsets.only(top: size.height * 0.1),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      _GallerySection(imagePaths: hotel_list_imagePaths,),
+                       _HotelTitleSection(hotel: widget.hotel),
+                      const SizedBox(height: 16),
+                      const _FacilitiesSection(),
+                      const SizedBox(height: 16),
+                      Card(
+                        elevation: 0.5, // Ajout d'une élévation au Card
+                        margin: const EdgeInsets.all(2), // Marge autour du Card
+                        child: Padding(
+                          padding: const EdgeInsets.all(16), // Espacement à l'intérieur du Card
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!.arrival_date,
+                                        style: const TextStyle(color: Colors.black),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        widget.destination_1.dateTravel,
+                                        style: const TextStyle(color: Colors.blue),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!.number_of_accomodation,
+                                        style: const TextStyle(color: Colors.black),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        widget.destination_1.accomodation.toString(),
+                                        style: const TextStyle(color: Colors.blue),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!.adults,
+                                        style: const TextStyle(color: Colors.black),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        widget.destination_1.adults.toString(),
+                                        style: const TextStyle(color: Colors.blue),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: [
+                                       Text(
+                                        AppLocalizations.of(context)!.children,
+                                        style: const TextStyle(color: Colors.black),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        widget.destination_1.children.toString(),
+                                        style:const TextStyle(color: Colors.blue),
+                                      ),
+                                    ],
+                                  ),
 
-    Color color = Colors.black;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kblue,
-        foregroundColor: kblack,
-        actions: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isFavorite = !isFavorite;
-              });
-            },
-            child: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red : Colors.black,
-              size: 30,
-            ),
-          ),
-          Padding(
-              padding: EdgeInsets.only(left: 8.0, right: 12),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Ionicons.share_social_outline, size: 30),
-              )),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          // margin: EdgeInsets.only(top: size.height * 0.1),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    _HotelTitleSection(hotel: widget.hotel),
-                    const SizedBox(height: 16),
-                    const _FacilitiesSection(),
-                    const SizedBox(height: 16),
-                    Card(
-                      elevation: 0.5, // Ajout d'une élévation au Card
-                      margin: EdgeInsets.all(2), // Marge autour du Card
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            16), // Espacement à l'intérieur du Card
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Arrival Date:',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      'August 25, 2023',
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Departure Date:',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      'August 30, 2023',
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Nombre d\'hébergement et de personnes',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '22',
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                              ],
-                            ),
-                          ],
+
+
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              _GallerySection(imagePaths: widget.hotel.imagePaths),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: _LocationSection(
-                  address: widget.hotel.address,
-                  coordinate: widget.hotel.coordinate,
-                  description: widget.hotel.description,
+                // _GallerySection(imagePaths: widget.hotel.imagePath),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: _LocationSection(
+                    address: widget.hotel.address!,
+                    coordinate: LatLng(widget.hotel.latitude!, widget.hotel.longitude!),
+                    description: widget.hotel.hotelDescription!,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: _ReserveBar(price: double.parse(widget.hotel.minPrice.toString())),
       ),
-      bottomNavigationBar: _ReserveBar(price: widget.hotel.price),
     );
   }
 }
@@ -179,7 +253,8 @@ class _HotelTitleSection extends StatelessWidget {
     required this.hotel,
   }) : super(key: key);
 
-  final HotelModel hotel;
+  final HotelModels hotel;
+
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +265,7 @@ class _HotelTitleSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppText.large(
-              hotel.title,
+              hotel.name!,
               textAlign: TextAlign.left,
               maxLine: 2,
               textOverflow: TextOverflow.ellipsis,
@@ -205,7 +280,7 @@ class _HotelTitleSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: AppText.small(
-                hotel.ratingScore.toString(), // Note de l'hôtel
+                hotel.nbStars.toString(), // Note de l'hôtel
                 color: Colors.white, // Couleur du texte à l'intérieur du carré
               ),
             ),
@@ -216,14 +291,14 @@ class _HotelTitleSection extends StatelessWidget {
           children: [
             Assets.icon.location.svg(color: kDarkGreyColor, height: 15),
             const SizedBox(width: 10),
-            AppText.small(hotel.location),
+            AppText.small(hotel.address!),
           ],
         ),
         const SizedBox(height: 10),
         CustomRating(
-          ratingScore: hotel.ratingScore,
+          ratingScore: double.parse(hotel.nbStars.toString()),
           showReviews: true,
-          totalReviewer: hotel.totalReview,
+          totalReviewer: 3456,
         ),
         const SizedBox(height: 10),
       ],
@@ -239,7 +314,7 @@ class _FacilitiesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText.medium('Facilities', fontWeight: FontWeight.bold),
+        AppText.medium(AppLocalizations.of(context)!.facilities_, fontWeight: FontWeight.bold),
         const SizedBox(height: 10),
         Table(
           columnWidths: const {0: FlexColumnWidth(), 1: FlexColumnWidth()},
@@ -344,11 +419,11 @@ class _GallerySection extends StatelessWidget {
                     margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        image: AssetImage(imagePath),
-                        fit: BoxFit.cover,
-                      ),
                     ),
+                    child: Image.network('${Urls.racine}imagesAccomodation/${imagePath}',
+                    fit: BoxFit.cover,
+                    scale: 1.05,
+                  ),
                   ),
                 );
               },
@@ -385,10 +460,10 @@ class _GallerySection extends StatelessWidget {
                       margin: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage(imagePath),
-                          fit: BoxFit.cover,
-                        ),
+                      ),
+                      child: Image.network('${Urls.racine}imagesAccomodation/${imagePath}',
+                        fit: BoxFit.cover,
+                        scale: 1.05,
                       ),
                     ),
                   );
@@ -422,7 +497,7 @@ class _GallerySection extends StatelessWidget {
                           child: Text(
                             '$remainingImageCount\nmore',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),
@@ -499,7 +574,7 @@ class _LocationSection extends ConsumerWidget {
         const SizedBox(height: 10),
         AppText.medium(description, fontWeight: FontWeight.normal),
         const SizedBox(height: 10),
-        AppText.medium('Show more', textDecoration: TextDecoration.underline)
+        // AppText.medium('Show more', textDecoration: TextDecoration.underline)
       ],
     );
   }
@@ -532,24 +607,24 @@ class _ReserveBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText.medium('Start from', fontWeight: FontWeight.normal),
+              AppText.medium(AppLocalizations.of(context)!.start_from, fontWeight: FontWeight.normal),
               RichText(
                 text: TextSpan(
                   children: [
                     AppTextSpan.large('\$$price'),
-                    AppTextSpan.medium(' /night'),
+                    AppTextSpan.medium(AppLocalizations.of(context)!.per_night),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(
-            width: 150,
-            child: CustomButton(
-              buttonText: 'Reserve',
-              onPressed: () {},
-            ),
-          ),
+          // SizedBox(
+          //   width: 150,
+          //   child: CustomButton(
+          //     buttonText: 'Reserve',
+          //     onPressed: () {},
+          //   ),
+          // ),
         ],
       ),
     );

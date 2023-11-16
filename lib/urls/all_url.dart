@@ -1,6 +1,7 @@
 class Urls {
-  //static const String baseURL = "http://192.168.1.122:8000/api";
+  // static const String baseURL = "http://192.168.8.162:8000/api";
   static const String baseURL = "https://kitab-oo.com/api";
+  static const String racine = "https://kitab-oo.com/";
 
   static const String user = "$baseURL/rentali_user";
   static const String userAvatar = "https://ui-avatars.com/api/?name=";

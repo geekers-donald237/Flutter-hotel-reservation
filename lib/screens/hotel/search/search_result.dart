@@ -111,19 +111,19 @@ class SearchResultScreen extends ConsumerWidget {
                           child: Container(
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: nearbyHotels.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      HotelModel hotel = nearbyHotels[index];
-                                      return HotelCard(hotel: hotel);
-                                    },
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: ListView.builder(
+                                //     shrinkWrap: true,
+                                //     physics: NeverScrollableScrollPhysics(),
+                                //     itemCount: nearbyHotels.length,
+                                //     itemBuilder:
+                                //         (BuildContext context, int index) {
+                                //       HotelModel hotel = nearbyHotels[index];
+                                //       return HotelCard(hotel: hotel);
+                                //     },
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

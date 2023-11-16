@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:find_hotel/gen/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class Test extends ConsumerWidget {
   Test({super.key});
 
   String location = 'Null, Press Button';
+
+
 
   // storeDestinationInfo(String Destination) async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,19 +60,28 @@ class Test extends ConsumerWidget {
   }
 
   Future<void> GetAddressFromLatLong(BuildContext context,Position position, WidgetRef ref) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-    EasyLoading.dismiss();
-    ref.read(LongitudeProvider.notifier).update((state) => position.longitude);
-    ref.read(LattitudeProvider.notifier).update((state) => position.longitude);
-     if (kDebugMode) {
-       print("dddididididi $placemarks");
-     }
-    if (kDebugMode) {
-      print('latitude et longitude ${position.longitude}, ${position.latitude}');
-    }
-    ref.read(LocationCurrentProvider.notifier).update((state) => AppLocalizations.of(context)!.my_position);
+    try{
+      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      EasyLoading.dismiss();
+      ref.read(LongitudeProvider.notifier).update((state) => position.longitude);
+      ref.read(LattitudeProvider.notifier).update((state) => position.longitude);
+      if (kDebugMode) {
+        print("dddididididi $placemarks");
+      }
+      if (kDebugMode) {
+        print('latitude et longitude ${position.longitude}, ${position.latitude}');
+      }
+      ref.read(LocationCurrentProvider.notifier).update((state) => AppLocalizations.of(context)!.my_position);
 
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    }on SocketException{
+      EasyLoading.showInfo(AppLocalizations.of(context)!.verified_internet,
+          duration: const Duration(seconds: 3));
+    }catch(e){
+      EasyLoading.showInfo(AppLocalizations.of(context)!.an_error_occur,
+          duration: const Duration(seconds: 4));
+    }
+
     // Placemark place = placemarks[0];
     // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
   }

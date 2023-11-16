@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:ionicons/ionicons.dart';
 
 import '../screens/hotel/favoris/favoris.dart';
-import '../screens/hotel/home/index.dart';
+import '../screens/home/index.dart';
 import '../screens/reservations/index.dart';
 import '../screens/settings/index.dart';
 
@@ -76,7 +76,6 @@ class _BottomBarState extends State<BottomBar> {
   void dispose() {
     // TODO: implement dispose
     //timer!.cancel();
-    setState(() {});
     super.dispose();
   }
 

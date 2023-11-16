@@ -1,4 +1,13 @@
 {
+  "arrival_date": "Date d'arrivée :",
+  "number_of_accomodation": "Nombre d'hébergement",
+  "adults": "Adulte(s)",
+  "enfants": "Enfants",
+  "per_night": " /nuit",
+  "start_from": "à partir de",
+  "listes_hotel": "Liste",
+  "facilities_": "Equipement",
+  "rooms_": "Chambres",
   "apartment_": "Appartements",
   "impossible_to_compose_an_e_mail": "Impossible de rédiger un e-mail",
   "please_fill_least_one_element": "Veuillez remplir au moins un élément",

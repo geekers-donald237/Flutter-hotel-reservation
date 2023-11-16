@@ -10,12 +10,12 @@ import 'package:ionicons/ionicons.dart';
 
 import 'package:find_hotel/urls/all_url.dart';
 
-import '../../../gen/theme.dart';
-import '../../../routes/route_names.dart';
-import '../../../utils/drawer_item.dart';
-import '../../../utils/nav_drawer.dart';
-import '../../../widgets/custom_icon_button.dart';
-import '../../car/showroom.dart';
+import '../../gen/theme.dart';
+import '../../routes/route_names.dart';
+import '../../utils/drawer_item.dart';
+import '../../utils/nav_drawer.dart';
+import '../../widgets/custom_icon_button.dart';
+import '../car/showroom.dart';
 
 class IndexScreen extends StatefulWidget {
   const IndexScreen({

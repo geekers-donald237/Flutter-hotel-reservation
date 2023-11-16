@@ -8,8 +8,8 @@ import '../screens/auth/otp_register.dart';
 import '../screens/auth/signup.dart';
 import '../screens/auth/edit_profile.dart';
 
-import '../screens/hotel/home/search/destination_page.dart';
-import '../screens/hotel/home/search/search_result.dart';
+import '../screens/hotel/search/destination_page.dart';
+import '../screens/hotel/search/search_result.dart';
 import '../utils/bottom_bar.dart';
 
 class NavigationServices {
