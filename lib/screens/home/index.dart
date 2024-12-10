@@ -1,5 +1,5 @@
 
-import 'package:find_hotel/screens/home/rent_car/rent_car.dart';
+import 'package:find_hotel/screens/car/rent_car.dart';
 import 'package:find_hotel/screens/hotel/home/stay.dart';
 import 'package:find_hotel/utils/Helpers.dart';
 import 'package:flutter/material.dart';

@@ -190,7 +190,7 @@ class _SearchCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
@@ -215,8 +215,6 @@ class _SearchCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-
                     Row(
                       children: [
                         Expanded(
@@ -241,7 +239,7 @@ class _SearchCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
                         ref
@@ -300,8 +298,7 @@ class _SearchCard extends ConsumerWidget {
   }
 
   _buildCalendarDialogButton(BuildContext context, WidgetRef ref) {
-    const dayTextStyle =
-        TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
+    const dayTextStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
 
     final config = CalendarDatePicker2WithActionButtonsConfig(
       dayTextStyle: dayTextStyle,
@@ -323,71 +320,64 @@ class _SearchCard extends ConsumerWidget {
       selectedDayTextStyle: dayTextStyle.copyWith(color: Colors.white),
     );
     return StatefulBuilder(builder: (BuildContext context, setState) {
-      return Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InkWell(
-              onTap: () async {
-                final values = await showCalendarDatePicker2Dialog(
-                  context: context,
-                  config: config,
-                  dialogSize: const Size(325, 400),
-                  borderRadius: BorderRadius.circular(15),
-                  value: _dialogCalendarPickerValue,
-                  dialogBackgroundColor: Colors.white,
-                );
-                if (values != null) {
-                  // ignore: avoid_print
-                  print(_getValueText(
-                    config.calendarType,
-                    values,
-                  ));
-                  setState(() {
-                    _dialogCalendarPickerValue = values;
-                  });
-                  setState(() {
-                    dateTravel =
-                        formatDateToDay(_dialogCalendarPickerValue[0]!) +
-                            "-" +
-                            formatDateToDay(_dialogCalendarPickerValue[1]!);
+      return SingleChildScrollView(
+        child: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InkWell(
+                onTap: () async {
+                  final values = await showCalendarDatePicker2Dialog(
+                    context: context,
+                    config: config,
+                    dialogSize: const Size(325, 400),
+                    borderRadius: BorderRadius.circular(15),
+                    value: _dialogCalendarPickerValue,
+                    dialogBackgroundColor: Colors.white,
+                  );
+                  if (values != null) {
+                    // ignore: avoid_print
+                    print(_getValueText(config.calendarType,values,));
+                    setState(() {
+                      _dialogCalendarPickerValue = values;
+                    });
+                    setState(() {
+                      dateTravel = formatDateToDay(_dialogCalendarPickerValue[0]!) + "-" + formatDateToDay(_dialogCalendarPickerValue[1]!);
+                      isSetDate = true;
+                    });
 
-                    isSetDate = true;
-                  });
-
-                  setState(() {
-                    dateTravel;
-                  });
-
-                  ref
-                      .read(StringDateProvider.notifier)
-                      .update((state) => dateTravel);
-                }
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: Icon(Icons.calendar_month),
-                  ),
-                  Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 16.0),
-                        child: dateTravel != ''
-                            ? Text(
-                                dateTravel,
-                              )
-                            : Text(
-                                AppLocalizations.of(context)!.duree_sejour,
-                                textAlign: TextAlign.start,
-                              ),
-                      ))
-                ],
+                    setState(() {
+                      dateTravel;
+                    });
+                    ref.read(StringDateProvider.notifier).update((state) => dateTravel);
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(12.0),
+                      child: Icon(Icons.calendar_month),
+                    ),
+                    Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(left: 12.0),
+                          child: dateTravel != ''
+                              ? Text(
+                                  dateTravel,
+                                )
+                              : Text(
+                                  AppLocalizations.of(context)!.duree_sejour,
+                                  textAlign: TextAlign.start,
+                                ),
+                        ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });
@@ -520,8 +510,7 @@ class _SearchCard extends ConsumerWidget {
               EasyLoading.show(status: AppLocalizations.of(context)!.loading);
               if (destination == AppLocalizations.of(context)!.choose_loca ||
                   dateTravel == '') {
-                EasyLoading.showError(
-                    duration: const Duration(milliseconds: 1500),
+                EasyLoading.showError(duration: const Duration(milliseconds: 1500),
                     AppLocalizations.of(context)!.all_fields_destination);
               } else {
                 EasyLoading.dismiss();

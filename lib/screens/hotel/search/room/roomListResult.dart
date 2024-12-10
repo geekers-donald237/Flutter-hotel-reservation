@@ -19,6 +19,7 @@ import 'package:ionicons/ionicons.dart';
 import '../../../../api/encrypt.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../gen/theme.dart';
+import '../../../../models/DestinationModel.dart';
 import '../../../../models/HotelModel.dart';
 import '../../../../../../../providers/utils_provider.dart';
 import '../../../../models/room_Model.dart';
@@ -33,9 +34,11 @@ class RoomListResult extends StatefulWidget {
   const RoomListResult({
     Key? key,
     required this.hotel,
+    required this.destination_1
   }) : super(key: key);
 
   final HotelModels hotel;
+  final DestinationModel destination_1;
 
   @override
   State<RoomListResult> createState() => _RoomListResultState();
@@ -44,8 +47,6 @@ class RoomListResult extends StatefulWidget {
 class _RoomListResultState extends State<RoomListResult> with TickerProviderStateMixin{
   bool isFavorite = false;
   bool isLoading = true;
-  List<HotelModels> _hotels = [];
-  List<RoomModel> _room = [];
   List<PlaceWidget> room = [];
   int total = 0;
   AnimationController? animationController;
@@ -56,11 +57,11 @@ class _RoomListResultState extends State<RoomListResult> with TickerProviderStat
   void initState() {
     // TODO: implement initState
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-    getDetailHotel();
+    getDetailListRoom();
     super.initState();
   }
 
-  getDetailHotel() async {
+  getDetailListRoom() async {
     try {
       var url = Uri.parse(Urls.hotel);
       final response = await http.post(url, body: {
@@ -89,13 +90,16 @@ class _RoomListResultState extends State<RoomListResult> with TickerProviderStat
           );
 
 
-          PlaceWidget widget = PlaceWidget(
+          PlaceWidget widgets = PlaceWidget(
             animation: animation,
             animationController: animationController,
             item: RoomModel.fromJson(item),
+            hotel: widget.hotel,
+            destination_1: widget.destination_1,
+
           );
-          room.add(widget);
-          widget.animationController?.forward();
+          room.add(widgets);
+          widgets.animationController?.forward();
 
           setState(() {
             index++;
@@ -149,7 +153,7 @@ class _RoomListResultState extends State<RoomListResult> with TickerProviderStat
               body: RefreshIndicator(
                   onRefresh: () {
                     room.clear();
-                    return getDetailHotel();
+                    return getDetailListRoom();
                   },
                   child: _buildContent()),
             ),
@@ -172,6 +176,7 @@ class _RoomListResultState extends State<RoomListResult> with TickerProviderStat
           })),
     );
   }
+
 
 
   Widget _buildFilterUI() {

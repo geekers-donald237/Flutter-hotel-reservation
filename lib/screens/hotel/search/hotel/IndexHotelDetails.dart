@@ -1,5 +1,5 @@
 import 'package:find_hotel/gen/theme.dart';
-import 'package:find_hotel/screens/hotel/search/hotel/roomListResult.dart';
+import 'package:find_hotel/screens/hotel/search/room/roomListResult.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
@@ -128,7 +128,7 @@ class _IndexHotelDetailsState extends State<IndexHotelDetails> {
                 child: TabBarView(
                     children: [
                       HotelDetailScreen(hotel: widget.hotel, destination_1: widget.destination_1,),
-                      RoomListResult(hotel: widget.hotel,),
+                      RoomListResult(hotel: widget.hotel,destination_1: widget.destination_1,),
                       appartListResult(hotel: widget.hotel)
                     ]
                 ),

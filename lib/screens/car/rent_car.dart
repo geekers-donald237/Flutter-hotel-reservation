@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../models/card_model.dart';
-import '../../../widgets/car_widget.dart';
-import '../../car/available_cars.dart';
-import '../../car/book_car.dart';
-import '../../hotel/home/activity_screen.dart';
+import '../../models/card_model.dart';
+import '../../widgets/car_widget.dart';
+import 'available_cars.dart';
+import 'book_car.dart';
+import '../hotel/home/activity_screen.dart';
 
 class RentCarScreen extends StatefulWidget {
   const RentCarScreen({super.key});
